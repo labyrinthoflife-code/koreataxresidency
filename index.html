@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>거주자·비거주자 세법 자가진단</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(140deg, #1e3a8a 0%, #3730a3 25%, #6d28d9 60%, #a21caf 100%);
+      padding: 32px 16px 56px;
+      line-height: 1.6;
+    }
+
+    .container { max-width: 740px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    .site-header { text-align: center; color: white; margin-bottom: 32px; }
+    .site-header .badge {
+      display: inline-block; background: rgba(255,255,255,0.18); color: white;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 4px 14px;
+      border-radius: 20px; margin-bottom: 14px; text-transform: uppercase;
+    }
+    .site-header h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .site-header p { font-size: 14px; opacity: 0.78; }
+
+    /* ── PROGRESS ── */
+    #progressBar {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; gap: 0;
+    }
+    .prog-step { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+    .prog-step:hover .prog-dot { box-shadow: 0 0 0 4px rgba(255,255,255,0.22); }
+    .prog-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.22); color: rgba(255,255,255,0.65);
+      font-size: 12px; font-weight: 700; display: flex; align-items: center;
+      justify-content: center; transition: all 0.3s; position: relative; z-index: 1;
+    }
+    .prog-dot.active { background: white; color: #4f46e5; box-shadow: 0 0 0 4px rgba(255,255,255,0.28); }
+    .prog-dot.done { background: #10b981; color: white; }
+    .prog-label {
+      font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 5px;
+      white-space: nowrap; font-weight: 500;
+    }
+    .prog-dot.active ~ .prog-label, .prog-dot.done ~ .prog-label { color: white; }
+    .prog-line {
+      height: 2px; background: rgba(255,255,255,0.22); flex: 1;
+      max-width: 44px; margin-bottom: 20px; transition: background 0.3s;
+    }
+    .prog-line.done { background: #10b981; }
+
+    /* ── CARD ── */
+    .card {
+      background: white; border-radius: 20px; padding: 36px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      display: none; animation: cardIn 0.32s ease-out;
+    }
+    .card.active { display: block; }
+    .result-card {
+      background: white; border-radius: 20px; padding: 36px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      display: none; animation: cardIn 0.32s ease-out;
+    }
+    .result-card.active { display: block; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .step-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #8b5cf6; margin-bottom: 6px; }
+    .card-title { font-size: 22px; font-weight: 800; color: #111827; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .card-desc { font-size: 14px; color: #6b7280; margin-bottom: 28px; line-height: 1.72; }
+
+    /* ── FORM ── */
+    .fg { margin-bottom: 20px; }
+    .fg label, .fg-label {
+      display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 8px;
+    }
+    .req::after { content: ' *'; color: #ef4444; }
+
+    input[type="number"], input[type="text"], select, textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #e5e7eb;
+      border-radius: 10px; font-size: 15px; color: #111827; background: white;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s; font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+    textarea { resize: vertical; min-height: 76px; }
+    .help { font-size: 12px; color: #9ca3af; margin-top: 4px; line-height: 1.6; }
+
+    /* ── RADIO BUTTONS ── */
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-radio { flex: 1; min-width: 96px; }
+    .btn-radio input { display: none; }
+    .btn-radio label {
+      display: flex; align-items: center; justify-content: center;
+      padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 10px;
+      cursor: pointer; font-size: 13px; font-weight: 500; color: #6b7280;
+      transition: all 0.18s; text-align: center; gap: 5px; line-height: 1.4;
+    }
+    .btn-radio input:checked + label {
+      border-color: #6366f1; background: #eff6ff; color: #4338ca; font-weight: 700;
+    }
+
+    /* ── LAYOUT HELPERS ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .divider { border: none; border-top: 1px solid #f3f4f6; margin: 22px 0; }
+    .section-title {
+      font-size: 12px; font-weight: 700; color: #9ca3af; text-transform: uppercase;
+      letter-spacing: 0.07em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: #f3f4f6; }
+
+    /* ── INFO / WARN BOXES ── */
+    .info-box {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #6366f1;
+      border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #1e40af;
+      margin-bottom: 22px; line-height: 1.7;
+    }
+    .warn-box {
+      background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b;
+      border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #78350f;
+      margin-top: 20px; line-height: 1.7;
+    }
+
+    /* ── ASSET CARDS ── */
+    .asset-card { border: 1.5px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+    .asset-header {
+      background: #f9fafb; padding: 12px 16px; font-size: 14px; font-weight: 700;
+      color: #374151; display: flex; align-items: center; gap: 8px; cursor: pointer;
+      user-select: none;
+    }
+    .asset-header .chevron { margin-left: auto; font-size: 16px; color: #9ca3af; transition: transform 0.2s; }
+    .asset-header.open .chevron { transform: rotate(180deg); }
+    .asset-body { padding: 16px; display: none; }
+    .asset-body.open { display: block; }
+    .asset-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+    .asset-row.single { grid-template-columns: 1fr; }
+
+    /* ── INPUT SUFFIX ── */
+    .inp-wrap { position: relative; }
+    .inp-wrap input { padding-right: 46px; }
+    .inp-wrap .unit { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: #9ca3af; }
+
+    /* ── TOTAL BOX ── */
+    .total-box {
+      background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1.5px solid #c7d2fe;
+      border-radius: 12px; padding: 15px 20px; display: flex; align-items: center;
+      justify-content: space-between; margin-top: 18px;
+    }
+    .total-box .tl { font-size: 14px; font-weight: 700; color: #374151; }
+    .total-box .tv { font-size: 18px; font-weight: 800; color: #4338ca; }
+
+    /* ── FAMILY MEMBER ── */
+    .family-block { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .family-block-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+    /* ── NAV BUTTONS ── */
+    .nav-buttons { display: flex; gap: 12px; margin-top: 30px; }
+    .btn {
+      padding: 14px 26px; border-radius: 12px; font-size: 15px; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.2s; font-family: inherit;
+    }
+    .btn-prev { background: #f3f4f6; color: #4b5563; flex: 0 0 auto; }
+    .btn-prev:hover { background: #e5e7eb; }
+    .btn-next, .btn-calc {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; flex: 1;
+    }
+    .btn-next:hover, .btn-calc:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(79,70,229,0.32); }
+    .btn-restart { background: #f3f4f6; color: #374151; font-size: 14px; }
+    .btn-print { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; flex: 1; }
+
+    /* ── RESULT ── */
+    .verdict-box { border-radius: 16px; padding: 26px; text-align: center; margin-bottom: 26px; }
+    .v-resident { background: linear-gradient(135deg, #dbeafe, #ede9fe); border: 2px solid #a5b4fc; }
+    .v-nonresident { background: linear-gradient(135deg, #fce7f3, #fee2e2); border: 2px solid #fca5a5; }
+    .v-unclear { background: linear-gradient(135deg, #fefce8, #f0fdf4); border: 2px solid #86efac; }
+
+    .v-emoji { font-size: 42px; margin-bottom: 10px; display: block; }
+    .v-tag {
+      display: inline-block; padding: 3px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .tag-r { background: #4338ca; color: white; }
+    .tag-nr { background: #dc2626; color: white; }
+    .tag-u { background: #d97706; color: white; }
+
+    .v-main { font-size: 24px; font-weight: 800; color: #111827; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .v-sub { font-size: 14px; color: #6b7280; }
+    .conf-bar-wrap { margin-top: 16px; }
+    .conf-label { font-size: 12px; color: #6b7280; margin-bottom: 5px; display: flex; justify-content: space-between; }
+    .conf-bar { height: 6px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; }
+    .conf-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #4f46e5, #7c3aed); }
+
+    /* ── FACTOR LIST ── */
+    .factors-title { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 12px; }
+    .factor-item {
+      border-radius: 10px; padding: 13px 15px; margin-bottom: 9px;
+      display: flex; gap: 11px; align-items: flex-start;
+    }
+    .f-pos { background: #f0fdf4; border-left: 4px solid #22c55e; }
+    .f-neg { background: #fef2f2; border-left: 4px solid #ef4444; }
+    .f-neu { background: #f8fafc; border-left: 4px solid #94a3b8; }
+    .f-warn { background: #fffbeb; border-left: 4px solid #f59e0b; }
+    .factor-icon { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+    .factor-body h4 { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .factor-body p { font-size: 13px; color: #6b7280; line-height: 1.58; }
+    .factor-basis { font-size: 11px; color: #8b5cf6; font-weight: 600; margin-top: 4px; }
+
+    /* ── TREATY SECTION ── */
+    .treaty-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
+    .treaty-box-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 16px; }
+    .treaty-step { display: flex; gap: 11px; align-items: flex-start; margin-bottom: 11px; }
+    .treaty-num {
+      width: 22px; height: 22px; border-radius: 50%; background: #6366f1; color: white;
+      font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .treaty-num.decisive { background: #10b981; }
+    .treaty-num.foreign { background: #ef4444; }
+    .treaty-step-body h5 { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 2px; }
+    .treaty-step-body p { font-size: 12px; color: #6b7280; line-height: 1.6; }
+    .treaty-verdict {
+      background: white; border: 1.5px solid #c7d2fe; border-radius: 10px;
+      padding: 13px 16px; margin-top: 14px; text-align: center; font-size: 14px; font-weight: 700;
+    }
+    .treaty-verdict.korea { color: #1d4ed8; }
+    .treaty-verdict.foreign { color: #dc2626; }
+
+    /* ── LEGAL / DISCLAIMER ── */
+    .legal-box { background: #f8fafc; border-radius: 12px; padding: 16px; margin-top: 20px; }
+    .legal-box h4 { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+    .legal-box ul { list-style: none; font-size: 12px; color: #6b7280; line-height: 2; }
+    .legal-box li::before { content: '▸ '; color: #8b5cf6; }
+    .disclaimer {
+      background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px;
+      padding: 14px 16px; font-size: 13px; color: #78350f; margin-top: 20px; line-height: 1.7;
+    }
+
+    /* ── TREATY BADGE ── */
+    .treaty-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+    .badge-yes { background: #dbeafe; color: #1d4ed8; }
+    .badge-no { background: #fee2e2; color: #991b1b; }
+
+    /* ── PRECEDENT MATCH ── */
+    .prec-section { margin-top: 26px; }
+    .prec-intro { font-size: 13px; color: #6b7280; margin-bottom: 14px; line-height: 1.7; }
+    .prec-predict {
+      background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1.5px solid #c7d2fe;
+      border-radius: 12px; padding: 15px 18px; margin-bottom: 16px;
+    }
+    .prec-predict h4 { font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px; }
+    .prec-predict p { font-size: 13px; color: #374151; line-height: 1.65; }
+    .prec-card {
+      border: 1.5px solid #e5e7eb; border-left-width: 4px; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 10px;
+    }
+    .prec-R { border-left-color: #4338ca; background: #f5f6ff; }
+    .prec-N { border-left-color: #dc2626; background: #fff5f5; }
+    .prec-M { border-left-color: #d97706; background: #fffaf0; }
+    .prec-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
+    .prec-id { font-size: 15px; font-weight: 800; color: #111827; }
+    .prec-rtag { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 6px; }
+    .prec-rtag.R { background: #4338ca; color: #fff; }
+    .prec-rtag.N { background: #dc2626; color: #fff; }
+    .prec-rtag.M { background: #d97706; color: #fff; }
+    .prec-sim { margin-left: auto; font-size: 12px; font-weight: 800; color: #4f46e5; background: #eef2ff; padding: 3px 11px; border-radius: 20px; }
+    .prec-summary { font-size: 13px; color: #374151; line-height: 1.62; margin-bottom: 6px; }
+    .prec-key { font-size: 12px; color: #6b7280; line-height: 1.58; }
+    .prec-key strong { color: #8b5cf6; }
+    .prec-tags { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .prec-tag { font-size: 11px; color: #6b7280; background: #f1f3f5; border-radius: 6px; padding: 2px 8px; }
+    .prec-tag.hit { background: #dcfce7; color: #166534; font-weight: 600; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; padding: 0; }
+      .nav-buttons, #progressBar, .site-header { display: none !important; }
+      .result-card { box-shadow: none; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 16px 12px 32px; }
+      .card, .result-card { padding: 22px 18px; }
+      .card-title { font-size: 20px; }
+      .v-main { font-size: 21px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .asset-row { grid-template-columns: 1fr; }
+      .prog-line { max-width: 26px; }
+      .prog-label { font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="badge">소득세법 · 조세조약 판례 기반</div>
+    <h1>거주자 · 비거주자 자가진단</h1>
+    <p>대법원 판례 및 조세심판원 심판례의 판단기준으로 세법상 지위를 확인합니다</p>
+  </header>
+
+  <!-- PROGRESS BAR -->
+  <div id="progressBar"></div>
+
+  <!-- ==================== STEP 1: 기본 정보 ==================== -->
+  <div class="card active" id="step-1">
+    <div class="step-label">Step 1 / <span id="s1-total">7</span></div>
+    <div class="card-title">기본 정보</div>
+    <div class="card-desc">진단하려는 과세연도와 관련 해외 국가를 선택해주세요. 조세조약 체결국 여부에 따라 판단 기준이 달라집니다.</div>
+
+    <div class="fg">
+      <label class="req">진단 대상 과세연도</label>
+      <select id="taxYear">
+        <option value="">-- 연도를 선택하세요 --</option>
+        <option value="2025">2025년</option><option value="2024">2024년</option>
+        <option value="2023">2023년</option><option value="2022">2022년</option>
+        <option value="2021">2021년</option><option value="2020">2020년</option>
+        <option value="2019">2019년</option><option value="2018">2018년</option>
+        <option value="2017">2017년</option><option value="2016">2016년</option>
+        <option value="2015">2015년</option>
+      </select>
+      <div class="help">거주자·비거주자 판정은 해당 과세연도(1.1 ~ 12.31) 전체를 기준으로 합니다.</div>
+    </div>
+
+    <div class="fg">
+      <label class="req">관련 해외 국가</label>
+      <select id="foreignCountry" onchange="onCountryChange()">
+        <option value="">-- 국가를 선택하세요 --</option>
+      </select>
+      <div id="treatyBadge" style="margin-top:8px;"></div>
+      <div class="help">체류·소득·자산 등의 연관이 있는 주요 해외 국가를 선택하세요.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-next" onclick="goNext(1)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 2: 국내 체류일수 ==================== -->
+  <div class="card" id="step-2">
+    <div class="step-label">Step 2 / <span class="s-total">7</span></div>
+    <div class="card-title">국내 체류일수</div>
+    <div class="card-desc">해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.</div>
+
+    <div class="info-box">
+      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 입국일·출국일 모두 1일로 계산합니다.
+    </div>
+
+    <div class="fg">
+      <label class="req">국내 체류일수</label>
+      <div class="inp-wrap">
+        <input type="number" id="daysInKorea" min="0" max="366" placeholder="예) 183">
+        <span class="unit">일</span>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>특이 체류 사유 (해당 시 선택)</label>
+      <div class="btn-group">
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr0" value="none" checked><label for="sr0">해당 없음</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr1" value="medical"><label for="sr1">🏥 질병 치료</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr2" value="sports"><label for="sr2">⚽ 국가대표</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr3" value="other"><label for="sr3">기타 일시적</label></div>
+      </div>
+      <div class="help">질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(2)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(2)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 3: 가족 현황 ==================== -->
+  <div class="card" id="step-3">
+    <div class="step-label">Step 3 / <span class="s-total">7</span></div>
+    <div class="card-title">가족 현황</div>
+    <div class="card-desc">생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.</div>
+
+    <div class="family-block">
+      <div class="family-block-title">👫 배우자</div>
+      <div class="fg" style="margin-bottom:0">
+        <label>배우자 거주 현황</label>
+        <div class="btn-group">
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss0" value="none" checked><label for="ss0">배우자 없음</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss1" value="korea"><label for="ss1">🇰🇷 국내 거주</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss2" value="abroad"><label for="ss2">✈️ 해외 거주</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss3" value="both"><label for="ss3">양국 왕래</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="family-block">
+      <div class="family-block-title">👨‍👧‍👦 자녀 (생계를 같이하는)</div>
+      <div class="grid-2">
+        <div class="fg" style="margin-bottom:0">
+          <label>국내 거주 자녀 수</label>
+          <div class="inp-wrap">
+            <input type="number" id="childrenInKorea" min="0" max="20" value="0">
+            <span class="unit">명</span>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label>해외 거주 자녀 수</label>
+          <div class="inp-wrap">
+            <input type="number" id="childrenAbroad" min="0" max="20" value="0">
+            <span class="unit">명</span>
+          </div>
+        </div>
+      </div>
+      <div class="help" style="margin-top:8px;">성인 자녀가 독립적으로 해외에서 학업·취업·결혼 등 생활기반을 형성한 경우, 부모가 학비를 지원해도 거주자 판정에 미치는 영향이 적을 수 있습니다 (대법 2019두59400).</div>
+    </div>
+
+    <div class="family-block">
+      <div class="family-block-title">👴 부모 (생계 동거)</div>
+      <div class="fg" style="margin-bottom:0">
+        <label>생계를 같이하는 부모 거주지</label>
+        <div class="btn-group">
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps0" value="none" checked><label for="ps0">해당 없음</label></div>
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps1" value="korea"><label for="ps1">🇰🇷 국내</label></div>
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps2" value="abroad"><label for="ps2">✈️ 해외</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(3)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(3)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 4: 국내 자산 ==================== -->
+  <div class="card" id="step-4">
+    <div class="step-label">Step 4 / <span class="s-total">7</span></div>
+    <div class="card-title">국내 자산 현황</div>
+    <div class="card-desc">해당 과세연도 기준 국내 보유 자산의 시가를 입력해주세요. 없는 항목은 0으로 두시면 됩니다.</div>
+
+    <div class="section-title">부동산</div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">🏞️ 토지<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:0"><label>보유 필지 수</label>
+            <div class="inp-wrap"><input type="number" id="landCount" min="0" value="0"><span class="unit">필지</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:0"><label>합산 시가</label>
+            <div class="inp-wrap"><input type="number" id="landValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">🏠 주택 (아파트·단독·연립 포함)<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:12px"><label>보유 채수</label>
+            <div class="inp-wrap"><input type="number" id="houseCount" min="0" value="0"><span class="unit">채</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>합산 시가</label>
+            <div class="inp-wrap"><input type="number" id="houseValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>임대 여부</label>
+          <div class="btn-group">
+            <div class="btn-radio"><input type="radio" name="houseRent" id="hr0" value="no" checked><label for="hr0">직접 거주·미임대</label></div>
+            <div class="btn-radio"><input type="radio" name="houseRent" id="hr1" value="yes"><label for="hr1">임대 중</label></div>
+            <div class="btn-radio"><input type="radio" name="houseRent" id="hr2" value="mix"><label for="hr2">일부 임대</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">🏪 상가·오피스텔·빌딩<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:12px"><label>보유 개수</label>
+            <div class="inp-wrap"><input type="number" id="shopCount" min="0" value="0"><span class="unit">개</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:12px"><label>합산 시가</label>
+            <div class="inp-wrap"><input type="number" id="shopValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>임대 여부</label>
+          <div class="btn-group">
+            <div class="btn-radio"><input type="radio" name="shopRent" id="shr0" value="no" checked><label for="shr0">미임대</label></div>
+            <div class="btn-radio"><input type="radio" name="shopRent" id="shr1" value="yes"><label for="shr1">임대 중</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card" style="margin-bottom:20px;">
+      <div class="asset-header" onclick="toggleAsset(this)">🏗️ 기타 부동산<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row single">
+          <div class="fg" style="margin-bottom:0"><label>합산 시가</label>
+            <div class="inp-wrap"><input type="number" id="otherREValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">금융자산 · 주식</div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">📈 상장주식<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row single">
+          <div class="fg" style="margin-bottom:12px"><label>시가 합산</label>
+            <div class="inp-wrap"><input type="number" id="listedStockVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>대주주 해당 여부</label>
+          <div class="btn-group">
+            <div class="btn-radio"><input type="radio" name="listedMajor" id="lm0" value="no" checked><label for="lm0">해당 없음</label></div>
+            <div class="btn-radio"><input type="radio" name="listedMajor" id="lm1" value="yes"><label for="lm1">대주주 해당</label></div>
+          </div>
+          <div class="help">1% 이상 보유 또는 시가총액 10억 원 이상 보유 시 대주주</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">📊 비상장주식<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row single">
+          <div class="fg" style="margin-bottom:12px"><label>시가 합산</label>
+            <div class="inp-wrap"><input type="number" id="unlistedStockVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0"><label>최대주주 해당 여부</label>
+          <div class="btn-group">
+            <div class="btn-radio"><input type="radio" name="unlistedMajor" id="um0" value="no" checked><label for="um0">해당 없음</label></div>
+            <div class="btn-radio"><input type="radio" name="unlistedMajor" id="um1" value="yes"><label for="um1">최대주주</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card" style="margin-bottom:20px;">
+      <div class="asset-header" onclick="toggleAsset(this)">💰 예금·금융자산 및 기타<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:0"><label>예금·적금·금융자산</label>
+            <div class="inp-wrap"><input type="number" id="depositVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:0"><label>기타 자산</label>
+            <div class="inp-wrap"><input type="number" id="otherAssetVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div>
+        <div class="tl">국내 자산 총합계 (시가)</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:2px;">입력한 모든 자산의 합산</div>
+      </div>
+      <div class="tv" id="domTotalDisplay">0 만원</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(4)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(4)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 5: 국적·영주권 ==================== -->
+  <div class="card" id="step-5">
+    <div class="step-label">Step 5 / <span class="s-total">7</span></div>
+    <div class="card-title">해외 국적 · 영주권</div>
+    <div class="card-desc">소득세법 시행령 제2조 제4항은 외국 국적·영주권 보유자에 대한 비거주자 간주 규정을 두고 있습니다.</div>
+
+    <div class="info-box">
+      ⚖️ <strong>비거주자 간주 (시행령 §2④)</strong>: 외국 국적 취득 또는 외국 영주권 보유 <strong>+</strong> 국내 생계 가족 없음 <strong>+</strong> 국내 183일 미만 체류 — 세 가지 요건을 모두 충족하면 비거주자로 봅니다.
+    </div>
+
+    <div class="fg">
+      <label class="req">해외 국적 또는 영주권 보유 여부</label>
+      <div class="btn-group">
+        <div class="btn-radio"><input type="radio" name="foreignStatus" id="fs0" value="none" checked onchange="toggleFSDetail()"><label for="fs0">없음 (한국 국적만)</label></div>
+        <div class="btn-radio"><input type="radio" name="foreignStatus" id="fs1" value="citizenship" onchange="toggleFSDetail()"><label for="fs1">🛂 외국 국적 취득</label></div>
+        <div class="btn-radio"><input type="radio" name="foreignStatus" id="fs2" value="pr" onchange="toggleFSDetail()"><label for="fs2">📋 외국 영주권</label></div>
+      </div>
+    </div>
+
+    <div id="fsDetail" style="display:none;">
+      <div class="grid-2">
+        <div class="fg">
+          <label>취득 국가</label>
+          <input type="text" id="fsCountry" placeholder="예) 미국, 캐나다">
+        </div>
+        <div class="fg">
+          <label>취득(발급) 연도</label>
+          <input type="number" id="fsYear" min="1950" max="2025" placeholder="예) 2010">
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:0">
+        <label>주민등록 말소 여부</label>
+        <div class="btn-group">
+          <div class="btn-radio"><input type="radio" name="krRegDel" id="krd0" value="no" checked><label for="krd0">주민등록 유지</label></div>
+          <div class="btn-radio"><input type="radio" name="krRegDel" id="krd1" value="yes"><label for="krd1">주민등록 말소</label></div>
+        </div>
+        <div class="help">주민등록 말소 자체가 비거주자를 결정하지는 않습니다. 다만 주소 판단의 간접 자료가 됩니다.</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(5)">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(5)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 6: 직업·사업장 ==================== -->
+  <div class="card" id="step-6">
+    <div class="step-label">Step 6 / <span class="s-total">7</span></div>
+    <div class="card-title">직업 · 사업장</div>
+    <div class="card-desc">주요 소득 활동의 근거지는 생활의 근거지(주소) 판단에서 핵심 요소입니다. 국내·해외 직업·사업장 현황을 상세히 입력해주세요.</div>
+
+    <div class="section-title">국내 직업·사업장</div>
+
+    <div class="fg">
+      <label class="req">국내 직업·근무 현황</label>
+      <div class="btn-group" style="flex-wrap:wrap;">
+        <div class="btn-radio"><input type="radio" name="krJob" id="kj0" value="employee" onchange="toggleKrJobDetail()"><label for="kj0">👔 직장인</label></div>
+        <div class="btn-radio"><input type="radio" name="krJob" id="kj1" value="business" onchange="toggleKrJobDetail()"><label for="kj1">🏢 사업자</label></div>
+        <div class="btn-radio"><input type="radio" name="krJob" id="kj2" value="officer" onchange="toggleKrJobDetail()"><label for="kj2">🏛️ 임원</label></div>
+        <div class="btn-radio"><input type="radio" name="krJob" id="kj3" value="none" checked onchange="toggleKrJobDetail()"><label for="kj3">국내 없음</label></div>
+      </div>
+    </div>
+
+    <div id="krJobDetail" style="display:none;">
+      <div class="grid-2">
+        <div class="fg"><label>조직 형태</label>
+          <select id="krOrgType">
+            <option value="">-- 선택 --</option>
+            <option value="corp">회사(법인)</option>
+            <option value="sole">개인사업자</option>
+            <option value="public">공공기관·단체</option>
+            <option value="etc">기타</option>
+          </select>
+        </div>
+        <div class="fg"><label>업종</label><input type="text" id="krIndustry" placeholder="예) 제조업, IT, 금융"></div>
+      </div>
+      <div class="grid-2">
+        <div class="fg"><label>직위·역할</label><input type="text" id="krPosition" placeholder="예) 대표이사, 팀장, 이사"></div>
+        <div class="fg"><label>연간 급여·소득 (대략)</label>
+          <div class="inp-wrap"><input type="number" id="krIncome" min="0" placeholder="0"><span class="unit">만원</span></div>
+        </div>
+      </div>
+      <div class="fg" style="margin-bottom:0"><label>실제 근무 형태</label>
+        <div class="btn-group">
+          <div class="btn-radio"><input type="radio" name="krWorkMode" id="kwm0" value="full" checked><label for="kwm0">상시 출근</label></div>
+          <div class="btn-radio"><input type="radio" name="krWorkMode" id="kwm1" value="remote"><label for="kwm1">원격 근무</label></div>
+          <div class="btn-radio"><input type="radio" name="krWorkMode" id="kwm2" value="nominal"><label for="kwm2">명목상 (실무 없음)</label></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">해외 직업·사업장</div>
+
+    <div class="fg">
+      <label class="req">해외 직업·근무 현황</label>
+      <div class="btn-group" style="flex-wrap:wrap;">
+        <div class="btn-radio"><input type="radio" name="abrJob" id="aj0" value="employee" onchange="toggleAbrJobDetail()"><label for="aj0">👔 직장인</label></div>
+        <div class="btn-radio"><input type="radio" name="abrJob" id="aj1" value="business" onchange="toggleAbrJobDetail()"><label for="aj1">🏢 사업자</label></div>
+        <div class="btn-radio"><input type="radio" name="abrJob" id="aj2" value="none" checked onchange="toggleAbrJobDetail()"><label for="aj2">해외 없음</label></div>
+      </div>
+    </div>
+
+    <div id="abrJobDetail" style="display:none;">
+      <div class="grid-2">
+        <div class="fg"><label>조직 형태</label>
+          <select id="abrOrgType">
+            <option value="">-- 선택 --</option>
+            <option value="corp">회사(법인)</option>
+            <option value="sole">개인사업자</option>
+            <option value="public">공공기관·단체</option>
+            <option value="etc">기타</option>
+          </select>
+        </div>
+        <div class="fg"><label>사업장 소재국</label><input type="text" id="abrCompanyCountry" placeholder="예) 미국, 일본, 카타르"></div>
+      </div>
+      <div class="grid-2">
+        <div class="fg"><label>업종</label><input type="text" id="abrIndustry" placeholder="예) 건설, 금융, 스포츠"></div>
+        <div class="fg"><label>직위·역할</label><input type="text" id="abrPosition" placeholder="예) PM, Director, 선수"></div>
+      </div>
+      <div class="fg" style="margin-bottom:0"><label>해당 연도 근무 기간</label>
+        <div class="btn-group">
+          <div class="btn-radio"><input type="radio" name="abrWorkDur" id="awd0" value="full" checked><label for="awd0">연중 지속</label></div>
+          <div class="btn-radio"><input type="radio" name="abrWorkDur" id="awd1" value="partial"><label for="awd1">일부 기간</label></div>
+          <div class="btn-radio"><input type="radio" name="abrWorkDur" id="awd2" value="ended"><label for="awd2">당해 종료</label></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(6)">← 이전</button>
+      <button class="btn btn-next" id="step6NextBtn" onclick="goNext(6)">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- ==================== STEP 7: 해외 현황 (조약국) ==================== -->
+  <div class="card" id="step-7">
+    <div class="step-label">Step 7 / 7</div>
+    <div class="card-title">해외 체류 · 자산 현황</div>
+    <div class="card-desc"><span id="step7Country">선택 국가</span>와의 조세조약 Tie-Breaker 규정 적용을 위해 해외 체류 및 자산 현황을 입력해주세요.</div>
+
+    <div class="info-box">
+      ⚖️ <strong>Tie-Breaker 적용 순서</strong>: ① 항구적 주거 → ② 중대한 이해관계 중심지 → ③ 일상적 거소 → ④ 국적 순으로 판정합니다. 이중거주자(한국 소득세법상 거주자 + 해외 조약상 거주자)인 경우에 적용됩니다.
+    </div>
+
+    <div class="section-title">해외 체류 현황</div>
+
+    <div class="fg">
+      <label class="req">해외 체류일수 (해당 과세연도)</label>
+      <div class="inp-wrap">
+        <input type="number" id="daysAbroad" min="0" max="365" value="0" placeholder="0" oninput="clampDaysAbroad(this)">
+        <span class="unit">일</span>
+      </div>
+      <div class="help">해외 체류일수는 365일을 초과할 수 없습니다.</div>
+    </div>
+
+    <div class="fg">
+      <label class="req">해외 체류 시 주거 형태</label>
+      <div class="btn-group" style="flex-wrap:wrap;">
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah0" value="own"><label for="ah0">🏠 자가 주택</label></div>
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah1" value="rent"><label for="ah1">🔑 임차 (전세·월세)</label></div>
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah2" value="company"><label for="ah2">🏢 회사 제공 숙소</label></div>
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah3" value="family"><label for="ah3">👪 가족·친지 집</label></div>
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah4" value="hotel"><label for="ah4">🏨 호텔·임시거처</label></div>
+        <div class="btn-radio"><input type="radio" name="abrHousing" id="ah5" value="none" checked><label for="ah5">없음</label></div>
+      </div>
+      <div class="help" style="margin-top:7px;">※ <strong>항구적 주거</strong>: 소유·임차 형식 불문하고 언제든지 사용 가능한 상태로 계속 사용한 주거. 회사 제공 숙소도 가족과 함께 계속 거주했다면 항구적 주거로 인정될 수 있습니다 (대법 2018두60847).</div>
+    </div>
+
+    <div class="fg">
+      <label>해외 주거의 독립적·계속적 사용 가능 여부 (항구적 주거 해당 여부)</label>
+      <div class="btn-group">
+        <div class="btn-radio"><input type="radio" name="abrPermanent" id="ap0" value="yes"><label for="ap0">✅ 가능 (항구적 주거)</label></div>
+        <div class="btn-radio"><input type="radio" name="abrPermanent" id="ap1" value="uncertain"><label for="ap1">불명확</label></div>
+        <div class="btn-radio"><input type="radio" name="abrPermanent" id="ap2" value="no" checked><label for="ap2">❌ 불가·임시적</label></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">해외 자산 현황</div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">🏘️ 해외 부동산<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:0"><label>합산 시가 (원화 환산)</label>
+            <div class="inp-wrap"><input type="number" id="abrREVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit">만원</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:0"><label>주거용 포함 여부</label>
+            <div class="btn-group" style="margin-top:6px;">
+              <div class="btn-radio"><input type="radio" name="abrRERes" id="arr0" value="yes"><label for="arr0">포함</label></div>
+              <div class="btn-radio"><input type="radio" name="abrRERes" id="arr1" value="no" checked><label for="arr1">미포함</label></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <div class="asset-header" onclick="toggleAsset(this)">📈 해외 주식<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:0"><label>시가 합산 (원화 환산)</label>
+            <div class="inp-wrap"><input type="number" id="abrStockVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit">만원</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:0"><label>최대 지분율</label>
+            <div class="inp-wrap"><input type="number" id="abrStockPct" min="0" max="100" value="0" step="0.01"><span class="unit">%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-card" style="margin-bottom:20px;">
+      <div class="asset-header" onclick="toggleAsset(this)">💵 해외 예금·기타 자산<span class="chevron">▼</span></div>
+      <div class="asset-body">
+        <div class="asset-row">
+          <div class="fg" style="margin-bottom:0"><label>예금·금융자산</label>
+            <div class="inp-wrap"><input type="number" id="abrDepositVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit">만원</span></div>
+          </div>
+          <div class="fg" style="margin-bottom:0"><label>기타 자산</label>
+            <div class="inp-wrap"><input type="number" id="abrOtherVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit">만원</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div>
+        <div class="tl">해외 자산 총합계 (시가)</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:2px;">원화 환산 기준</div>
+      </div>
+      <div class="tv" id="abrTotalDisplay">0 만원</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-prev" onclick="goPrev(7)">← 이전</button>
+      <button class="btn btn-calc" onclick="runAssessment()">📋 판정 결과 보기</button>
+    </div>
+  </div>
+
+  <!-- ==================== RESULT ==================== -->
+  <div class="result-card" id="resultCard">
+    <div id="resultContent"></div>
+    <div class="nav-buttons" style="margin-top:28px;">
+      <button class="btn btn-prev" onclick="goBackFromResult()">← 돌아가기</button>
+      <button class="btn btn-restart" onclick="restart()">처음부터</button>
+      <button class="btn btn-print" onclick="window.print()">🖨️ 인쇄·저장</button>
+    </div>
+  </div>
+
+  <div style="text-align:center;color:rgba(255,255,255,0.45);font-size:12px;margin-top:22px;line-height:2;">
+    본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 세무사·변호사와 상담하시기 바랍니다.<br>
+    판단 기준: 소득세법 §1의2·시행령 §2, 대법원 판례, 조세심판원 심판례
+  </div>
+</div>
+
+<script>
+// ====================================================
+//  DATA
+// ====================================================
+const TREATY_COUNTRIES = {
+  '동북아시아': ['몽골', '중국', '일본', '홍콩'],
+  '동남아시아': ['말레이시아', '필리핀', '인도네시아', '베트남', '미얀마', '라오스', '태국', '브루나이', '싱가포르', '캄보디아'],
+  '서남아시아': ['방글라데시', '스리랑카', '파키스탄', '네팔', '인도'],
+  '오세아니아': ['뉴질랜드', '호주', '피지', '파푸아뉴기니'],
+  '러시아·중앙아시아': ['러시아', '우즈베키스탄', '카자흐스탄', '키르기즈', '타지키스탄', '투르크메니스탄'],
+  '북미': ['미국', '캐나다'],
+  '중남미': ['브라질', '멕시코', '칠레', '베네수엘라', '파나마', '우루과이', '에콰도르', '페루', '콜롬비아'],
+  '유럽': ['덴마크', '벨기에', '프랑스', '네덜란드', '스위스', '핀란드', '스웨덴', '노르웨이', '룩셈부르크', '오스트리아', '헝가리', '아일랜드', '폴란드', '이탈리아', '루마니아', '스페인', '불가리아', '영국', '포르투갈', '몰타', '그리스', '우크라이나', '독일', '벨라루스', '슬로바키아', '슬로베니아', '크로아티아', '알바니아', '리투아니아', '아제르바이잔', '아이슬란드', '라트비아', '에스토니아', '세르비아', '조지아', '체코', '튀르키예', '안도라'],
+  '중동': ['이스라엘', '쿠웨이트', '요르단', '오만', '사우디아라비아', '카타르', '이란', '바레인', '아랍에미리트'],
+  '아프리카': ['튀니지', '이집트', '남아프리카공화국', '모로코', '알제리', '가봉', '케냐', '에티오피아', '르완다'],
+};
+
+// State
+let hasTreaty = false;
+let currentStep = 1;
+const TOTAL_STEPS_TREATY = 7;
+const TOTAL_STEPS_NO_TREATY = 6;
+
+// ====================================================
+//  INIT
+// ====================================================
+(function init() {
+  buildCountryDropdown();
+  renderProgress(1);
+})();
+
+function buildCountryDropdown() {
+  const sel = document.getElementById('foreignCountry');
+
+  const tg = document.createElement('optgroup');
+  tg.label = '조세조약 체결국';
+  for (const [region, countries] of Object.entries(TREATY_COUNTRIES)) {
+    const sep = document.createElement('option');
+    sep.disabled = true;
+    sep.textContent = '── ' + region + ' ──';
+    tg.appendChild(sep);
+    countries.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      opt.setAttribute('data-treaty', '1');
+      tg.appendChild(opt);
+    });
+  }
+  sel.appendChild(tg);
+
+  const ntg = document.createElement('optgroup');
+  ntg.label = '조세조약 미체결국';
+  [['기타미체결', '기타 (미체결국)'], ['나이지리아', '나이지리아 (효력정지)'], ['수단', '수단 (미발효)']].forEach(([v, t]) => {
+    const opt = document.createElement('option');
+    opt.value = v; opt.textContent = t;
+    opt.setAttribute('data-treaty', '0');
+    ntg.appendChild(opt);
+  });
+  sel.appendChild(ntg);
+}
+
+function onCountryChange() {
+  const sel = document.getElementById('foreignCountry');
+  const opt = sel.options[sel.selectedIndex];
+  hasTreaty = opt && opt.getAttribute('data-treaty') === '1';
+  const badge = document.getElementById('treatyBadge');
+  if (sel.value) {
+    badge.innerHTML = hasTreaty
+      ? '<span class="treaty-badge badge-yes">✓ 한국-' + sel.value + ' 조세조약 체결국</span>'
+      : '<span class="treaty-badge badge-no">✗ 조세조약 미체결국</span>';
+  } else {
+    badge.innerHTML = '';
+  }
+  const total = hasTreaty ? TOTAL_STEPS_TREATY : TOTAL_STEPS_NO_TREATY;
+  document.querySelectorAll('.s-total').forEach(el => el.textContent = total);
+  document.getElementById('s1-total').textContent = total;
+  // Update step 6 button
+  const btn6 = document.getElementById('step6NextBtn');
+  if (btn6) {
+    btn6.textContent = hasTreaty ? '다음 단계 →' : '📋 판정 결과 보기';
+  }
+  renderProgress(currentStep);
+}
+
+// ====================================================
+//  PROGRESS BAR
+// ====================================================
+function renderProgress(active) {
+  const total = hasTreaty ? TOTAL_STEPS_TREATY : TOTAL_STEPS_NO_TREATY;
+  const labels = ['기본정보', '체류일수', '가족현황', '국내자산', '국적·영주권', '직업·사업장'];
+  if (hasTreaty) labels.push('해외현황');
+  const bar = document.getElementById('progressBar');
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    const cls = i < active ? 'done' : (i === active ? 'active' : '');
+    html += `<div class="prog-step" onclick="goToStep(${i})" title="${labels[i-1]||''} 단계로 이동"><div class="prog-dot ${cls}">${i < active ? '✓' : i}</div><div class="prog-label">${labels[i-1]||''}</div></div>`;
+    if (i < total) {
+      html += `<div class="prog-line ${i < active ? 'done' : ''}"></div>`;
+    }
+  }
+  bar.innerHTML = html;
+}
+
+function goToStep(n) {
+  const total = hasTreaty ? TOTAL_STEPS_TREATY : TOTAL_STEPS_NO_TREATY;
+  if (n < 1 || n > total) return;
+  showStep(n);
+}
+
+function clampDaysAbroad(el) {
+  if (el.value !== '' && parseInt(el.value) > 365) el.value = 365;
+}
+
+// ====================================================
+//  NAVIGATION
+// ====================================================
+function showStep(n) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('resultCard').classList.remove('active');
+  const card = document.getElementById('step-' + n);
+  if (card) { card.classList.add('active'); }
+  currentStep = n;
+  if (n === 7) {
+    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || '선택 국가';
+  }
+  renderProgress(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goBackFromResult() {
+  showStep(hasTreaty ? TOTAL_STEPS_TREATY : TOTAL_STEPS_NO_TREATY);
+}
+
+function goNext(from) {
+  if (from === 1) {
+    if (!document.getElementById('taxYear').value) { alert('과세연도를 선택해주세요.'); return; }
+    if (!document.getElementById('foreignCountry').value) { alert('해외 국가를 선택해주세요.'); return; }
+  }
+  if (from === 2) {
+    const v = document.getElementById('daysInKorea').value;
+    if (v === '' || v < 0) { alert('국내 체류일수를 입력해주세요.'); return; }
+  }
+  if (from === 6 && !hasTreaty) {
+    runAssessment();
+    return;
+  }
+  showStep(from + 1);
+  if (from === 1) {
+    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || '선택 국가';
+  }
+}
+
+function goPrev(from) {
+  showStep(from - 1);
+}
+
+// ====================================================
+//  TOGGLE HELPERS
+// ====================================================
+function toggleAsset(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function toggleFSDetail() {
+  const v = document.querySelector('input[name="foreignStatus"]:checked')?.value;
+  document.getElementById('fsDetail').style.display = (v && v !== 'none') ? 'block' : 'none';
+}
+
+function toggleKrJobDetail() {
+  const v = document.querySelector('input[name="krJob"]:checked')?.value;
+  document.getElementById('krJobDetail').style.display = (v && v !== 'none') ? 'block' : 'none';
+}
+
+function toggleAbrJobDetail() {
+  const v = document.querySelector('input[name="abrJob"]:checked')?.value;
+  document.getElementById('abrJobDetail').style.display = (v && v !== 'none') ? 'block' : 'none';
+}
+
+// ====================================================
+//  TOTALS
+// ====================================================
+function getNum(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+function calcDomTotal() {
+  const t = getNum('landValue') + getNum('houseValue') + getNum('shopValue') +
+    getNum('otherREValue') + getNum('listedStockVal') + getNum('unlistedStockVal') +
+    getNum('depositVal') + getNum('otherAssetVal');
+  document.getElementById('domTotalDisplay').textContent = fmtM(t);
+  return t;
+}
+
+function calcAbrTotal() {
+  const t = getNum('abrREVal') + getNum('abrStockVal') + getNum('abrDepositVal') + getNum('abrOtherVal');
+  document.getElementById('abrTotalDisplay').textContent = fmtM(t);
+  return t;
+}
+
+function fmtM(v) {
+  if (v === 0) return '0 만원';
+  if (v >= 10000) return (v / 10000).toFixed(1) + ' 억원';
+  return v.toLocaleString() + ' 만원';
+}
+
+function fmtFullM(v) {
+  if (v === 0) return '0원';
+  const eok = Math.floor(v / 10000);
+  const man = v % 10000;
+  if (eok > 0 && man > 0) return eok.toLocaleString() + '억 ' + man.toLocaleString() + '만원';
+  if (eok > 0) return eok.toLocaleString() + '억원';
+  return man.toLocaleString() + '만원';
+}
+
+// ====================================================
+//  COLLECT DATA
+// ====================================================
+function collectData() {
+  return {
+    taxYear: document.getElementById('taxYear').value,
+    country: document.getElementById('foreignCountry').value,
+    hasTreaty,
+    daysInKorea: parseInt(document.getElementById('daysInKorea').value) || 0,
+    stayReason: document.querySelector('input[name="stayReason"]:checked')?.value || 'none',
+    spouseStatus: document.querySelector('input[name="spouseStatus"]:checked')?.value || 'none',
+    childrenInKorea: parseInt(document.getElementById('childrenInKorea').value) || 0,
+    childrenAbroad: parseInt(document.getElementById('childrenAbroad').value) || 0,
+    parentsStatus: document.querySelector('input[name="parentsStatus"]:checked')?.value || 'none',
+    domTotal: calcDomTotal(),
+    houseCount: getNum('houseCount'),
+    houseRent: document.querySelector('input[name="houseRent"]:checked')?.value || 'no',
+    shopCount: getNum('shopCount'),
+    foreignStatus: document.querySelector('input[name="foreignStatus"]:checked')?.value || 'none',
+    krJob: document.querySelector('input[name="krJob"]:checked')?.value || 'none',
+    krWorkMode: document.querySelector('input[name="krWorkMode"]:checked')?.value || 'full',
+    abrJob: document.querySelector('input[name="abrJob"]:checked')?.value || 'none',
+    abrWorkDur: document.querySelector('input[name="abrWorkDur"]:checked')?.value || 'full',
+    // Treaty-specific
+    daysAbroad: parseInt(document.getElementById('daysAbroad').value) || 0,
+    abrHousing: document.querySelector('input[name="abrHousing"]:checked')?.value || 'none',
+    abrPermanent: document.querySelector('input[name="abrPermanent"]:checked')?.value || 'no',
+    abrTotal: calcAbrTotal(),
+    abrRERes: document.querySelector('input[name="abrRERes"]:checked')?.value || 'no',
+  };
+}
+
+// ====================================================
+//  PRECEDENT DATABASE (판례·심판례)
+//  r: R(거주자) / N(비거주자·조약상 상대국) / M(연도별·혼재)
+//  f.days: H(183일↑) M(90~182) L(<90)
+//  f.fam:  K(국내) A(해외) X(혼재) N(없음)
+//  f.job:  K(국내) A(해외) X(국내외) N(없음)
+//  f.asset:H(5억↑) M(1억↑) L(소액)
+//  f.foreign: Y(외국적·영주권) N(한국적)
+// ====================================================
+const PRECEDENTS = [
+  { id:'2018두60847', country:'일본', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+    summary:'일본 J리그 프로축구선수. 배우자·자녀가 일본 구단 제공 주거에서 함께 생활하고, 국내 체류는 국가대표 활동 등 일시적이었음.',
+    key:'항구적 주거는 소유·임차 불문 「계속 거주 가능성」으로 판단 — 가족과 함께 산 구단 숙소도 인정. 국가대표 일시 입국은 국내 거주 근거가 아님.' },
+  { id:'2019두59400', country:'미국', r:'N', f:{days:'L',fam:'A',job:'A',asset:'L',foreign:'Y'},
+    summary:'어린 시절 미국 이주 후 학업·취업·결혼으로 미국에 생활기반을 형성한 자녀(수증자)의 거주자 여부.',
+    key:'부모의 학비 지원·주민등록 유지는 거주자 판정을 좌우하지 않음. 실질적 생활근거지가 어디인지로 판단.' },
+  { id:'2019두52935', country:'카타르', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+    summary:'카타르 건설법인 총괄관리자로 상시 근무. 국내 생계 가족 없이 연 37일 정도만 제사·명절로 입국.',
+    key:'국내에 부동산·친족이 있어 소득세법상 거주자라도, 조약상 「중대한 이해관계의 중심지」가 카타르면 비거주자로 역전.' },
+  { id:'2018두128', country:'미국', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+    summary:'1992년 가족 전원 미국 이주, 미국에 항구적 주거 형성. BVI·홍콩 페이퍼컴퍼니 운영(이중거주자).',
+    key:'조약상 항구적 주거 = 「가족과 함께 거주하는 장소」. 가족 전원이 미국에 살면 미국 거주자 → 한국 국외원천소득 과세권 소멸.' },
+  { id:'2018두54798', country:'미국', r:'N', f:{days:'L',fam:'X',job:'X',asset:'H',foreign:'Y'},
+    summary:'미국 영주권자(국내 비등재 회장). 본인은 과세연도에 전혀 입국하지 않았고 배우자는 국내 거주 중 사망.',
+    key:'배우자가 국내에 있어도 본인이 전혀 귀국하지 않으면 「일상적 거소」에서 조약상 거주자가 역전될 수 있음.' },
+  { id:'2015두52050', country:'미국', r:'N', f:{days:'M',fam:'A',job:'X',asset:'L',foreign:'Y'},
+    summary:'미국 영주권자. 배우자·자녀 모두 미국 거주, 국내엔 매출 없는 법인 등기이사 직위뿐, 부동산도 양도 완료.',
+    key:'국내에 생계 가족·실질 자산이 없고 명목상 직위뿐이면 183일 부근 체류여도 비거주자.' },
+  { id:'2017두59352', country:'인도네시아', r:'N', f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
+    summary:'인도네시아 대규모 현지공장 대표이사. 처·딸은 국내, 아들은 현지 동거, 연 39일만 국내 체류.',
+    key:'부양가족 일부가 국내에 있어도 본인이 국내에 주소·1년 이상 거소를 두지 않았다면 비거주자.' },
+  { id:'2022두33279', country:'호주', r:'N', f:{days:'M',fam:'A',job:'K',asset:'M',foreign:'Y'},
+    summary:'호주 시민권자. 국내 다가구주택을 임대만 하고 실거주하지 않으며, 생계 가족도 국내에 없음.',
+    key:'주민등록이 유지되고 2과세기간 합산 거소(183일)를 충족해도, 실거주·생계가족이 없으면 조약 tie-breaker에서 비거주자.' },
+  { id:'2021두53054', country:'인도네시아', r:'N', f:{days:'M',fam:'X',job:'A',asset:'H',foreign:'N'},
+    summary:'인도네시아 코린도그룹 회장. 부인·모친은 국내 상주, 본인은 자카르타 거주(국내 자산 약 338억).',
+    key:'양국 항구적 주거 → 중대한 이해관계 단정 불가 → 「일상적 거소」(인니 체류가 더 김)가 최종 결정. Tie-Breaker 3단계가 모두 작동한 사례.' },
+  { id:'조심2023부3227', country:'인도네시아', r:'N', f:{days:'L',fam:'A',job:'A',asset:'H',foreign:'N'},
+    summary:'배우자의 인니 근무로 이주한 전업주부. 가족 전원 자카르타 거주, 국내 비상장법인 60% 지분 보유.',
+    key:'주민등록이 유지되어 있어도 가족 전원이 해외에 살고 국내 생계 가족이 없으면 비거주자일 수 있음.' },
+  { id:'조심2023서9615', country:'뉴질랜드', r:'N', f:{days:'H',fam:'A',job:'A',asset:'M',foreign:'Y'},
+    summary:'뉴질랜드 영주권자. 배우자 폐종양 치료로 18개월 연속 국내 체류하며 파생상품 거래.',
+    key:'183일을 명백히 초과해도 질병 치료 목적 체류는 거소 기간에서 제외 — 183일 룰의 중대한 예외.' },
+  { id:'2017두50928', country:'중국', r:'M', f:{days:'M',fam:'X',job:'A',asset:'M',foreign:'N'},
+    summary:'홍콩·중국법인 대표. 2008~2010년은 처·자 중국 거주(비거주자), 2011년 처 귀국·국내 사업 개시(거주자).',
+    key:'같은 사람도 연도별로 거주자성이 달라짐 — 가족 귀국·국내 사업 개시 시점이 분기점.' },
+  { id:'서울고법 2022누38108', country:'러시아', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'러시아 프로축구선수. 본인은 연 6~66일 체류지만 배우자·자녀·부모가 국내 상주, 국내 임대업 운영.',
+    key:'본인이 해외에서 활동해도 배우자·자녀가 국내에 상주하고 소득을 국내에 투자하면 거주자 판정이 거의 뒤집히지 않음.' },
+  { id:'2020두48567', country:'중국', r:'R', f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
+    summary:'중국 프로축구선수. 본인 국내 148일이나 배우자·자녀가 국내 대부분 거주, 국내 전세·건물 취득.',
+    key:'본인 체류일수가 해외보다 적어도 배우자·자녀가 국내에 상주하면 「생계를 같이하는 가족」으로 거주자.' },
+  { id:'2018두65903', country:'사우디·영국', r:'R', f:{days:'M',fam:'K',job:'A',asset:'H',foreign:'N'},
+    summary:'사우디 해외법인 근무. 배우자·자녀가 4년간 단 5일만 국외 체류하며 국내에서 생계.',
+    key:'가족이 국내에서 생계를 같이한 사실이 핵심. 외국 국적·영주권이 없으면 비거주자 간주 규정도 적용되지 않음.' },
+  { id:'2019두30096', country:'미국·홍콩', r:'R', f:{days:'M',fam:'X',job:'X',asset:'H',foreign:'Y'},
+    summary:'미국 시민권자. 홍콩 출국 후에도 가족이 연 147~167일 국내 체류, 수천억 국내 법인 경영 관여.',
+    key:'시민권자라도 체류·가족·자산·경영이 국내에 집중되면 거주자. 형식적 비거주자 요건 만들기는 오히려 불리하게 작용.' },
+  { id:'2018두135', country:'싱가포르', r:'R', f:{days:'H',fam:'X',job:'X',asset:'H',foreign:'Y'},
+    summary:'싱가포르 영주권자. 국내 체류·자산이 급증(2009년 270일), 매입한 국내 아파트에 부모 거주.',
+    key:'영주권이 있어도 국내 체류·자산이 급증하고 부모가 국내에 거주하면 거주자. 조약상 입증책임은 납세자.' },
+  { id:'2018두35575', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'중국 공예품 제조업. 중국 체류가 더 많지만 재혼 배우자·딸이 국내 주소지에서 상주.',
+    key:'중국 체류가 더 많아도 생계를 같이하는 가족(배우자·자녀)이 국내에 상주하면 거주자.' },
+  { id:'2018두34367', country:'캐나다', r:'R', f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+    summary:'캐나다 영주권 취득·이주했으나 국내 고가 아파트 등 거액 자산 보유, 임대소득 계속 발생.',
+    key:'영주권 취득·출국만으로 비거주자로 자동 전환되지 않음 — 국내 거액 자산·소득이 있으면 거주자 유지.' },
+  { id:'2017두39112', country:'쿠웨이트', r:'R', f:{days:'L',fam:'K',job:'A',asset:'M',foreign:'N'},
+    summary:'쿠웨이트 법인 파견 근로자. 배우자·자녀가 국내 소유 아파트에 거주, 연중 2달 이상 국내 업무 수행.',
+    key:'가족·자산 기반이 국내에 있고 국내 업무가 병행되면 해외 파견 근로자도 거주자.' },
+  { id:'2017두57929', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'중국 거점 무역·사업. 연 40일만 국내 체류하나 가족 전원 국내, 30억 초과 부동산·임대사업.',
+    key:'연 318일 중국 체류라도 가족 전원이 국내에 살고 귀국 시 같은 주소지에 거주하면 거주자.' },
+  { id:'2015두36546', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'중국 위탁가공업. 본인은 연 21일만 국내 체류하나 배우자·자녀가 1년 내내 국내 상주.',
+    key:'본인 21일 체류여도 가족이 국내에 상주하면 거주자 — 체류일수는 결정적 기준이 아님. 신용카드·진료기록이 생활중심지 증거.' },
+  { id:'2018두39065', country:'홍콩·미국', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'Y'},
+    summary:'홍콩 영주권자. 쟁점기간 대부분 국내 체류, 배우자 국내 거주, 국내 법인 100% 보유·임원.',
+    key:'특정일 해외 체류여도 기간 전체 생활관계로 거주자. 해외이주신고 미이행·국내 직장 건강보험은 거주자 방증.' },
+  { id:'2017두73686', country:'홍콩', r:'R', f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
+    summary:'홍콩 영구거주권자(가정주부). 배우자가 국내 기업 운영, 본인도 국내 법인 등기임원.',
+    key:'「영주권=비거주자」 공식은 통하지 않음 — 실제 체류일수와 가족의 경제생활관계가 더 강한 기준.' },
+  { id:'2017두53705', country:'캐나다', r:'R', f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
+    summary:'캐나다 영주권자. 처·자녀는 캐나다 시민권자로 현지 거주하나 본인은 국내 체류가 더 많고 국내 법인 대표이사.',
+    key:'「가족+영주권」만으로는 비거주자가 못 됨. 중대한 이해관계의 중심지는 「돈이 나오는 곳」.' },
+  { id:'2018두35025', country:'미국', r:'R', f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
+    summary:'미국 영주권자. 배우자·자녀는 미국, 모친은 국내 거주. 국내에서 유통회사 설립·실질 경영.',
+    key:'가족이 해외에 있어도 국내에서 법인을 실질 경영하고 거액 자산을 보유하면 거주자.' },
+  { id:'2016두269674', country:'중국', r:'R', f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
+    summary:'중국 무역중개업. 연 40일 정도만 국내 체류하나 배우자·자녀가 국내 실거주, 30억+ 부동산·임대.',
+    key:'해외에 오래 머문다고 비거주자가 되는 것이 아님 — 가족과 자산의 무게중심이 국내면 거주자.' },
+  { id:'2015두1243', country:'일본', r:'R', f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
+    summary:'일본 거류증 보유 그룹 경영자. 가족 전용 국내 생활공간 완비, 국내 집무실에서 그룹 전체 통제.',
+    key:'국내 집무실에서 그룹 의사결정을 하고 가족 생활공간이 국내에 완비되면 거주자.' },
+  { id:'2016두37584', country:'사우디·카타르', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'사우디 법인 대표(국내법인 대표이사 겸직). 본인 연 188일·배우자 327일 국내 체류, 강남 자산.',
+    key:'해외 사업의 통제권·매출의 한국 종속성까지 들여다봄 — 의사결정 장소가 국내면 거주자.' },
+  { id:'2014두13959', country:'케이만(미국·중국 주장)', r:'R', f:{days:'H',fam:'K',job:'X',asset:'M',foreign:'N'},
+    summary:'케이만 법인 주주·국내법인 이사. 연평균 255일 국내 체류, 한국인 배우자 국내 거주.',
+    key:'해외 거주자라는 주장을 구체적으로 입증하지 못하면 국내 거주자. 입증책임은 납세자.' },
+  { id:'2014두47303', country:'미국', r:'R', f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+    summary:'미국 영주권자. 처·자녀는 미국 이주했으나 본인은 국내 부동산 임대업·법인 경영.',
+    key:'가족이 미국에 있어도 자산과 일이 국내에 있으면 「언제든 돌아와 살 사람」으로 거주자. 거주자 소득공제 받은 사실이 증거.' },
+  { id:'2013두16876', country:'일본', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+    summary:'재일교포(한국 국적). 배우자와 국내 고가주택 거주, 약 155억 국내 자산, 국내·일본 법인 경영.',
+    key:'국내 고가주택에 가족과 거주하고 거액 자산을 두면 일본 주소·납세가 있어도 거주자.' },
+  { id:'조심2024서0141', country:'캐나다', r:'R', f:{days:'H',fam:'X',job:'K',asset:'H',foreign:'Y'},
+    summary:'캐나다 국적자. 양도 당시 본인·딸이 국내 454일 연속 거주, 배우자는 자녀 유학 뒷바라지로 일시 캐나다.',
+    key:'국적·영주권 유무가 아닌 183일 이상 국내 거소가 핵심. 배우자의 한시적 해외 체류는 세대 분리로 봄.' },
+  { id:'2006두3964', country:'미국·일본', r:'R', f:{days:'M',fam:'A',job:'N',asset:'L',foreign:'Y'},
+    summary:'입출국을 반복한 이중거주자. 2개 과세기간 합산 1년 이상 거소가 인정됨.',
+    key:'매년 1년에 못 미쳐도 2과세기간 합산 1년 이상이면 거주자. 이중거주자 입증책임은 납세자.' },
+];
+
+const PREC_TAGLABEL = {
+  days:  { H:'국내체류 183일↑', M:'국내체류 90~182일', L:'국내체류 90일 미만' },
+  fam:   { K:'생계가족 국내', A:'생계가족 해외', X:'가족 양국 혼재', N:'생계가족 없음' },
+  job:   { K:'직업 국내', A:'직업 해외', X:'직업 국내외', N:'직업 없음' },
+  asset: { H:'국내자산 5억↑', M:'국내자산 1억↑', L:'국내자산 소액' },
+  foreign:{ Y:'외국적·영주권', N:'한국 국적' },
+};
+
+function userProfile(d) {
+  const days = d.daysInKorea >= 183 ? 'H' : (d.daysInKorea >= 90 ? 'M' : 'L');
+  let kr = 0, ab = 0;
+  if (d.spouseStatus === 'korea') kr += 3;
+  else if (d.spouseStatus === 'abroad') ab += 3;
+  else if (d.spouseStatus === 'both') { kr += 2; ab += 1; }
+  kr += d.childrenInKorea * 2; ab += d.childrenAbroad * 2;
+  if (d.parentsStatus === 'korea') kr += 1; else if (d.parentsStatus === 'abroad') ab += 1;
+  let fam;
+  if (kr === 0 && ab === 0) fam = 'N';
+  else if (kr > ab + 1) fam = 'K';
+  else if (ab > kr + 1) fam = 'A';
+  else fam = 'X';
+  let job;
+  if (d.krJob !== 'none' && d.abrJob !== 'none') job = 'X';
+  else if (d.krJob !== 'none') job = 'K';
+  else if (d.abrJob !== 'none') job = 'A';
+  else job = 'N';
+  const asset = d.domTotal >= 50000 ? 'H' : (d.domTotal >= 10000 ? 'M' : 'L');
+  const foreign = d.foreignStatus !== 'none' ? 'Y' : 'N';
+  return { days, fam, job, asset, foreign };
+}
+
+function precOrd3(a, b) { const o = 'HML'; const dd = Math.abs(o.indexOf(a) - o.indexOf(b)); return dd === 0 ? 1 : (dd === 1 ? 0.5 : 0); }
+function precCat(a, b) { if (a === b) return 1; if (a === 'X' || b === 'X') return 0.5; if (a === 'N' || b === 'N') return 0.25; return 0; }
+
+function precSim(u, p, d) {
+  const f = p.f, w = { fam:30, days:22, job:20, asset:14, foreign:14 };
+  let s = 0, max = 0; const hits = {};
+  max += w.fam;     s += precCat(u.fam, f.fam) * w.fam;       hits.fam = (u.fam === f.fam);
+  max += w.days;    s += precOrd3(u.days, f.days) * w.days;   hits.days = (u.days === f.days);
+  max += w.job;     s += precCat(u.job, f.job) * w.job;       hits.job = (u.job === f.job);
+  max += w.asset;   s += precOrd3(u.asset, f.asset) * w.asset; hits.asset = (u.asset === f.asset);
+  max += w.foreign; s += (u.foreign === f.foreign ? 1 : 0) * w.foreign; hits.foreign = (u.foreign === f.foreign);
+  let sim = Math.round(s / max * 100);
+  const sameCountry = !!(d.country && p.country.indexOf(d.country) >= 0);
+  hits.country = sameCountry;
+  if (sameCountry) sim = Math.min(98, sim + 6);
+  return { sim, hits };
+}
+
+function precTags(p, hits) {
+  const keys = ['days', 'fam', 'job', 'asset', 'foreign'];
+  let t = keys.map(k => `<span class="prec-tag ${hits[k] ? 'hit' : ''}">${PREC_TAGLABEL[k][p.f[k]]}</span>`).join('');
+  if (hits.country) t = `<span class="prec-tag hit">같은 국가</span>` + t;
+  return t;
+}
+
+function buildPrecedentHTML(d) {
+  const u = userProfile(d);
+  const scored = PRECEDENTS
+    .map(p => { const m = precSim(u, p, d); return Object.assign({}, p, { sim: m.sim, hits: m.hits }); })
+    .sort((a, b) => b.sim - a.sim);
+  const top = scored.slice(0, 4);
+
+  let rW = 0, nW = 0;
+  scored.slice(0, 6).forEach(p => {
+    if (p.r === 'R') rW += p.sim;
+    else if (p.r === 'N') nW += p.sim;
+    else { rW += p.sim / 2; nW += p.sim / 2; }
+  });
+  const totalW = rW + nW || 1;
+  const lean = rW > nW ? '거주자' : (nW > rW ? '비거주자' : '혼재');
+  const leanPct = Math.round(Math.max(rW, nW) / totalW * 100);
+  const rtagText = { R:'거주자 판정', N:'비거주자 판정', M:'연도별·혼재' };
+
+  const predict = lean === '혼재'
+    ? `유사 판례들의 결론이 거주자·비거주자로 팽팽히 나뉩니다. 사실관계의 미세한 차이가 결론을 가르므로 전문가 검토가 특히 중요합니다.`
+    : `입력하신 상황과 가장 유사한 판례들은 약 <strong>${leanPct}%</strong>의 가중치로 <strong>${lean}</strong> 결론에 가깝습니다. 다만 거주자 판정은 개별 사실관계에 따라 달라지므로 아래 판례의 키포인트를 함께 확인하세요.`;
+
+  return `
+  <div class="prec-section">
+    <div class="factors-title">⚖️ 유사 판례 매칭</div>
+    <div class="prec-intro">입력하신 체류일수·가족·직업·자산·국적 정보를 실제 대법원 판례 및 조세심판원 심판례 ${PRECEDENTS.length}건과 대조하여 가장 가까운 사례를 찾았습니다.</div>
+    <div class="prec-predict">
+      <h4>📊 판례 기반 종합 의견</h4>
+      <p>${predict}</p>
+    </div>
+    ${top.map(p => `
+      <div class="prec-card prec-${p.r}">
+        <div class="prec-top">
+          <span class="prec-id">${p.id}</span>
+          <span class="prec-rtag ${p.r}">${rtagText[p.r]}</span>
+          <span class="prec-sim">${p.sim}% 유사</span>
+        </div>
+        <div class="prec-summary"><strong>[${p.country}]</strong> ${p.summary}</div>
+        <div class="prec-key"><strong>▸ 키포인트</strong> ${p.key}</div>
+        <div class="prec-tags">${precTags(p, p.hits)}</div>
+      </div>
+    `).join('')}
+  </div>`;
+}
+
+// ====================================================
+//  MAIN ASSESSMENT
+// ====================================================
+function runAssessment() {
+  const d = collectData();
+  const factors = [];
+  const legalBasis = new Set();
+  let score = 0;
+
+  const add = (type, icon, title, detail, basis, pts) => {
+    factors.push({ type, icon, title, detail, basis });
+    score += pts;
+    if (basis) legalBasis.add(basis);
+  };
+
+  // ── 가족 국내 여부 ──
+  const hasKrFamily = d.spouseStatus === 'korea' || d.spouseStatus === 'both' ||
+                      d.childrenInKorea > 0 || d.parentsStatus === 'korea';
+  const hasForeignStatus = d.foreignStatus !== 'none';
+
+  // ── RULE 1: 183일 이상 체류 ──
+  if (d.daysInKorea >= 183) {
+    add('positive', '✅', '183일 이상 국내 체류',
+      `${d.taxYear}년 국내 체류일수 ${d.daysInKorea}일 — 거소 기준(183일)을 충족하여 거주자 요건에 해당합니다.`,
+      '소득세법 제1조의2 제1항 제2호', 60);
+    if (d.stayReason === 'medical') {
+      add('warning', '⚠️', '질병 치료 목적 체류 포함',
+        '조세심판원(조심2023서9615)에서는 질병 치료 목적의 체류는 생활 근거지를 형성한 것으로 보기 어렵다고 판단하여 183일 초과 체류에도 불구하고 비거주자로 인정한 사례가 있습니다.',
+        '조심2023서9615', -12);
+    }
+    if (d.stayReason === 'sports') {
+      add('warning', '⚠️', '국가대표 활동 체류 포함',
+        '대법원(2018두60847)은 국가대표 활동으로 인한 일시적 귀국은 국내 생활 근거지 형성과 무관하다고 보았습니다.',
+        '대법원 2018두60847', -10);
+    }
+  }
+
+  // ── RULE 2: 영주권·외국국적 비거주자 간주 ──
+  if (hasForeignStatus && !hasKrFamily && d.daysInKorea < 183) {
+    add('negative', '🚫', '비거주자 간주 규정 적용',
+      `외국 ${d.foreignStatus === 'citizenship' ? '국적' : '영주권'} 보유 + 국내 생계 가족 없음 + 183일 미만 체류 — 세 요건 모두 충족으로 비거주자로 간주됩니다.`,
+      '소득세법 시행령 제2조 제4항 제1호', -65);
+  } else if (hasForeignStatus && hasKrFamily) {
+    add('warning', '⚠️', `외국 ${d.foreignStatus === 'citizenship' ? '국적' : '영주권'} 보유 (간주 규정 미적용)`,
+      '외국 국적·영주권이 있으나 국내에 생계를 같이하는 가족이 있어 비거주자 간주 규정은 적용되지 않습니다. 단, 종합적 판단에서 불리한 요소로 고려됩니다.',
+      '소득세법 시행령 제2조 제4항 제1호 단서', -5);
+  } else if (hasForeignStatus && d.daysInKorea >= 183) {
+    add('warning', '⚠️', `외국 ${d.foreignStatus === 'citizenship' ? '국적' : '영주권'} 보유`,
+      '183일 이상 체류로 거소 기준 거주자에 해당하여 비거주자 간주 규정은 배제됩니다.',
+      '소득세법 시행령 제2조 제4항', 0);
+  }
+
+  // ── 배우자 ──
+  if (d.spouseStatus === 'korea') {
+    add('positive', '👫', '배우자 국내 거주',
+      '생계를 같이하는 배우자가 국내에 거주하고 있어 국내 주소(생활의 근거지)를 강력하게 지지합니다. 판례(서울고법 2022누38108)는 배우자가 국내에 상주하고 소득을 국내에 투자하는 경우 비거주자 판정이 매우 어렵다고 보았습니다.',
+      '소득세법 시행령 제2조 제1항', 28);
+  } else if (d.spouseStatus === 'abroad') {
+    add('negative', '✈️', '배우자 해외 거주',
+      '배우자가 해외에 거주하고 있어 생활의 근거지가 국내가 아닐 수 있음을 시사합니다. 판례상 배우자의 해외 거주는 비거주자 판단에서 중요한 요소입니다.',
+      '소득세법 시행령 제2조 제1항', -18);
+  } else if (d.spouseStatus === 'both') {
+    add('neutral', '🔄', '배우자 국내·해외 왕래',
+      '배우자가 양국을 오가는 경우 국내 생계 가족 요건은 어느 정도 충족하나, 중점 거주지 판단이 필요합니다.',
+      '소득세법 시행령 제2조 제1항', 8);
+  }
+
+  // ── 자녀 ──
+  if (d.childrenInKorea > 0) {
+    add('positive', '👧', `국내 거주 자녀 ${d.childrenInKorea}명`,
+      `생계를 같이하는 자녀 ${d.childrenInKorea}명이 국내에 거주하고 있어 주소 판단에 유리합니다.`,
+      '소득세법 시행령 제2조 제1항', Math.min(d.childrenInKorea * 8, 16));
+  }
+  if (d.childrenAbroad > 0 && d.childrenInKorea === 0) {
+    add('negative', '✈️', `해외 거주 자녀 ${d.childrenAbroad}명 (국내 자녀 없음)`,
+      '자녀가 모두 해외에 거주하고 있어 국내를 생활의 근거지로 보기 어렵게 합니다.',
+      '소득세법 시행령 제2조 제1항', -10);
+  }
+
+  // ── 부모 ──
+  if (d.parentsStatus === 'korea') {
+    add('positive', '👴', '부모 국내 거주 (생계 동거)',
+      '생계를 같이하는 부모가 국내에 있어 주소 판단에 보조적으로 유리합니다.',
+      '소득세법 시행령 제2조 제1항', 5);
+  }
+
+  // ── 직업 ──
+  if (d.krJob !== 'none') {
+    if (d.krWorkMode === 'full') {
+      add('positive', '🏢', '국내 직장·사업장 (상시 근무)',
+        '국내에 상시 근무하는 직업이 있어 시행령 제2조 제3항에 따라 국내에 183일 이상 거주를 통상 필요로 하는 직업으로 볼 수 있습니다.',
+        '소득세법 시행령 제2조 제3항 제1호', 22);
+    } else if (d.krWorkMode === 'remote') {
+      add('positive', '💻', '국내 직장 (원격 근무)',
+        '국내 법인에 소속되어 원격 근무 중으로, 국내 경제적 이해관계를 지지합니다.',
+        '소득세법 시행령 제2조 제1항', 10);
+    } else {
+      add('neutral', '📋', '국내 직위 (명목상)',
+        '명목상 임원·직위만 있고 실제 상시 근무가 없는 경우 직업 요소로서의 비중이 낮습니다.',
+        '소득세법 시행령 제2조 제1항', 4);
+    }
+  }
+  if (d.abrJob !== 'none') {
+    if (d.abrWorkDur === 'full') {
+      add('negative', '✈️', '해외 직장·사업장 (연중 지속)',
+        '해당 연도 내내 해외에서 근무·사업하고 있어 생활의 근거지가 해외에 있음을 강력히 시사합니다.',
+        '소득세법 시행령 제2조 제1항', -20);
+    } else {
+      add('negative', '✈️', '해외 직장·사업장 (일부 기간)',
+        '해외 근무·사업이 있어 생활의 근거지 판단에서 해외 연계 요소가 고려됩니다.',
+        '소득세법 시행령 제2조 제1항', -8);
+    }
+  }
+  if (d.krJob === 'none' && d.abrJob === 'none') {
+    add('neutral', '❓', '직업·사업장 없음 또는 미입력',
+      '직업·사업장 정보가 없어 해당 요소는 판단에서 제외합니다.',
+      '', 0);
+  }
+
+  // ── 국내 자산 ──
+  if (d.domTotal >= 50000) { // 5억 이상 (만원 단위)
+    add('positive', '🏦', '국내 상당한 자산 보유',
+      `국내 자산 시가 합계 ${fmtFullM(d.domTotal)} — 국내에 상당한 경제적 이해관계가 집중되어 있습니다.`,
+      '소득세법 시행령 제2조 제1항', 12);
+  } else if (d.domTotal >= 10000) { // 1억 이상
+    add('positive', '🏦', '국내 자산 보유',
+      `국내 자산 시가 합계 ${fmtFullM(d.domTotal)} — 국내에 경제적 기반이 있습니다.`,
+      '소득세법 시행령 제2조 제1항', 7);
+  } else if (d.domTotal > 0) {
+    add('neutral', '🏦', '국내 소규모 자산',
+      `국내 자산 시가 합계 ${fmtFullM(d.domTotal)} — 소규모 자산은 단독으로는 큰 영향이 없습니다.`,
+      '소득세법 시행령 제2조 제1항', 2);
+  }
+
+  // ── 체류일수 보조 판단 (183일 미만) ──
+  if (d.daysInKorea < 183 && d.daysInKorea > 0) {
+    if (d.daysInKorea >= 90) {
+      add('neutral', '📅', `국내 체류 ${d.daysInKorea}일 (183일 미만)`,
+        '183일 기준에 미치지 못하지만 상당 기간 국내에 체류하였습니다. 다른 요소와 종합적으로 판단됩니다.',
+        '소득세법 제1조의2 제1항 제2호', 4);
+    } else {
+      add('neutral', '📅', `국내 체류 ${d.daysInKorea}일 (단기 체류)`,
+        '국내 체류일수가 적어 거소 기준을 충족하지 못하며, 주소 판단에서도 불리합니다.',
+        '소득세법 제1조의2 제1항 제2호', -4);
+    }
+  } else if (d.daysInKorea === 0) {
+    add('negative', '📅', '국내 체류일수 0일',
+      '해당 연도에 전혀 국내에 체류하지 않아 국내를 생활의 근거지로 보기 어렵습니다.',
+      '소득세법 제1조의2', -15);
+  }
+
+  // ── 판정 ──
+  let verdict, verdictClass, verdictTag, verdictTagClass, emoji, subText;
+  let confidence;
+  if (score >= 55) {
+    verdict = '거주자'; verdictClass = 'v-resident'; verdictTag = '소득세법상 거주자'; verdictTagClass = 'tag-r'; emoji = '🏠';
+    subText = '국내에 주소 또는 183일 이상 거소를 두고 있어 거주자로 판단됩니다.';
+    confidence = Math.min(93, 68 + (score - 55) * 0.4);
+  } else if (score >= 30) {
+    verdict = '거주자 가능성 높음'; verdictClass = 'v-resident'; verdictTag = '거주자 성향 강함'; verdictTagClass = 'tag-r'; emoji = '🏠';
+    subText = '전반적인 요소가 거주자 판단을 지지하나, 다소 불확실한 요소가 있습니다.';
+    confidence = 56 + (score - 30) * 0.5;
+  } else if (score >= 10) {
+    verdict = '판단 불명확 (거주자 성향)'; verdictClass = 'v-unclear'; verdictTag = '불명확'; verdictTagClass = 'tag-u'; emoji = '⚖️';
+    subText = '거주자와 비거주자 요소가 혼재하며 거주자 쪽이 다소 유력합니다. 전문가 상담을 권장합니다.';
+    confidence = 52;
+  } else if (score >= -10) {
+    verdict = '판단 불명확'; verdictClass = 'v-unclear'; verdictTag = '불명확'; verdictTagClass = 'tag-u'; emoji = '⚖️';
+    subText = '거주자와 비거주자 요소가 유사하게 혼재합니다. 세무전문가의 검토가 필요합니다.';
+    confidence = 45;
+  } else if (score >= -30) {
+    verdict = '판단 불명확 (비거주자 성향)'; verdictClass = 'v-unclear'; verdictTag = '불명확'; verdictTagClass = 'tag-u'; emoji = '⚖️';
+    subText = '비거주자 판단 요소가 다소 우세하나 확정적이지 않습니다. 전문가 상담을 권장합니다.';
+    confidence = 52;
+  } else if (score >= -55) {
+    verdict = '비거주자 가능성 높음'; verdictClass = 'v-nonresident'; verdictTag = '비거주자 성향 강함'; verdictTagClass = 'tag-nr'; emoji = '✈️';
+    subText = '전반적인 요소가 비거주자 판단을 지지하나, 최종 확정을 위해 전문가 검토가 필요합니다.';
+    confidence = 56 + (Math.abs(score) - 30) * 0.5;
+  } else {
+    verdict = '비거주자'; verdictClass = 'v-nonresident'; verdictTag = '소득세법상 비거주자'; verdictTagClass = 'tag-nr'; emoji = '✈️';
+    subText = '국내에 주소 또는 183일 이상 거소를 두고 있지 않아 비거주자로 판단됩니다.';
+    confidence = Math.min(93, 68 + (Math.abs(score) - 55) * 0.4);
+  }
+  confidence = Math.min(93, Math.round(confidence));
+
+  // ── 조세조약 Tie-Breaker ──
+  let treatyHTML = '';
+  if (d.hasTreaty) {
+    treatyHTML = buildTreatyHTML(d, score, hasKrFamily, hasForeignStatus);
+  }
+
+  // ── 법적 근거 ──
+  const bases = [...legalBasis].filter(Boolean);
+
+  // ── RENDER ──
+  document.getElementById('resultContent').innerHTML = `
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px;">${d.taxYear}년 귀속 · ${d.country}</div>
+    <div class="card-title" style="margin-bottom:24px;">판정 결과</div>
+
+    <div class="verdict-box ${verdictClass}">
+      <span class="v-emoji">${emoji}</span>
+      <div class="v-tag ${verdictTagClass}">${verdictTag}</div>
+      <div class="v-main">${verdict}</div>
+      <div class="v-sub">${subText}</div>
+      <div class="conf-bar-wrap">
+        <div class="conf-label"><span>판정 신뢰도</span><span>${confidence}%</span></div>
+        <div class="conf-bar"><div class="conf-fill" style="width:${confidence}%"></div></div>
+      </div>
+    </div>
+
+    ${buildPrecedentHTML(d)}
+
+    <div class="factors-title">📋 판정 요소별 분석</div>
+    ${factors.map(f => `
+      <div class="factor-item f-${f.type}">
+        <div class="factor-icon">${f.icon}</div>
+        <div class="factor-body">
+          <h4>${f.title}</h4>
+          <p>${f.detail}</p>
+          ${f.basis ? `<div class="factor-basis">▸ ${f.basis}</div>` : ''}
+        </div>
+      </div>
+    `).join('')}
+
+    ${treatyHTML}
+
+    ${bases.length > 0 ? `
+    <div class="legal-box">
+      <h4>적용 법령 및 판례</h4>
+      <ul>${bases.map(b => `<li>${b}</li>`).join('')}</ul>
+    </div>` : ''}
+
+    <div class="disclaimer">
+      ⚠️ <strong>주의사항</strong>: 본 진단은 입력 정보를 바탕으로 한 참고용 판단입니다. 거주자·비거주자 판정은 개별 사실관계에 따라 달라질 수 있으며, 과세당국이나 법원의 최종 판단은 다를 수 있습니다. 구체적인 세금 문제는 반드시 세무사·세무변호사와 상담하시기 바랍니다.
+    </div>
+  `;
+
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('resultCard').classList.add('active');
+  renderProgress(hasTreaty ? 8 : 7);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ====================================================
+//  TREATY TIE-BREAKER
+// ====================================================
+function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
+  // Only meaningful if there's a chance of being a resident
+  if (domesticScore < -40) {
+    return `<div class="treaty-box"><div class="treaty-box-title">🌐 한-${d.country} 조세조약 Tie-Breaker</div>
+      <p style="font-size:13px;color:#6b7280;">소득세법상 비거주자로 판단되므로 조세조약 Tie-Breaker 분석이 불필요합니다.</p></div>`;
+  }
+
+  const krPermanent = d.houseCount > 0; // 국내 항구적 주거 (주택 보유)
+  const abrPermanent = d.abrPermanent === 'yes';
+  const abrUncertain = d.abrPermanent === 'uncertain';
+
+  const steps = [];
+  let treatySide = null;
+
+  // Step 1: Permanent Home
+  if (krPermanent && !abrPermanent && !abrUncertain) {
+    treatySide = 'korea';
+    steps.push({ num: 1, decisive: true, result: '한국', color: 'korea',
+      title: '① 항구적 주거 (Permanent Home)',
+      detail: `국내에 주택이 있고 해외에 항구적으로 사용 가능한 주거가 없습니다 → <strong>한국 거주자</strong>로 판정합니다.` });
+  } else if (!krPermanent && abrPermanent) {
+    treatySide = 'foreign';
+    steps.push({ num: 1, decisive: true, result: '해외', color: 'foreign',
+      title: '① 항구적 주거 (Permanent Home)',
+      detail: `해외에 항구적 주거가 있고 국내에 항구적 주거가 없습니다 → <strong>${d.country} 거주자</strong>로 판정합니다.` });
+  } else if (krPermanent && (abrPermanent || abrUncertain)) {
+    steps.push({ num: 1, decisive: false, result: '양국 → Step ②로',
+      title: '① 항구적 주거 (Permanent Home)',
+      detail: `국내·해외 양쪽에 항구적 주거가 있거나 불명확합니다. 다음 단계(중대한 이해관계 중심지)로 진행합니다.` });
+    treatySide = analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus);
+  } else {
+    steps.push({ num: 1, decisive: false, result: '해당 없음 → Step ②로',
+      title: '① 항구적 주거 (Permanent Home)',
+      detail: `양국 모두 항구적 주거가 없거나 불명확합니다. 다음 단계로 진행합니다.` });
+    treatySide = analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus);
+  }
+
+  if (!treatySide) treatySide = 'unclear';
+
+  const finalText = treatySide === 'korea'
+    ? `<strong>조세조약상 한국 거주자</strong>로 판정됩니다. 한국이 전세계 소득에 대한 과세권을 가집니다.`
+    : treatySide === 'foreign'
+    ? `<strong>조세조약상 ${d.country} 거주자</strong>로 판정될 가능성이 높습니다. 소득세법상 거주자라도 조약에 따라 한국의 전세계 소득 과세권이 제한될 수 있습니다.`
+    : `조세조약 Tie-Breaker 적용 결과가 <strong>불명확</strong>합니다. 세무전문가의 구체적 검토가 필요합니다.`;
+
+  return `
+    <div class="treaty-box">
+      <div class="treaty-box-title">🌐 한-${d.country} 조세조약 Tie-Breaker 분석</div>
+      ${steps.map(s => `
+        <div class="treaty-step">
+          <div class="treaty-num ${s.decisive ? (s.color || '') : ''}">${s.num}</div>
+          <div class="treaty-step-body">
+            <h5>${s.title}</h5>
+            <p>${s.detail}</p>
+          </div>
+        </div>
+      `).join('')}
+      <div class="treaty-verdict ${treatySide !== 'unclear' ? (treatySide === 'korea' ? 'korea' : 'foreign') : ''}">
+        ${finalText}
+      </div>
+    </div>`;
+}
+
+function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
+  // Score: family + job + assets
+  let krVI = 0, abrVI = 0;
+
+  // Family
+  if (d.spouseStatus === 'korea') krVI += 4;
+  else if (d.spouseStatus === 'abroad') abrVI += 4;
+  else if (d.spouseStatus === 'both') { krVI += 2; abrVI += 2; }
+  krVI += d.childrenInKorea * 2;
+  abrVI += d.childrenAbroad * 2;
+  if (d.parentsStatus === 'korea') krVI += 1;
+
+  // Job
+  if (d.krJob !== 'none') krVI += (d.krWorkMode === 'full' ? 4 : 2);
+  if (d.abrJob !== 'none') abrVI += (d.abrWorkDur === 'full' ? 4 : 2);
+
+  // Assets
+  if (d.domTotal >= 50000) krVI += 3;
+  else if (d.domTotal >= 10000) krVI += 2;
+  else if (d.domTotal > 0) krVI += 1;
+  if (d.abrTotal >= 50000) abrVI += 3;
+  else if (d.abrTotal >= 10000) abrVI += 2;
+  else if (d.abrTotal > 0) abrVI += 1;
+
+  let side = null;
+  if (krVI > abrVI + 1) {
+    side = 'korea';
+    steps.push({ num: 2, decisive: true, result: '한국', color: 'korea',
+      title: '② 중대한 이해관계 중심지 (Center of Vital Interests)',
+      detail: `국내 연계도 지수(${krVI}) > 해외 연계도 지수(${abrVI}) — 가족·직업·자산 등 생활의 중심이 한국에 있습니다 → <strong>한국 거주자</strong>.` });
+  } else if (abrVI > krVI + 1) {
+    side = 'foreign';
+    steps.push({ num: 2, decisive: true, result: '해외', color: 'foreign',
+      title: '② 중대한 이해관계 중심지 (Center of Vital Interests)',
+      detail: `해외 연계도 지수(${abrVI}) > 국내 연계도 지수(${krVI}) — 가족·직업·자산 등 생활의 중심이 해외에 있습니다 → <strong>${d.country} 거주자</strong>.` });
+  } else {
+    steps.push({ num: 2, decisive: false, result: '불명확 → Step ③으로',
+      title: '② 중대한 이해관계 중심지 (Center of Vital Interests)',
+      detail: `국내·해외 연계도가 유사(국내 ${krVI} : 해외 ${abrVI})하여 결정 불가 → 일상적 거소로 진행합니다.` });
+
+    // Step 3: Habitual Abode
+    if (d.daysInKorea > d.daysAbroad) {
+      side = 'korea';
+      steps.push({ num: 3, decisive: true, result: '한국', color: 'korea',
+        title: '③ 일상적 거소 (Habitual Abode)',
+        detail: `국내 체류일수(${d.daysInKorea}일) > 해외 체류일수(${d.daysAbroad}일) → <strong>한국이 일상적 거소</strong>.` });
+    } else if (d.daysAbroad > d.daysInKorea) {
+      side = 'foreign';
+      steps.push({ num: 3, decisive: true, result: '해외', color: 'foreign',
+        title: '③ 일상적 거소 (Habitual Abode)',
+        detail: `해외 체류일수(${d.daysAbroad}일) > 국내 체류일수(${d.daysInKorea}일) → <strong>${d.country}이 일상적 거소</strong>.` });
+    } else {
+      steps.push({ num: 3, decisive: false, result: '동일 → Step ④으로',
+        title: '③ 일상적 거소 (Habitual Abode)',
+        detail: `국내·해외 체류일수가 동일하여 결정 불가 → 국적으로 진행합니다.` });
+
+      // Step 4: Nationality
+      if (!hasForeignStatus) {
+        side = 'korea';
+        steps.push({ num: 4, decisive: true, result: '한국', color: 'korea',
+          title: '④ 국적 (Nationality)',
+          detail: `한국 국적만 보유 → <strong>한국 거주자</strong>로 최종 판정합니다.` });
+      } else {
+        side = 'foreign';
+        steps.push({ num: 4, decisive: true, result: '해외', color: 'foreign',
+          title: '④ 국적 (Nationality)',
+          detail: `외국 ${d.foreignStatus === 'citizenship' ? '국적' : '영주권'} 보유 → <strong>${d.country} 거주자</strong>로 판정될 수 있습니다. 조약별 규정을 확인하세요.` });
+      }
+    }
+  }
+  return side;
+}
+
+// ====================================================
+//  RESTART
+// ====================================================
+function restart() {
+  document.querySelectorAll('input[type="number"]').forEach(el => el.value = '0');
+  document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.getElementById('taxYear').value = '';
+  document.getElementById('foreignCountry').value = '';
+  document.getElementById('krOrgType').value = '';
+  document.getElementById('abrOrgType').value = '';
+  document.getElementById('treatyBadge').innerHTML = '';
+  // Reset radios to first option
+  ['stayReason','spouseStatus','parentsStatus','houseRent','shopRent','listedMajor','unlistedMajor',
+   'foreignStatus','krJob','abrJob','abrHousing','abrPermanent','abrRERes','krRegDel','krWorkMode','abrWorkDur'].forEach(name => {
+    const first = document.querySelector(`input[name="${name}"]`);
+    if (first) first.checked = true;
+  });
+  hasTreaty = false;
+  document.getElementById('fsDetail').style.display = 'none';
+  document.getElementById('krJobDetail').style.display = 'none';
+  document.getElementById('abrJobDetail').style.display = 'none';
+  calcDomTotal(); calcAbrTotal();
+  showStep(1);
+  renderProgress(1);
+  document.querySelectorAll('.s-total').forEach(el => el.textContent = '7');
+}
+</script>
+</body>
+</html>
