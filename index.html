@@ -18,7 +18,19 @@
     .container { max-width: 740px; margin: 0 auto; }
 
     /* ── HEADER ── */
-    .site-header { text-align: center; color: white; margin-bottom: 32px; }
+    .site-header { text-align: center; color: white; margin-bottom: 32px; position: relative; }
+    .lang-switcher {
+      position: absolute; top: 0; right: 0;
+      display: flex; gap: 6px;
+    }
+    .lang-btn {
+      background: rgba(255,255,255,0.18); color: white;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 8px; padding: 5px 13px; font-size: 12px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all 0.2s; letter-spacing: 0.02em;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.28); }
+    .lang-btn.active { background: white; color: #4f46e5; border-color: white; }
     .site-header .badge {
       display: inline-block; background: rgba(255,255,255,0.18); color: white;
       font-size: 11px; font-weight: 700; letter-spacing: 0.08em; padding: 4px 14px;
@@ -297,9 +309,13 @@
 
   <!-- HEADER -->
   <header class="site-header">
-    <div class="badge"> 한국 세법 및 판례 기반</div>
-    <h1>거주자 · 비거주자 자가진단</h1>
-    <p>대법원 판례 및 조세심판원 심판례의 판단기준으로 세법상 지위를 확인합니다</p>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('ko')" id="btn-ko">한국어</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">English</button>
+    </div>
+    <div class="badge" data-i18n="badge">한국 세법 및 판례 기반</div>
+    <h1 data-i18n="title">거주자 · 비거주자 자가진단</h1>
+    <p data-i18n="subtitle">대법원 판례 및 조세심판원 심판례의 판단기준으로 세법상 지위를 확인합니다</p>
   </header>
 
   <!-- PROGRESS BAR -->
@@ -308,127 +324,127 @@
   <!-- ==================== STEP 1: 기본 정보 ==================== -->
   <div class="card active" id="step-1">
     <div class="step-label">Step 1 / <span id="s1-total">7</span></div>
-    <div class="card-title">기본 정보</div>
-    <div class="card-desc">진단하려는 과세연도와 관련 해외 국가를 선택해주세요. 조세조약 체결국 여부에 따라 판단 기준이 달라집니다.</div>
+    <div class="card-title" data-i18n="step1_title">기본 정보</div>
+    <div class="card-desc" data-i18n="step1_desc">진단하려는 과세연도와 관련 해외 국가를 선택해주세요. 조세조약 체결국 여부에 따라 판단 기준이 달라집니다.</div>
 
     <div class="fg">
-      <label class="req">진단 대상 과세연도</label>
+      <label class="req" data-i18n="taxYear_label">진단 대상 과세연도</label>
       <select id="taxYear">
-        <option value="">-- 연도를 선택하세요 --</option>
-        <option value="2025">2025년</option><option value="2024">2024년</option>
-        <option value="2023">2023년</option><option value="2022">2022년</option>
-        <option value="2021">2021년</option><option value="2020">2020년</option>
-        <option value="2019">2019년</option><option value="2018">2018년</option>
-        <option value="2017">2017년</option><option value="2016">2016년</option>
-        <option value="2015">2015년</option>
+        <option value="" data-i18n-opt="taxYear_placeholder">-- 연도를 선택하세요 --</option>
+        <option value="2025">2025</option><option value="2024">2024</option>
+        <option value="2023">2023</option><option value="2022">2022</option>
+        <option value="2021">2021</option><option value="2020">2020</option>
+        <option value="2019">2019</option><option value="2018">2018</option>
+        <option value="2017">2017</option><option value="2016">2016</option>
+        <option value="2015">2015</option>
       </select>
-      <div class="help">거주자·비거주자 판정은 해당 과세연도(1.1 ~ 12.31) 전체를 기준으로 합니다.</div>
+      <div class="help" data-i18n="taxYear_help">거주자·비거주자 판정은 해당 과세연도(1.1 ~ 12.31) 전체를 기준으로 합니다.</div>
     </div>
 
     <div class="fg">
-      <label class="req">관련 해외 국가</label>
+      <label class="req" data-i18n="country_label">관련 해외 국가</label>
       <select id="foreignCountry" onchange="onCountryChange()">
-        <option value="">-- 국가를 선택하세요 --</option>
+        <option value="" data-i18n-opt="country_placeholder">-- 국가를 선택하세요 --</option>
       </select>
       <div id="treatyBadge" style="margin-top:8px;"></div>
-      <div class="help">체류·소득·자산 등의 연관이 있는 주요 해외 국가를 선택하세요.</div>
+      <div class="help" data-i18n="country_help">체류·소득·자산 등의 연관이 있는 주요 해외 국가를 선택하세요.</div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn btn-next" onclick="goNext(1)">다음 단계 →</button>
+      <button class="btn btn-next" onclick="goNext(1)" data-i18n="btn_next">다음 단계 →</button>
     </div>
   </div>
 
   <!-- ==================== STEP 2: 국내 체류일수 ==================== -->
   <div class="card" id="step-2">
     <div class="step-label">Step 2 / <span class="s-total">7</span></div>
-    <div class="card-title">국내 체류일수</div>
-    <div class="card-desc">해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.</div>
+    <div class="card-title" data-i18n="step2_title">국내 체류일수</div>
+    <div class="card-desc" data-i18n="step2_desc">해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.</div>
 
-    <div class="info-box">
+    <div class="info-box" data-i18n-html="info_183">
       📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 입국일·출국일 모두 1일로 계산합니다.
     </div>
 
     <div class="fg">
-      <label class="req">국내 체류일수</label>
+      <label class="req" data-i18n="days_label">국내 체류일수</label>
       <div class="inp-wrap">
         <input type="number" id="daysInKorea" min="0" max="366" placeholder="예) 183">
-        <span class="unit">일</span>
+        <span class="unit" data-i18n="unit_days">일</span>
       </div>
     </div>
 
     <div class="fg">
-      <label>특이 체류 사유 (해당 시 선택)</label>
+      <label data-i18n="stayReason_label">특이 체류 사유 (해당 시 선택)</label>
       <div class="btn-group">
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr0" value="none" checked><label for="sr0">해당 없음</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr1" value="medical"><label for="sr1">🏥 질병 치료</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr2" value="sports"><label for="sr2">⚽ 국가대표</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr3" value="other"><label for="sr3">기타 일시적</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr0" value="none" checked><label for="sr0" data-i18n="sr_none">해당 없음</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr1" value="medical"><label for="sr1" data-i18n="sr_medical">🏥 질병 치료</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr2" value="sports"><label for="sr2" data-i18n="sr_sports">⚽ 국가대표</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr3" value="other"><label for="sr3" data-i18n="sr_other">기타 일시적</label></div>
       </div>
-      <div class="help">질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.</div>
+      <div class="help" data-i18n="stayReason_help">질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.</div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn btn-prev" onclick="goPrev(2)">← 이전</button>
-      <button class="btn btn-next" onclick="goNext(2)">다음 단계 →</button>
+      <button class="btn btn-prev" onclick="goPrev(2)" data-i18n="btn_prev">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(2)" data-i18n="btn_next">다음 단계 →</button>
     </div>
   </div>
 
   <!-- ==================== STEP 3: 가족 현황 ==================== -->
   <div class="card" id="step-3">
     <div class="step-label">Step 3 / <span class="s-total">7</span></div>
-    <div class="card-title">가족 현황</div>
-    <div class="card-desc">생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.</div>
+    <div class="card-title" data-i18n="step3_title">가족 현황</div>
+    <div class="card-desc" data-i18n="step3_desc">생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.</div>
 
     <div class="family-block">
-      <div class="family-block-title">👫 배우자</div>
+      <div class="family-block-title" data-i18n="spouse_title">👫 배우자</div>
       <div class="fg" style="margin-bottom:0">
-        <label>배우자 거주 현황</label>
+        <label data-i18n="spouse_label">배우자 거주 현황</label>
         <div class="btn-group">
-          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss0" value="none" checked><label for="ss0">배우자 없음</label></div>
-          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss1" value="korea"><label for="ss1">🇰🇷 국내 거주</label></div>
-          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss2" value="abroad"><label for="ss2">✈️ 해외 거주</label></div>
-          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss3" value="both"><label for="ss3">양국 왕래</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss0" value="none" checked><label for="ss0" data-i18n="ss_none">배우자 없음</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss1" value="korea"><label for="ss1" data-i18n="ss_korea">🇰🇷 국내 거주</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss2" value="abroad"><label for="ss2" data-i18n="ss_abroad">✈️ 해외 거주</label></div>
+          <div class="btn-radio"><input type="radio" name="spouseStatus" id="ss3" value="both"><label for="ss3" data-i18n="ss_both">양국 왕래</label></div>
         </div>
       </div>
     </div>
 
     <div class="family-block">
-      <div class="family-block-title">👨‍👧‍👦 자녀 (생계를 같이하는)</div>
+      <div class="family-block-title" data-i18n="children_title">👨‍👧‍👦 자녀 (생계를 같이하는)</div>
       <div class="grid-2">
         <div class="fg" style="margin-bottom:0">
-          <label>국내 거주 자녀 수</label>
+          <label data-i18n="children_kr_label">국내 거주 자녀 수</label>
           <div class="inp-wrap">
             <input type="number" id="childrenInKorea" min="0" max="20" value="0">
-            <span class="unit">명</span>
+            <span class="unit" data-i18n="unit_persons">명</span>
           </div>
         </div>
         <div class="fg" style="margin-bottom:0">
-          <label>해외 거주 자녀 수</label>
+          <label data-i18n="children_ab_label">해외 거주 자녀 수</label>
           <div class="inp-wrap">
             <input type="number" id="childrenAbroad" min="0" max="20" value="0">
-            <span class="unit">명</span>
+            <span class="unit" data-i18n="unit_persons">명</span>
           </div>
         </div>
       </div>
-      <div class="help" style="margin-top:8px;">성인 자녀가 독립적으로 해외에서 학업·취업·결혼 등 생활기반을 형성한 경우, 부모가 학비를 지원해도 거주자 판정에 미치는 영향이 적을 수 있습니다 (대법 2019두59400).</div>
+      <div class="help" style="margin-top:8px;" data-i18n="children_help">성인 자녀가 독립적으로 해외에서 학업·취업·결혼 등 생활기반을 형성한 경우, 부모가 학비를 지원해도 거주자 판정에 미치는 영향이 적을 수 있습니다 (대법 2019두59400).</div>
     </div>
 
     <div class="family-block">
-      <div class="family-block-title">👴 부모 (생계 동거)</div>
+      <div class="family-block-title" data-i18n="parents_title">👴 부모 (생계 동거)</div>
       <div class="fg" style="margin-bottom:0">
-        <label>생계를 같이하는 부모 거주지</label>
+        <label data-i18n="parents_label">생계를 같이하는 부모 거주지</label>
         <div class="btn-group">
-          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps0" value="none" checked><label for="ps0">해당 없음</label></div>
-          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps1" value="korea"><label for="ps1">🇰🇷 국내</label></div>
-          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps2" value="abroad"><label for="ps2">✈️ 해외</label></div>
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps0" value="none" checked><label for="ps0" data-i18n="ps_none">해당 없음</label></div>
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps1" value="korea"><label for="ps1" data-i18n="ps_korea">🇰🇷 국내</label></div>
+          <div class="btn-radio"><input type="radio" name="parentsStatus" id="ps2" value="abroad"><label for="ps2" data-i18n="ps_abroad">✈️ 해외</label></div>
         </div>
       </div>
     </div>
 
     <div class="nav-buttons">
-      <button class="btn btn-prev" onclick="goPrev(3)">← 이전</button>
-      <button class="btn btn-next" onclick="goNext(3)">다음 단계 →</button>
+      <button class="btn btn-prev" onclick="goPrev(3)" data-i18n="btn_prev">← 이전</button>
+      <button class="btn btn-next" onclick="goNext(3)" data-i18n="btn_next">다음 단계 →</button>
     </div>
   </div>
 
@@ -816,18 +832,239 @@
   <div class="result-card" id="resultCard">
     <div id="resultContent"></div>
     <div class="nav-buttons" style="margin-top:28px;">
-      <button class="btn btn-prev" onclick="goBackFromResult()">← 돌아가기</button>
-      <button class="btn btn-restart" onclick="restart()">처음부터</button>
-      <button class="btn btn-print" onclick="window.print()">🖨️ 인쇄·저장</button>
+      <button class="btn btn-prev" onclick="goBackFromResult()" data-i18n="btn_back">← 돌아가기</button>
+      <button class="btn btn-restart" onclick="restart()" data-i18n="btn_restart">처음부터</button>
+      <button class="btn btn-print" onclick="window.print()" data-i18n="btn_print">🖨️ 인쇄·저장</button>
     </div>
   </div>
 
-  <div style="text-align:center;color:rgba(255,255,255,0.45);font-size:12px;margin-top:22px;line-height:2;">
-    본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.<br>
+  <div style="text-align:center;color:rgba(255,255,255,0.45);font-size:12px;margin-top:22px;line-height:2;" data-i18n="footer_disclaimer">
+    본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.
   </div>
 </div>
 
 <script>
+// ====================================================
+//  LANGUAGE / i18n
+// ====================================================
+let currentLang = 'ko';
+
+const LANG = {
+  ko: {
+    badge: '한국 세법 및 판례 기반',
+    title: '거주자 · 비거주자 자가진단',
+    subtitle: '대법원 판례 및 조세심판원 심판례의 판단기준으로 세법상 지위를 확인합니다',
+    // Step 1
+    step1_title: '기본 정보',
+    step1_desc: '진단하려는 과세연도와 관련 해외 국가를 선택해주세요. 조세조약 체결국 여부에 따라 판단 기준이 달라집니다.',
+    taxYear_label: '진단 대상 과세연도',
+    taxYear_placeholder: '-- 연도를 선택하세요 --',
+    taxYear_help: '거주자·비거주자 판정은 해당 과세연도(1.1 ~ 12.31) 전체를 기준으로 합니다.',
+    country_label: '관련 해외 국가',
+    country_placeholder: '-- 국가를 선택하세요 --',
+    country_help: '체류·소득·자산 등의 연관이 있는 주요 해외 국가를 선택하세요.',
+    btn_next: '다음 단계 →',
+    btn_prev: '← 이전',
+    btn_calc: '📋 판정 결과 보기',
+    btn_restart: '처음부터',
+    btn_print: '🖨️ 인쇄·저장',
+    btn_back: '← 돌아가기',
+    // Step 2
+    step2_title: '국내 체류일수',
+    step2_desc: '해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.',
+    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 입국일·출국일 모두 1일로 계산합니다.',
+    days_label: '국내 체류일수',
+    unit_days: '일',
+    unit_persons: '명',
+    stayReason_label: '특이 체류 사유 (해당 시 선택)',
+    sr_none: '해당 없음',
+    sr_medical: '🏥 질병 치료',
+    sr_sports: '⚽ 국가대표',
+    sr_other: '기타 일시적',
+    stayReason_help: '질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.',
+    // Step 3
+    step3_title: '가족 현황',
+    step3_desc: '생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.',
+    spouse_title: '👫 배우자',
+    spouse_label: '배우자 거주 현황',
+    ss_none: '배우자 없음',
+    ss_korea: '🇰🇷 국내 거주',
+    ss_abroad: '✈️ 해외 거주',
+    ss_both: '양국 왕래',
+    children_title: '👨‍👧‍👦 자녀 (생계를 같이하는)',
+    children_kr_label: '국내 거주 자녀 수',
+    children_ab_label: '해외 거주 자녀 수',
+    children_help: '성인 자녀가 독립적으로 해외에서 학업·취업·결혼 등 생활기반을 형성한 경우, 부모가 학비를 지원해도 거주자 판정에 미치는 영향이 적을 수 있습니다 (대법 2019두59400).',
+    parents_title: '👴 부모 (생계 동거)',
+    parents_label: '생계를 같이하는 부모 거주지',
+    ps_none: '해당 없음',
+    ps_korea: '🇰🇷 국내',
+    ps_abroad: '✈️ 해외',
+    // Dropdown groups
+    treaty_group: '조세조약 체결국',
+    non_treaty_group: '조세조약 미체결국',
+    // Progress labels
+    prog: ['기본정보', '체류일수', '가족현황', '국내자산', '국적·영주권', '직업·사업장', '해외현황'],
+    // Alert
+    alert_year: '과세연도를 선택해주세요.',
+    alert_country: '해외 국가를 선택해주세요.',
+    alert_days: '국내 체류일수를 입력해주세요.',
+    // Treaty badge
+    treaty_yes_pre: '✓ 한국-',
+    treaty_yes_post: ' 조세조약 체결국',
+    treaty_no: '✗ 조세조약 미체결국',
+    // Regions
+    regions: {
+      '동북아시아': '동북아시아',
+      '동남아시아': '동남아시아',
+      '서남아시아': '서남아시아',
+      '오세아니아': '오세아니아',
+      '러시아·중앙아시아': '러시아·중앙아시아',
+      '북미': '북미',
+      '중남미': '중남미',
+      '유럽': '유럽',
+      '중동': '중동',
+      '아프리카': '아프리카',
+    },
+    non_treaty_opts: [['기타미체결','기타 (미체결국)'],['나이지리아','나이지리아 (효력정지)'],['수단','수단 (미발효)']],
+    footer_disclaimer: '본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.',
+  },
+  en: {
+    badge: 'Based on Korean Tax Law & Precedents',
+    title: 'Tax Resident · Non-Resident Self-Assessment',
+    subtitle: 'Determine your tax status based on Supreme Court precedents and Tax Tribunal decisions',
+    // Step 1
+    step1_title: 'Basic Information',
+    step1_desc: 'Select the tax year and related foreign country for your assessment. The criteria differ depending on whether Korea has a tax treaty with the country.',
+    taxYear_label: 'Tax Year',
+    taxYear_placeholder: '-- Select a year --',
+    taxYear_help: 'Resident/non-resident determination is based on the entire tax year (Jan 1 – Dec 31).',
+    country_label: 'Related Foreign Country',
+    country_placeholder: '-- Select a country --',
+    country_help: 'Select the main foreign country related to your stay, income, or assets.',
+    btn_next: 'Next →',
+    btn_prev: '← Prev',
+    btn_calc: '📋 View Result',
+    btn_restart: 'Start Over',
+    btn_print: '🖨️ Print / Save',
+    btn_back: '← Back',
+    // Step 2
+    step2_title: 'Days in Korea',
+    step2_desc: 'Enter the actual number of days you stayed in Korea during the tax year.',
+    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). Both the date of entry and departure count as 1 day.',
+    days_label: 'Days in Korea',
+    unit_days: 'days',
+    unit_persons: 'persons',
+    stayReason_label: 'Special Stay Reason (if applicable)',
+    sr_none: 'None',
+    sr_medical: '🏥 Medical Treatment',
+    sr_sports: '⚽ National Athlete',
+    sr_other: 'Other Temporary',
+    stayReason_help: 'Stays for unavoidable reasons such as medical treatment (조심2023서9615) or national team activities (대법 2018두60847) may be assessed independently of the actual base of life.',
+    // Step 3
+    step3_title: 'Family Status',
+    step3_desc: 'The residence of family members sharing a livelihood is the most important factor in determining resident status. A spouse and children living in Korea strongly support resident determination.',
+    spouse_title: '👫 Spouse',
+    spouse_label: 'Spouse Residence Status',
+    ss_none: 'No Spouse',
+    ss_korea: '🇰🇷 In Korea',
+    ss_abroad: '✈️ Abroad',
+    ss_both: 'Between Both',
+    children_title: '👨‍👧‍👦 Children (sharing livelihood)',
+    children_kr_label: 'Children in Korea',
+    children_ab_label: 'Children Abroad',
+    children_help: 'If adult children have independently established their life base abroad through study, employment, or marriage, parental financial support may have little impact on resident determination (대법 2019두59400).',
+    parents_title: '👴 Parents (living together)',
+    parents_label: 'Parents\' Residence',
+    ps_none: 'N/A',
+    ps_korea: '🇰🇷 Korea',
+    ps_abroad: '✈️ Abroad',
+    // Dropdown groups
+    treaty_group: 'Tax Treaty Countries',
+    non_treaty_group: 'Non-Treaty Countries',
+    // Progress labels
+    prog: ['Basic Info', 'Stay Days', 'Family', 'Assets', 'Citizenship', 'Occupation', 'Overseas'],
+    // Alert
+    alert_year: 'Please select a tax year.',
+    alert_country: 'Please select a foreign country.',
+    alert_days: 'Please enter the number of days in Korea.',
+    // Treaty badge
+    treaty_yes_pre: '✓ Korea-',
+    treaty_yes_post: ' Tax Treaty Country',
+    treaty_no: '✗ No Tax Treaty',
+    // Regions
+    regions: {
+      '동북아시아': 'Northeast Asia',
+      '동남아시아': 'Southeast Asia',
+      '서남아시아': 'South Asia',
+      '오세아니아': 'Oceania',
+      '러시아·중앙아시아': 'Russia & Central Asia',
+      '북미': 'North America',
+      '중남미': 'Latin America',
+      '유럽': 'Europe',
+      '중동': 'Middle East',
+      '아프리카': 'Africa',
+    },
+    non_treaty_opts: [['기타미체결','Other (Non-treaty country)'],['나이지리아','Nigeria (Treaty suspended)'],['수단','Sudan (Not in force)']],
+    footer_disclaimer: 'For reference only. Please consult a licensed tax attorney or certified tax accountant for specific tax matters.',
+  }
+};
+
+function t(key) {
+  return (LANG[currentLang] && LANG[currentLang][key] !== undefined)
+    ? LANG[currentLang][key]
+    : (LANG.ko[key] || key);
+}
+
+function applyLang() {
+  document.documentElement.lang = currentLang;
+  document.title = currentLang === 'en'
+    ? 'Tax Resident · Non-Resident Self-Assessment'
+    : '거주자·비거주자 세법 자가진단';
+
+  // Update text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val !== undefined) el.textContent = val;
+  });
+
+  // Update innerHTML (for elements with HTML tags like <strong>)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    const val = t(key);
+    if (val !== undefined) el.innerHTML = val;
+  });
+
+  // Update select option placeholders
+  document.querySelectorAll('[data-i18n-opt]').forEach(el => {
+    const key = el.getAttribute('data-i18n-opt');
+    const val = t(key);
+    if (val !== undefined) el.textContent = val;
+  });
+
+  // Update button states
+  document.getElementById('btn-ko').classList.toggle('active', currentLang === 'ko');
+  document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+
+  // Rebuild country dropdown preserving selection
+  const sel = document.getElementById('foreignCountry');
+  const prev = sel.value;
+  // Remove all but first option
+  while (sel.options.length > 1) sel.remove(1);
+  buildCountryDropdown();
+  sel.value = prev;
+  onCountryChange();
+
+  // Re-render progress bar with translated labels
+  renderProgress(currentStep);
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  applyLang();
+}
+
 // ====================================================
 //  DATA
 // ====================================================
@@ -860,13 +1097,15 @@ const TOTAL_STEPS_NO_TREATY = 6;
 
 function buildCountryDropdown() {
   const sel = document.getElementById('foreignCountry');
+  const regions = t('regions');
+  const nonTreatyOpts = t('non_treaty_opts');
 
   const tg = document.createElement('optgroup');
-  tg.label = '조세조약 체결국';
+  tg.label = t('treaty_group');
   for (const [region, countries] of Object.entries(TREATY_COUNTRIES)) {
     const sep = document.createElement('option');
     sep.disabled = true;
-    sep.textContent = '── ' + region + ' ──';
+    sep.textContent = '── ' + (regions[region] || region) + ' ──';
     tg.appendChild(sep);
     countries.forEach(c => {
       const opt = document.createElement('option');
@@ -879,10 +1118,10 @@ function buildCountryDropdown() {
   sel.appendChild(tg);
 
   const ntg = document.createElement('optgroup');
-  ntg.label = '조세조약 미체결국';
-  [['기타미체결', '기타 (미체결국)'], ['나이지리아', '나이지리아 (효력정지)'], ['수단', '수단 (미발효)']].forEach(([v, t]) => {
+  ntg.label = t('non_treaty_group');
+  nonTreatyOpts.forEach(([v, label]) => {
     const opt = document.createElement('option');
-    opt.value = v; opt.textContent = t;
+    opt.value = v; opt.textContent = label;
     opt.setAttribute('data-treaty', '0');
     ntg.appendChild(opt);
   });
@@ -896,8 +1135,8 @@ function onCountryChange() {
   const badge = document.getElementById('treatyBadge');
   if (sel.value) {
     badge.innerHTML = hasTreaty
-      ? '<span class="treaty-badge badge-yes">✓ 한국-' + sel.value + ' 조세조약 체결국</span>'
-      : '<span class="treaty-badge badge-no">✗ 조세조약 미체결국</span>';
+      ? '<span class="treaty-badge badge-yes">' + t('treaty_yes_pre') + sel.value + t('treaty_yes_post') + '</span>'
+      : '<span class="treaty-badge badge-no">' + t('treaty_no') + '</span>';
   } else {
     badge.innerHTML = '';
   }
@@ -907,7 +1146,7 @@ function onCountryChange() {
   // Update step 6 button
   const btn6 = document.getElementById('step6NextBtn');
   if (btn6) {
-    btn6.textContent = hasTreaty ? '다음 단계 →' : '📋 판정 결과 보기';
+    btn6.textContent = hasTreaty ? t('btn_next') : t('btn_calc');
   }
   renderProgress(currentStep);
 }
@@ -917,8 +1156,7 @@ function onCountryChange() {
 // ====================================================
 function renderProgress(active) {
   const total = hasTreaty ? TOTAL_STEPS_TREATY : TOTAL_STEPS_NO_TREATY;
-  const labels = ['기본정보', '체류일수', '가족현황', '국내자산', '국적·영주권', '직업·사업장'];
-  if (hasTreaty) labels.push('해외현황');
+  const labels = t('prog').slice(0, hasTreaty ? 7 : 6);
   const bar = document.getElementById('progressBar');
   let html = '';
   for (let i = 1; i <= total; i++) {
@@ -951,7 +1189,7 @@ function showStep(n) {
   if (card) { card.classList.add('active'); }
   currentStep = n;
   if (n === 7) {
-    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || '선택 국가';
+    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || (currentLang === 'en' ? 'Selected Country' : '선택 국가');
   }
   renderProgress(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -963,12 +1201,12 @@ function goBackFromResult() {
 
 function goNext(from) {
   if (from === 1) {
-    if (!document.getElementById('taxYear').value) { alert('과세연도를 선택해주세요.'); return; }
-    if (!document.getElementById('foreignCountry').value) { alert('해외 국가를 선택해주세요.'); return; }
+    if (!document.getElementById('taxYear').value) { alert(t('alert_year')); return; }
+    if (!document.getElementById('foreignCountry').value) { alert(t('alert_country')); return; }
   }
   if (from === 2) {
     const v = document.getElementById('daysInKorea').value;
-    if (v === '' || v < 0) { alert('국내 체류일수를 입력해주세요.'); return; }
+    if (v === '' || v < 0) { alert(t('alert_days')); return; }
   }
   if (from === 6 && !hasTreaty) {
     runAssessment();
