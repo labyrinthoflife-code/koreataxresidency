@@ -363,7 +363,7 @@
     <div class="card-desc" data-i18n="step2_desc">해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.</div>
 
     <div class="info-box" data-i18n-html="info_183">
-      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 입국일·출국일 모두 1일로 계산합니다.
+      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①). 1과세기간 중 183일 이상이면 요건을 충족합니다 (시행령 §4③).
     </div>
 
     <div class="fg">
@@ -592,10 +592,10 @@
   <div class="card" id="step-5">
     <div class="step-label">Step 5 / <span class="s-total">7</span></div>
     <div class="card-title" data-i18n="step5_title">해외 국적 · 영주권</div>
-    <div class="card-desc" data-i18n="step5_desc">소득세법 시행령 제2조 제4항은 외국 국적·영주권 보유자에 대한 비거주자 간주 규정을 두고 있습니다.</div>
+    <div class="card-desc" data-i18n="step5_desc">소득세법 시행령 제2조 제4항 제2호는 외국 국적·영주권 보유자의 국내 주소를 부인하는 규정을 두고 있습니다. 다만 국내 자산·직업 상태가 함께 고려됩니다.</div>
 
     <div class="info-box" data-i18n-html="info_nr_rule">
-      ⚖️ <strong>비거주자 간주 (시행령 §2④)</strong>: 외국 국적 취득 또는 외국 영주권 보유 <strong>+</strong> 국내 생계 가족 없음 <strong>+</strong> 국내 183일 미만 체류 — 세 가지 요건을 모두 충족하면 비거주자로 봅니다.
+      ⚖️ <strong>국내 주소 부인 (시행령 §2④2호)</strong>: 국외에 거주·근무하는 사람이 ① 외국 국적 취득 또는 외국 영주권 보유 <strong>+</strong> ② 국내에 생계를 같이하는 가족 없음 <strong>+</strong> ③ 직업·자산상태에 비추어 다시 입국하여 주로 국내에 거주하리라고 인정되지 않을 것 — 세 요건을 모두 충족하면 국내에 주소가 없는 것으로 봅니다. 영주권 보유만으로는 적용되지 않습니다 (대법 2018두34367).
     </div>
 
     <div class="fg">
@@ -731,7 +731,7 @@
     <div class="card-desc"><span id="step7Country">선택 국가</span><span data-i18n="step7_desc_suffix">와의 조세조약 Tie-Breaker 규정 적용을 위해 해외 체류 및 자산 현황을 입력해주세요.</span></div>
 
     <div class="info-box" data-i18n-html="info_tiebreaker">
-      ⚖️ <strong>Tie-Breaker 적용 순서</strong>: ① 항구적 주거 → ② 중대한 이해관계 중심지 → ③ 일상적 거소 → ④ 국적 순으로 판정합니다. 이중거주자(한국 소득세법상 거주자 + 해외 조약상 거주자)인 경우에 적용됩니다.
+      ⚖️ <strong>Tie-Breaker 적용 순서</strong>: ① 항구적 주거 → ② 중대한 이해관계 중심지 → ③ 일상적 거소 → ④ 국적 → ⑤ 상호합의절차(MAP) 순으로 순차 적용하며, 앞 단계에서 결론이 나면 다음 단계로 넘어가지 않습니다. 이중거주자(한국 소득세법상 거주자 + 해외 조약상 거주자)인 경우에 적용됩니다.
     </div>
 
     <div class="section-title" data-i18n="section_abr_stay">해외 체류 현황</div>
@@ -873,7 +873,7 @@ const LANG = {
     // Step 2
     step2_title: '국내 체류일수',
     step2_desc: '해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.',
-    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 입국일·출국일 모두 1일로 계산합니다.',
+    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①). 1과세기간 중 183일 이상이면 요건을 충족합니다 (시행령 §4③).',
     days_label: '국내 체류일수',
     unit_days: '일',
     unit_persons: '명',
@@ -914,6 +914,7 @@ const LANG = {
     treaty_yes_pre: '✓ 한국-',
     treaty_yes_post: ' 조세조약 체결국',
     treaty_no: '✗ 조세조약 미체결국',
+    treaty_taiwan_note: '⚠ 한-대만 협정은 2024.1.1. 이후 발생 소득부터 적용',
     // Regions
     regions: {
       '동북아시아': '동북아시아',
@@ -969,8 +970,8 @@ const LANG = {
     opt_none: '없음',
     // Step 5
     step5_title: '해외 국적 · 영주권',
-    step5_desc: '소득세법 시행령 제2조 제4항은 외국 국적·영주권 보유자에 대한 비거주자 간주 규정을 두고 있습니다.',
-    info_nr_rule: '⚖️ <strong>비거주자 간주 (시행령 §2④)</strong>: 외국 국적 취득 또는 외국 영주권 보유 <strong>+</strong> 국내 생계 가족 없음 <strong>+</strong> 국내 183일 미만 체류 — 세 가지 요건을 모두 충족하면 비거주자로 봅니다.',
+    step5_desc: '소득세법 시행령 제2조 제4항 제2호는 외국 국적·영주권 보유자의 국내 주소를 부인하는 규정을 두고 있습니다. 다만 국내 자산·직업 상태가 함께 고려됩니다.',
+    info_nr_rule: '⚖️ <strong>국내 주소 부인 (시행령 §2④2호)</strong>: 국외에 거주·근무하는 사람이 ① 외국 국적 취득 또는 외국 영주권 보유 <strong>+</strong> ② 국내에 생계를 같이하는 가족 없음 <strong>+</strong> ③ 직업·자산상태에 비추어 다시 입국하여 주로 국내에 거주하리라고 인정되지 않을 것 — 세 요건을 모두 충족하면 국내에 주소가 없는 것으로 봅니다. 영주권 보유만으로는 적용되지 않습니다 (대법 2018두34367).',
     fs_label: '해외 국적 또는 영주권 보유 여부',
     fs_none: '없음 (한국 국적만)',
     fs_citizenship: '🛂 외국 국적 취득',
@@ -1021,7 +1022,7 @@ const LANG = {
     // Step 7
     step7_title: '해외 체류 · 자산 현황',
     step7_desc_suffix: '와의 조세조약 Tie-Breaker 규정 적용을 위해 해외 체류 및 자산 현황을 입력해주세요.',
-    info_tiebreaker: '⚖️ <strong>Tie-Breaker 적용 순서</strong>: ① 항구적 주거 → ② 중대한 이해관계 중심지 → ③ 일상적 거소 → ④ 국적 순으로 판정합니다. 이중거주자(한국 소득세법상 거주자 + 해외 조약상 거주자)인 경우에 적용됩니다.',
+    info_tiebreaker: '⚖️ <strong>Tie-Breaker 적용 순서</strong>: ① 항구적 주거 → ② 중대한 이해관계 중심지 → ③ 일상적 거소 → ④ 국적 → ⑤ 상호합의절차(MAP) 순으로 순차 적용하며, 앞 단계에서 결론이 나면 다음 단계로 넘어가지 않습니다. 이중거주자(한국 소득세법상 거주자 + 해외 조약상 거주자)인 경우에 적용됩니다.',
     section_abr_stay: '해외 체류 현황',
     section_abr_assets: '해외 자산 현황',
     abr_days_label: '해외 체류일수 (해당 과세연도)',
@@ -1090,6 +1091,7 @@ const LANG = {
     ts2_title: '② 중대한 이해관계 중심지 (Center of Vital Interests)',
     ts3_title: '③ 일상적 거소 (Habitual Abode)',
     ts4_title: '④ 국적 (Nationality)',
+    ts5_title: '⑤ 상호합의절차 (Mutual Agreement Procedure)',
     ts_next2: '양국 → Step ②로',
     ts_next2b: '해당 없음 → Step ②로',
     ts_next3: '불명확 → Step ③으로',
@@ -1139,7 +1141,7 @@ const LANG = {
     // Step 2
     step2_title: 'Days in Korea',
     step2_desc: 'Enter the actual number of days you stayed in Korea during the tax year.',
-    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). Both the date of entry and departure count as 1 day.',
+    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). The period of residence is counted <strong>from the day after entry through the day of departure</strong> (Decree §4①). Meeting 183+ days within one tax period satisfies the requirement (Decree §4③).',
     days_label: 'Days in Korea',
     unit_days: 'days',
     unit_persons: 'persons',
@@ -1180,6 +1182,7 @@ const LANG = {
     treaty_yes_pre: '✓ Korea-',
     treaty_yes_post: ' Tax Treaty Country',
     treaty_no: '✗ No Tax Treaty',
+    treaty_taiwan_note: '⚠ The Korea–Taiwan agreement applies to income arising on or after 2024-01-01',
     // Regions
     regions: {
       '동북아시아': 'Northeast Asia',
@@ -1235,8 +1238,8 @@ const LANG = {
     opt_none: 'None',
     // Step 5
     step5_title: 'Foreign Citizenship / PR',
-    step5_desc: 'Enforcement Decree §2④ of the Income Tax Act provides a deemed non-resident rule for holders of foreign citizenship or permanent residency.',
-    info_nr_rule: '⚖️ <strong>Deemed Non-Resident (Decree §2④)</strong>: Foreign citizenship or PR <strong>+</strong> No domestic dependent family <strong>+</strong> Less than 183 days in Korea — meeting all three conditions deems you a non-resident.',
+    step5_desc: 'Enforcement Decree §2④(2) of the Income Tax Act denies domestic domicile for holders of foreign citizenship or permanent residency — but occupation and asset status are weighed together.',
+    info_nr_rule: '⚖️ <strong>No Domestic Domicile (Decree §2④(2))</strong>: For a person residing/working abroad — ① foreign citizenship or PR <strong>+</strong> ② no dependent family living in Korea <strong>+</strong> ③ not expected, in light of occupation and assets, to re-enter and reside primarily in Korea. Meeting all three means no domicile in Korea. Holding PR alone is not sufficient (Supreme Court 2018두34367).',
     fs_label: 'Foreign Citizenship or PR Status',
     fs_none: 'None (Korean citizenship only)',
     fs_citizenship: '🛂 Foreign Citizenship',
@@ -1287,7 +1290,7 @@ const LANG = {
     // Step 7
     step7_title: 'Overseas Status',
     step7_desc_suffix: ' tax treaty Tie-Breaker analysis. Please enter your overseas stay and asset details.',
-    info_tiebreaker: '⚖️ <strong>Tie-Breaker Order</strong>: ① Permanent Home → ② Center of Vital Interests → ③ Habitual Abode → ④ Nationality. Applied when you are a dual resident (resident under Korean Income Tax Act + resident under the foreign treaty).',
+    info_tiebreaker: '⚖️ <strong>Tie-Breaker Order</strong>: ① Permanent Home → ② Center of Vital Interests → ③ Habitual Abode → ④ Nationality → ⑤ Mutual Agreement Procedure (MAP), applied in sequence — once a stage is decisive, later stages are not reached. Applied when you are a dual resident (resident under the Korean Income Tax Act + resident under the foreign treaty).',
     section_abr_stay: 'Overseas Stay',
     section_abr_assets: 'Overseas Assets',
     abr_days_label: 'Days Abroad (for the tax year)',
@@ -1356,6 +1359,7 @@ const LANG = {
     ts2_title: '② Center of Vital Interests',
     ts3_title: '③ Habitual Abode',
     ts4_title: '④ Nationality',
+    ts5_title: '⑤ Mutual Agreement Procedure',
     ts_next2: 'Both countries → Step ②',
     ts_next2b: 'N/A → Step ②',
     ts_next3: 'Inconclusive → Step ③',
@@ -1469,7 +1473,7 @@ function setLang(lang) {
 //  DATA
 // ====================================================
 const TREATY_COUNTRIES = {
-  '동북아시아': ['몽골', '중국', '일본', '홍콩'],
+  '동북아시아': ['몽골', '중국', '일본', '홍콩', '대만'],
   '동남아시아': ['말레이시아', '필리핀', '인도네시아', '베트남', '미얀마', '라오스', '태국', '브루나이', '싱가포르', '캄보디아'],
   '서남아시아': ['방글라데시', '스리랑카', '파키스탄', '네팔', '인도'],
   '오세아니아': ['뉴질랜드', '호주', '피지', '파푸아뉴기니'],
@@ -1537,6 +1541,11 @@ function onCountryChange() {
     badge.innerHTML = hasTreaty
       ? '<span class="treaty-badge badge-yes">' + t('treaty_yes_pre') + sel.value + t('treaty_yes_post') + '</span>'
       : '<span class="treaty-badge badge-no">' + t('treaty_no') + '</span>';
+    // 대만: 2023.12.27. 발효, 2024.1.1. 이후 발생 소득부터 적용
+    const yr = parseInt(document.getElementById('taxYear').value, 10);
+    if (sel.value === '대만' && yr && yr < 2024) {
+      badge.innerHTML += '<span class="treaty-badge badge-no">' + t('treaty_taiwan_note') + '</span>';
+    }
   } else {
     badge.innerHTML = '';
   }
@@ -1813,9 +1822,6 @@ const PRECEDENTS = [
   { id:'2018두35025', country:'미국', r:'R', f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'미국 영주권자. 배우자·자녀는 미국, 모친은 국내 거주. 국내에서 유통회사 설립·실질 경영.',
     key:'가족이 해외에 있어도 국내에서 법인을 실질 경영하고 거액 자산을 보유하면 거주자.' },
-  { id:'2016두269674', country:'중국', r:'R', f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
-    summary:'중국 무역중개업. 연 40일 정도만 국내 체류하나 배우자·자녀가 국내 실거주, 30억+ 부동산·임대.',
-    key:'해외에 오래 머문다고 비거주자가 되는 것이 아님 — 가족과 자산의 무게중심이 국내면 거주자.' },
   { id:'2015두1243', country:'일본', r:'R', f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
     summary:'일본 거류증 보유 그룹 경영자. 가족 전용 국내 생활공간 완비, 국내 집무실에서 그룹 전체 통제.',
     key:'국내 집무실에서 그룹 의사결정을 하고 가족 생활공간이 국내에 완비되면 거주자.' },
@@ -1990,25 +1996,31 @@ function runAssessment() {
     }
   }
 
-  // ── RULE 2: 영주권·외국국적 비거주자 간주 ──
-  if (hasForeignStatus && !hasKrFamily && d.daysInKorea < 183) {
+  // ── RULE 2: 외국국적·영주권자의 국내 주소 부인 (시행령 §2④2호) ──
+  // 3요건: ① 외국 국적·영주권  ② 국내 생계가족 없음
+  //        ③ 직업·자산상태에 비추어 다시 입국하여 주로 국내에 거주하리라고 인정되지 않을 것
+  // ③은 국내 자산 규모와 국내 직업 유무로 판단한다 (대법 2018두34367 — 영주권자라도
+  // 국내 거액 자산·임대소득이 계속되면 재입국·국내거주 가능성이 인정되어 주소가 유지됨).
+  const krJobActive = d.krJob !== 'none' && d.krWorkMode !== 'nominal';
+  const willReturnKr = d.domTotal >= 50000 || krJobActive;
+  if (hasForeignStatus && !hasKrFamily && !willReturnKr) {
     add('negative', '🚫',
-      en ? 'Deemed Non-Resident Rule Applies' : '비거주자 간주 규정 적용',
-      en ? `Foreign ${fsW} + no domestic dependent family + under 183 days in Korea — all three conditions met, deemed non-resident.`
-         : `외국 ${fsW} 보유 + 국내 생계 가족 없음 + 183일 미만 체류 — 세 요건 모두 충족으로 비거주자로 간주됩니다.`,
-      '소득세법 시행령 제2조 제4항 제1호', -65);
+      en ? 'No Domestic Domicile (Decree §2④(2))' : '국내 주소 부인 규정 적용 (시행령 §2④2호)',
+      en ? `Foreign ${fsW} + no dependent family in Korea + no substantial domestic assets or active domestic occupation — all three conditions met, so no domicile in Korea is recognized.`
+         : `외국 ${fsW} 보유 + 국내 생계 가족 없음 + 국내에 상당한 자산·실질 직업 없음 — 세 요건을 모두 충족하여 국내에 주소가 없는 것으로 봅니다.`,
+      '소득세법 시행령 제2조 제4항 제2호', -65);
   } else if (hasForeignStatus && hasKrFamily) {
     add('warning', '⚠️',
-      en ? `Foreign ${fsW} held (Deemed rule not applied)` : `외국 ${fsW} 보유 (간주 규정 미적용)`,
-      en ? 'Foreign citizenship/PR is held but has domestic dependent family, so the deemed non-resident rule does not apply. However, it is an unfavorable factor in overall assessment.'
-         : '외국 국적·영주권이 있으나 국내에 생계를 같이하는 가족이 있어 비거주자 간주 규정은 적용되지 않습니다. 단, 종합적 판단에서 불리한 요소로 고려됩니다.',
-      '소득세법 시행령 제2조 제4항 제1호 단서', -5);
-  } else if (hasForeignStatus && d.daysInKorea >= 183) {
+      en ? `Foreign ${fsW} held (Rule not applied — family in Korea)` : `외국 ${fsW} 보유 (규정 미적용 — 국내 생계가족)`,
+      en ? 'Foreign citizenship/PR is held, but there is dependent family living in Korea, so the second requirement fails and domestic domicile is not denied. It also weighs against non-resident status overall.'
+         : '외국 국적·영주권이 있으나 국내에 생계를 같이하는 가족이 있어 두 번째 요건이 충족되지 않습니다. 국내 주소가 부인되지 않으며, 종합 판단에서도 불리한 요소로 고려됩니다.',
+      '소득세법 시행령 제2조 제4항 제2호', -5);
+  } else if (hasForeignStatus && willReturnKr) {
     add('warning', '⚠️',
-      en ? `Foreign ${fsW} held` : `외국 ${fsW} 보유`,
-      en ? '183+ days satisfies the residency threshold, excluding the deemed non-resident rule.'
-         : '183일 이상 체류로 거소 기준 거주자에 해당하여 비거주자 간주 규정은 배제됩니다.',
-      '소득세법 시행령 제2조 제4항', 0);
+      en ? `Foreign ${fsW} held (Rule not applied — domestic base remains)` : `외국 ${fsW} 보유 (규정 미적용 — 국내 기반 유지)`,
+      en ? 'Substantial domestic assets or an active domestic occupation remain, so it cannot be said that re-entry and primary residence in Korea are not expected. Holding PR alone does not deny domestic domicile (Supreme Court 2018두34367).'
+         : '국내에 상당한 자산 또는 실질적 직업이 남아 있어 「다시 입국하여 주로 국내에 거주하리라고 인정되지 않는다」고 보기 어렵습니다. 영주권 보유만으로는 국내 주소가 부인되지 않습니다 (대법 2018두34367).',
+      '소득세법 시행령 제2조 제4항 제2호', 0);
   }
 
   // ── 배우자 ──
@@ -2382,21 +2394,26 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
           ? `Days in Korea and abroad are equal, inconclusive → Proceeding to Nationality.`
           : `국내·해외 체류일수가 동일하여 결정 불가 → 국적으로 진행합니다.` });
 
-      // Step 4: Nationality
-      if (!hasForeignStatus) {
+      // Step 4: Nationality — 국적만 따진다. 영주권은 국적이 아니므로 이 단계에서 고려되지 않는다.
+      if (d.foreignStatus !== 'citizenship') {
         side = 'korea';
         steps.push({ num: 4, decisive: true, result: t('ts_korea'), color: 'korea',
           title: t('ts4_title'),
           detail: currentLang === 'en'
-            ? `Korean citizenship only → Final determination as <strong>Korean resident</strong>.`
-            : `한국 국적만 보유 → <strong>한국 거주자</strong>로 최종 판정합니다.` });
+            ? `Holds Korean nationality only (permanent residency is not nationality) → Final determination as <strong>Korean resident</strong>.`
+            : `한국 국적만 보유(영주권은 국적이 아님) → <strong>한국 거주자</strong>로 최종 판정합니다.` });
       } else {
         side = 'foreign';
         steps.push({ num: 4, decisive: true, result: t('ts_foreign'), color: 'foreign',
           title: t('ts4_title'),
           detail: currentLang === 'en'
-            ? `Foreign ${fsWord} held → May be determined as <strong>${d.country} resident</strong>. Please check the specific treaty provisions.`
-            : `외국 ${fsWord} 보유 → <strong>${d.country} 거주자</strong>로 판정될 수 있습니다. 조약별 규정을 확인하세요.` });
+            ? `Holds ${d.country} nationality → May be determined as <strong>${d.country} resident</strong>. Please check the specific treaty provisions.`
+            : `${d.country} 국적 보유 → <strong>${d.country} 거주자</strong>로 판정될 수 있습니다. 조약별 규정을 확인하세요.` });
+        steps.push({ num: 5, decisive: false, result: '', color: '',
+          title: t('ts5_title'),
+          detail: currentLang === 'en'
+            ? `If the person is a national of <strong>both</strong> countries (or of neither), nationality cannot decide either, and the competent authorities of the two states settle residence by <strong>mutual agreement</strong> (OECD Model Art. 4(2)(d)).`
+            : `양국 모두의 국적자이거나 어느 쪽도 국적자가 아닌 경우에는 국적으로도 결정할 수 없으므로, 양국 권한 있는 당국 간 <strong>상호합의절차(MAP)</strong>로 거주지국을 결정합니다 (OECD 모델조약 제4조 제2항 라목).` });
       }
     }
   }
