@@ -224,6 +224,28 @@
 
     /* ── TREATY SECTION ── */
     .treaty-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
+
+    /* ── DISPUTE TYPE ── */
+    .type-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
+    .type-box-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 8px; }
+    .type-intro { font-size: 12px; color: #6b7280; line-height: 1.65; margin-bottom: 14px; }
+    .type-card { background: white; border: 1px solid #e5e7eb; border-radius: 11px; padding: 14px 16px; }
+    .type-card.type-primary { border-color: #6366f1; border-left: 4px solid #6366f1; }
+    .type-label {
+      display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .04em;
+      color: #6b7280; background: #f1f3f5; border-radius: 5px; padding: 2px 7px; margin-bottom: 7px;
+    }
+    .type-primary .type-label { color: #4338ca; background: #e0e7ff; }
+    .type-name { font-size: 14px; font-weight: 700; color: #1f2937; }
+    .type-tag { font-size: 12px; color: #6366f1; font-weight: 600; margin-top: 3px; }
+    .type-desc { font-size: 12.5px; color: #4b5563; line-height: 1.65; margin-top: 8px; }
+    .type-key { font-size: 12.5px; color: #374151; line-height: 1.7; margin-top: 9px; padding-top: 9px; border-top: 1px dashed #e5e7eb; }
+    .type-count { font-size: 11px; color: #9ca3af; margin-top: 9px; }
+    .type-others { display: grid; gap: 10px; margin-top: 10px; }
+    .type-none { font-size: 12.5px; color: #6b7280; line-height: 1.65; }
+    .type-note { font-size: 11.5px; color: #6b7280; line-height: 1.65; margin-top: 12px; }
+    .prec-type { font-size: 11px; color: #4338ca; background: #eef2ff; border-radius: 6px; padding: 2px 8px; font-weight: 600; }
+    @media (max-width: 600px) { .type-others { grid-template-columns: 1fr; } }
     .treaty-box-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 16px; }
     .treaty-step { display: flex; gap: 11px; align-items: flex-start; margin-bottom: 11px; }
     .treaty-num {
@@ -1072,6 +1094,32 @@ const LANG = {
     prec_sim_suffix: '% 유사',
     prec_keypoint: '▸ 키포인트',
     prec_same_country: '같은 국가',
+    // Dispute types (책 3장·5장 5가지 유형)
+    type_box_title: '🧭 분쟁 유형 분류',
+    type_intro: '입력하신 상황을 책에서 정리한 5가지 분쟁 유형과 대조했습니다. 유형 분류는 참고용이며 위 판정 결과에는 영향을 주지 않습니다.',
+    type_primary_label: '가장 가까운 유형',
+    type_other_label: '함께 검토할 유형',
+    type_none: '입력하신 정보만으로는 특정 유형에 뚜렷하게 해당하지 않습니다.',
+    type_t5_note: '※ <strong>유형 5</strong>는 자산의 양도·증여 시점이 쟁점인 유형입니다. 최근 5년 이내 국외자산을 양도했거나 국내 자산의 양도·증여를 계획 중이라면 이 유형도 함께 검토하세요.',
+    type_prec_pre: '이 유형의 판례 ',
+    type_prec_post: '건',
+    types: [
+      { n:'유형 1. 가족 분리형', t:'가족이 있는 곳이 거주지다',
+        d:'본인은 해외에 있으나 배우자·자녀 등 생계를 같이하는 가족이 국내에 남아 있는 구조입니다.',
+        k:'가족이 한국에 남아 있는 한 본인이 어디에 있어도 거주자로 판정될 가능성이 매우 높습니다. 체류일수보다 생계를 같이하는 가족의 소재지가 우선합니다. 비거주자 인정 경로는 ① 가족 전원의 해외 동반 이주, ② 해외 직업의 실질이 압도적인 경우 두 가지입니다.' },
+      { n:'유형 2. 영주권·국적 취득형', t:'영주권은 비거주자 증명서가 아니다',
+        d:'외국 영주권 또는 국적을 취득한 상태에서 거주자 여부가 다투어지는 구조입니다.',
+        k:'영주권은 비거주자의 필요조건일 뿐 충분조건이 아닙니다. 시행령 제2조 제4항 제2호는 ① 국내 생계 가족이 없을 것, ② 직업·자산상태에 비추어 다시 입국하여 주로 국내에 거주하리라고 인정되지 않을 것을 함께 요구합니다. 국내에 경제적 뿌리가 남아 있으면 영주권은 형식에 그칩니다.' },
+      { n:'유형 3. 국내 자산 집중형', t:'돈의 꼬리를 봐라',
+        d:'해외 체류가 길더라도 소득이 국내로 흘러 자산을 형성·관리하고 있는 구조입니다.',
+        k:'해외 체류일수가 아무리 길어도 소득이 국내로 흘러 자산을 형성하면 경제적 무게중심은 한국입니다. 이 유형에서 비거주자가 인정된 사례는 사실상 없습니다. 임대사업자 등록·종합소득세 신고는 국내 경제활동의 직접적 근거가 됩니다.' },
+      { n:'유형 4. 해외 법인·국내 실질 지배형', t:'의사결정 장소가 거주지를 만든다',
+        d:'해외 법인·사업체를 두고 있으나 국내에서도 직위·경영 관여가 함께 유지되는 구조입니다.',
+        k:'해외 법인의 간판이 어디에 있는지가 아니라 핵심 경영 결정이 어디에서 이루어지는지가 기준입니다. 등기임원 사임만으로는 부족하며, 비등기 상태의 이메일·결재·회의도 실질 경영으로 평가됩니다. 형식적 외관 만들기가 가장 쉽게 무너지는 영역입니다.' },
+      { n:'유형 5. 자산 처분·이전 시점형', t:'거주자 판정은 한 장의 사진이 아니다',
+        d:'양도·증여 시점의 거주자성이 쟁점이 되는 구조입니다.',
+        k:'처분·이전이라는 특정 시점만의 거주자성을 주장하는 시도는 거의 통하지 않습니다. 법원은 그 시점 전후의 생활관계 전체를 봅니다. 국외자산 양도소득세의 5년 요건, 국내 주택 양도 시 1세대 1주택 비과세가 주요 쟁점입니다.' },
+    ],
     prec_tags_days: { H:'국내체류 183일↑', M:'국내체류 90~182일', L:'국내체류 90일 미만' },
     prec_tags_fam: { K:'생계가족 국내', A:'생계가족 해외', X:'가족 양국 혼재', N:'생계가족 없음' },
     prec_tags_job: { K:'직업 국내', A:'직업 해외', X:'직업 국내외', N:'직업 없음' },
@@ -1340,6 +1388,32 @@ const LANG = {
     prec_sim_suffix: '% match',
     prec_keypoint: '▸ Key Point',
     prec_same_country: 'Same Country',
+    // Dispute types
+    type_box_title: '🧭 Dispute Type',
+    type_intro: 'Your situation was matched against the five dispute types identified in the book. This classification is informational and does not affect the determination above.',
+    type_primary_label: 'Closest type',
+    type_other_label: 'Also worth reviewing',
+    type_none: 'The information entered does not clearly match any single type.',
+    type_t5_note: '※ <strong>Type 5</strong> turns on the timing of a disposal or gift. If you have transferred overseas assets within the last 5 years, or plan to transfer or gift domestic assets, review this type as well.',
+    type_prec_pre: 'Precedents of this type: ',
+    type_prec_post: '',
+    types: [
+      { n:'Type 1. Family Separation', t:'Residence follows the family',
+        d:'You are abroad while a spouse, children, or other dependent family remain in Korea.',
+        k:'As long as family remains in Korea, residency is very likely regardless of where you are. The location of dependent family outweighs day count. Two routes to non-residency: ① the whole family relocates abroad, or ② the substance of overseas work is overwhelming.' },
+      { n:'Type 2. Permanent Residency / Citizenship', t:'A green card is not a certificate of non-residency',
+        d:'Residency is disputed while you hold foreign permanent residency or citizenship.',
+        k:'Permanent residency is necessary but not sufficient. Decree §2④(2) also requires ① no dependent family in Korea, and ② that you not be expected, in light of occupation and assets, to re-enter and reside primarily in Korea. If economic roots remain in Korea, the PR is a formality.' },
+      { n:'Type 3. Domestic Asset Concentration', t:'Follow the money',
+        d:'Even with long stays abroad, income flows back to Korea and forms or sustains assets there.',
+        k:'However long you stay abroad, if income flows into Korea and builds assets, the economic center is Korea. There is virtually no case of non-residency being recognized in this type. Rental-business registration and income tax filing are direct evidence of domestic economic activity.' },
+      { n:'Type 4. Offshore Entity / Domestic Control', t:'Where decisions are made makes the residence',
+        d:'You run an overseas entity while also holding a position or management involvement in Korea.',
+        k:'What matters is not where the overseas entity is registered but where key management decisions are made. Resigning as a registered officer is not enough — email, approvals, and meetings from Korea count as substantive management. This is where formal appearances collapse most easily.' },
+      { n:'Type 5. Timing of Disposal / Transfer', t:'Residency is not a single snapshot',
+        d:'Residency at the moment of a transfer or gift is the point in dispute.',
+        k:'Arguing residency status for one isolated moment rarely works; courts examine the whole pattern of life around that time. The main issues are the 5-year requirement for overseas-asset capital gains tax and the one-house exemption on domestic home transfers.' },
+    ],
     prec_tags_days: { H:'183+ Days in Korea', M:'90–182 Days in Korea', L:'Under 90 Days in Korea' },
     prec_tags_fam: { K:'Family in Korea', A:'Family Abroad', X:'Family in Both', N:'No Dependent Family' },
     prec_tags_job: { K:'Job in Korea', A:'Job Abroad', X:'Job in Both', N:'No Job' },
@@ -1720,6 +1794,10 @@ function collectData() {
     houseCount: getNum('houseCount'),
     houseRent: document.querySelector('input[name="houseRent"]:checked')?.value || 'no',
     shopCount: getNum('shopCount'),
+    shopRent: document.querySelector('input[name="shopRent"]:checked')?.value || 'no',
+    listedMajor: document.querySelector('input[name="listedMajor"]:checked')?.value || 'no',
+    unlistedMajor: document.querySelector('input[name="unlistedMajor"]:checked')?.value || 'no',
+    krRegDel: document.querySelector('input[name="krRegDel"]:checked')?.value || 'no',
     foreignStatus: document.querySelector('input[name="foreignStatus"]:checked')?.value || 'none',
     krJob: document.querySelector('input[name="krJob"]:checked')?.value || 'none',
     krWorkMode: document.querySelector('input[name="krWorkMode"]:checked')?.value || 'full',
@@ -1744,103 +1822,103 @@ function collectData() {
 //  f.foreign: Y(외국적·영주권) N(한국적)
 // ====================================================
 const PRECEDENTS = [
-  { id:'2018두60847', country:'일본', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+  { id:'2018두60847', country:'일본', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
     summary:'일본 J리그 프로축구선수. 배우자·자녀가 일본 구단 제공 주거에서 함께 생활하고, 국내 체류는 국가대표 활동 등 일시적이었음.',
     key:'항구적 주거는 소유·임차 불문 「계속 거주 가능성」으로 판단 — 가족과 함께 산 구단 숙소도 인정. 국가대표 일시 입국은 국내 거주 근거가 아님.' },
-  { id:'2019두59400', country:'미국', r:'N', f:{days:'L',fam:'A',job:'A',asset:'L',foreign:'Y'},
+  { id:'2019두59400', country:'미국', r:'N', ty:2, f:{days:'L',fam:'A',job:'A',asset:'L',foreign:'Y'},
     summary:'어린 시절 미국 이주 후 학업·취업·결혼으로 미국에 생활기반을 형성한 자녀(수증자)의 거주자 여부.',
     key:'부모의 학비 지원·주민등록 유지는 거주자 판정을 좌우하지 않음. 실질적 생활근거지가 어디인지로 판단.' },
-  { id:'2019두52935', country:'카타르', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+  { id:'2019두52935', country:'카타르', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
     summary:'카타르 건설법인 총괄관리자로 상시 근무. 국내 생계 가족 없이 연 37일 정도만 제사·명절로 입국.',
     key:'국내에 부동산·친족이 있어 소득세법상 거주자라도, 조약상 「중대한 이해관계의 중심지」가 카타르면 비거주자로 역전.' },
-  { id:'2018두128', country:'미국', r:'N', f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+  { id:'2018두128', country:'미국', r:'N', ty:2, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
     summary:'1992년 가족 전원 미국 이주, 미국에 항구적 주거 형성. BVI·홍콩 페이퍼컴퍼니 운영(이중거주자).',
     key:'조약상 항구적 주거 = 「가족과 함께 거주하는 장소」. 가족 전원이 미국에 살면 미국 거주자 → 한국 국외원천소득 과세권 소멸.' },
-  { id:'2018두54798', country:'미국', r:'N', f:{days:'L',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두54798', country:'미국', r:'N', ty:2, f:{days:'L',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'미국 영주권자(국내 비등재 회장). 본인은 과세연도에 전혀 입국하지 않았고 배우자는 국내 거주 중 사망.',
     key:'배우자가 국내에 있어도 본인이 전혀 귀국하지 않으면 「일상적 거소」에서 조약상 거주자가 역전될 수 있음.' },
-  { id:'2015두52050', country:'미국', r:'N', f:{days:'M',fam:'A',job:'X',asset:'L',foreign:'Y'},
+  { id:'2015두52050', country:'미국', r:'N', ty:5, f:{days:'M',fam:'A',job:'X',asset:'L',foreign:'Y'},
     summary:'미국 영주권자. 배우자·자녀 모두 미국 거주, 국내엔 매출 없는 법인 등기이사 직위뿐, 부동산도 양도 완료.',
     key:'국내에 생계 가족·실질 자산이 없고 명목상 직위뿐이면 183일 부근 체류여도 비거주자.' },
-  { id:'2017두59352', country:'인도네시아', r:'N', f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
+  { id:'2017두59352', country:'인도네시아', r:'N', ty:1, f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
     summary:'인도네시아 대규모 현지공장 대표이사. 처·딸은 국내, 아들은 현지 동거, 연 39일만 국내 체류.',
     key:'부양가족 일부가 국내에 있어도 본인이 국내에 주소·1년 이상 거소를 두지 않았다면 비거주자.' },
-  { id:'2022두33279', country:'호주', r:'N', f:{days:'M',fam:'A',job:'K',asset:'M',foreign:'Y'},
+  { id:'2022두33279', country:'호주', r:'N', ty:5, f:{days:'M',fam:'A',job:'K',asset:'M',foreign:'Y'},
     summary:'호주 시민권자. 국내 다가구주택을 임대만 하고 실거주하지 않으며, 생계 가족도 국내에 없음.',
     key:'주민등록이 유지되고 2과세기간 합산 거소(183일)를 충족해도, 실거주·생계가족이 없으면 조약 tie-breaker에서 비거주자.' },
-  { id:'2021두53054', country:'인도네시아', r:'N', f:{days:'M',fam:'X',job:'A',asset:'H',foreign:'N'},
+  { id:'2021두53054', country:'인도네시아', r:'N', ty:4, f:{days:'M',fam:'X',job:'A',asset:'H',foreign:'N'},
     summary:'인도네시아 코린도그룹 회장. 부인·모친은 국내 상주, 본인은 자카르타 거주(국내 자산 약 338억).',
     key:'양국 항구적 주거 → 중대한 이해관계 단정 불가 → 「일상적 거소」(인니 체류가 더 김)가 최종 결정. Tie-Breaker 3단계가 모두 작동한 사례.' },
-  { id:'조심2023부3227', country:'인도네시아', r:'N', f:{days:'L',fam:'A',job:'A',asset:'H',foreign:'N'},
+  { id:'조심2023부3227', country:'인도네시아', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'H',foreign:'N'},
     summary:'배우자의 인니 근무로 이주한 전업주부. 가족 전원 자카르타 거주, 국내 비상장법인 60% 지분 보유.',
     key:'주민등록이 유지되어 있어도 가족 전원이 해외에 살고 국내 생계 가족이 없으면 비거주자일 수 있음.' },
-  { id:'조심2023서9615', country:'뉴질랜드', r:'N', f:{days:'H',fam:'A',job:'A',asset:'M',foreign:'Y'},
+  { id:'조심2023서9615', country:'뉴질랜드', r:'N', ty:2, f:{days:'H',fam:'A',job:'A',asset:'M',foreign:'Y'},
     summary:'뉴질랜드 영주권자. 배우자 폐종양 치료로 18개월 연속 국내 체류하며 파생상품 거래.',
     key:'183일을 명백히 초과해도 질병 치료 목적 체류는 거소 기간에서 제외 — 183일 룰의 중대한 예외.' },
-  { id:'2017두50928', country:'중국', r:'M', f:{days:'M',fam:'X',job:'A',asset:'M',foreign:'N'},
+  { id:'2017두50928', country:'중국', r:'M', ty:1, f:{days:'M',fam:'X',job:'A',asset:'M',foreign:'N'},
     summary:'홍콩·중국법인 대표. 2008~2010년은 처·자 중국 거주(비거주자), 2011년 처 귀국·국내 사업 개시(거주자).',
     key:'같은 사람도 연도별로 거주자성이 달라짐 — 가족 귀국·국내 사업 개시 시점이 분기점.' },
-  { id:'서울고법 2022누38108', country:'러시아', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'서울고법 2022누38108', country:'러시아', r:'R', ty:1, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'러시아 프로축구선수. 본인은 연 6~66일 체류지만 배우자·자녀·부모가 국내 상주, 국내 임대업 운영.',
     key:'본인이 해외에서 활동해도 배우자·자녀가 국내에 상주하고 소득을 국내에 투자하면 거주자 판정이 거의 뒤집히지 않음.' },
-  { id:'2020두48567', country:'중국', r:'R', f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
+  { id:'2020두48567', country:'중국', r:'R', ty:1, f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
     summary:'중국 프로축구선수. 본인 국내 148일이나 배우자·자녀가 국내 대부분 거주, 국내 전세·건물 취득.',
     key:'본인 체류일수가 해외보다 적어도 배우자·자녀가 국내에 상주하면 「생계를 같이하는 가족」으로 거주자.' },
-  { id:'2018두65903', country:'사우디·영국', r:'R', f:{days:'M',fam:'K',job:'A',asset:'H',foreign:'N'},
+  { id:'2018두65903', country:'사우디·영국', r:'R', ty:1, f:{days:'M',fam:'K',job:'A',asset:'H',foreign:'N'},
     summary:'사우디 해외법인 근무. 배우자·자녀가 4년간 단 5일만 국외 체류하며 국내에서 생계.',
     key:'가족이 국내에서 생계를 같이한 사실이 핵심. 외국 국적·영주권이 없으면 비거주자 간주 규정도 적용되지 않음.' },
-  { id:'2019두30096', country:'미국·홍콩', r:'R', f:{days:'M',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2019두30096', country:'미국·홍콩', r:'R', ty:4, f:{days:'M',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'미국 시민권자. 홍콩 출국 후에도 가족이 연 147~167일 국내 체류, 수천억 국내 법인 경영 관여.',
     key:'시민권자라도 체류·가족·자산·경영이 국내에 집중되면 거주자. 형식적 비거주자 요건 만들기는 오히려 불리하게 작용.' },
-  { id:'2018두135', country:'싱가포르', r:'R', f:{days:'H',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두135', country:'싱가포르', r:'R', ty:4, f:{days:'H',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'싱가포르 영주권자. 국내 체류·자산이 급증(2009년 270일), 매입한 국내 아파트에 부모 거주.',
     key:'영주권이 있어도 국내 체류·자산이 급증하고 부모가 국내에 거주하면 거주자. 조약상 입증책임은 납세자.' },
-  { id:'2018두35575', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2018두35575', country:'중국', r:'R', ty:3, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 공예품 제조업. 중국 체류가 더 많지만 재혼 배우자·딸이 국내 주소지에서 상주.',
     key:'중국 체류가 더 많아도 생계를 같이하는 가족(배우자·자녀)이 국내에 상주하면 거주자.' },
-  { id:'2018두34367', country:'캐나다', r:'R', f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2018두34367', country:'캐나다', r:'R', ty:2, f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 영주권 취득·이주했으나 국내 고가 아파트 등 거액 자산 보유, 임대소득 계속 발생.',
     key:'영주권 취득·출국만으로 비거주자로 자동 전환되지 않음 — 국내 거액 자산·소득이 있으면 거주자 유지.' },
-  { id:'2017두39112', country:'쿠웨이트', r:'R', f:{days:'L',fam:'K',job:'A',asset:'M',foreign:'N'},
+  { id:'2017두39112', country:'쿠웨이트', r:'R', ty:1, f:{days:'L',fam:'K',job:'A',asset:'M',foreign:'N'},
     summary:'쿠웨이트 법인 파견 근로자. 배우자·자녀가 국내 소유 아파트에 거주, 연중 2달 이상 국내 업무 수행.',
     key:'가족·자산 기반이 국내에 있고 국내 업무가 병행되면 해외 파견 근로자도 거주자.' },
-  { id:'2017두57929', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2017두57929', country:'중국', r:'R', ty:3, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 거점 무역·사업. 연 40일만 국내 체류하나 가족 전원 국내, 30억 초과 부동산·임대사업.',
     key:'연 318일 중국 체류라도 가족 전원이 국내에 살고 귀국 시 같은 주소지에 거주하면 거주자.' },
-  { id:'2015두36546', country:'중국', r:'R', f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2015두36546', country:'중국', r:'R', ty:1, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 위탁가공업. 본인은 연 21일만 국내 체류하나 배우자·자녀가 1년 내내 국내 상주.',
     key:'본인 21일 체류여도 가족이 국내에 상주하면 거주자 — 체류일수는 결정적 기준이 아님. 신용카드·진료기록이 생활중심지 증거.' },
-  { id:'2018두39065', country:'홍콩·미국', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두39065', country:'홍콩·미국', r:'R', ty:5, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'Y'},
     summary:'홍콩 영주권자. 쟁점기간 대부분 국내 체류, 배우자 국내 거주, 국내 법인 100% 보유·임원.',
     key:'특정일 해외 체류여도 기간 전체 생활관계로 거주자. 해외이주신고 미이행·국내 직장 건강보험은 거주자 방증.' },
-  { id:'2017두73686', country:'홍콩', r:'R', f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
+  { id:'2017두73686', country:'홍콩', r:'R', ty:5, f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
     summary:'홍콩 영구거주권자(가정주부). 배우자가 국내 기업 운영, 본인도 국내 법인 등기임원.',
     key:'「영주권=비거주자」 공식은 통하지 않음 — 실제 체류일수와 가족의 경제생활관계가 더 강한 기준.' },
-  { id:'2017두53705', country:'캐나다', r:'R', f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2017두53705', country:'캐나다', r:'R', ty:4, f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 영주권자. 처·자녀는 캐나다 시민권자로 현지 거주하나 본인은 국내 체류가 더 많고 국내 법인 대표이사.',
     key:'「가족+영주권」만으로는 비거주자가 못 됨. 중대한 이해관계의 중심지는 「돈이 나오는 곳」.' },
-  { id:'2018두35025', country:'미국', r:'R', f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2018두35025', country:'미국', r:'R', ty:2, f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'미국 영주권자. 배우자·자녀는 미국, 모친은 국내 거주. 국내에서 유통회사 설립·실질 경영.',
     key:'가족이 해외에 있어도 국내에서 법인을 실질 경영하고 거액 자산을 보유하면 거주자.' },
-  { id:'2015두1243', country:'일본', r:'R', f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
+  { id:'2015두1243', country:'일본', r:'R', ty:4, f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
     summary:'일본 거류증 보유 그룹 경영자. 가족 전용 국내 생활공간 완비, 국내 집무실에서 그룹 전체 통제.',
     key:'국내 집무실에서 그룹 의사결정을 하고 가족 생활공간이 국내에 완비되면 거주자.' },
-  { id:'2016두37584', country:'사우디·카타르', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2016두37584', country:'사우디·카타르', r:'R', ty:4, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'사우디 법인 대표(국내법인 대표이사 겸직). 본인 연 188일·배우자 327일 국내 체류, 강남 자산.',
     key:'해외 사업의 통제권·매출의 한국 종속성까지 들여다봄 — 의사결정 장소가 국내면 거주자.' },
-  { id:'2014두13959', country:'케이만(미국·중국 주장)', r:'R', f:{days:'H',fam:'K',job:'X',asset:'M',foreign:'N'},
+  { id:'2014두13959', country:'케이만(미국·중국 주장)', r:'R', ty:4, f:{days:'H',fam:'K',job:'X',asset:'M',foreign:'N'},
     summary:'케이만 법인 주주·국내법인 이사. 연평균 255일 국내 체류, 한국인 배우자 국내 거주.',
     key:'해외 거주자라는 주장을 구체적으로 입증하지 못하면 국내 거주자. 입증책임은 납세자.' },
-  { id:'2014두47303', country:'미국', r:'R', f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2014두47303', country:'미국', r:'R', ty:2, f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'미국 영주권자. 처·자녀는 미국 이주했으나 본인은 국내 부동산 임대업·법인 경영.',
     key:'가족이 미국에 있어도 자산과 일이 국내에 있으면 「언제든 돌아와 살 사람」으로 거주자. 거주자 소득공제 받은 사실이 증거.' },
-  { id:'2013두16876', country:'일본', r:'R', f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2013두16876', country:'일본', r:'R', ty:3, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'재일교포(한국 국적). 배우자와 국내 고가주택 거주, 약 155억 국내 자산, 국내·일본 법인 경영.',
     key:'국내 고가주택에 가족과 거주하고 거액 자산을 두면 일본 주소·납세가 있어도 거주자.' },
-  { id:'조심2024서0141', country:'캐나다', r:'R', f:{days:'H',fam:'X',job:'K',asset:'H',foreign:'Y'},
+  { id:'조심2024서0141', country:'캐나다', r:'R', ty:5, f:{days:'H',fam:'X',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 국적자. 양도 당시 본인·딸이 국내 454일 연속 거주, 배우자는 자녀 유학 뒷바라지로 일시 캐나다.',
     key:'국적·영주권 유무가 아닌 183일 이상 국내 거소가 핵심. 배우자의 한시적 해외 체류는 세대 분리로 봄.' },
-  { id:'2006두3964', country:'미국·일본', r:'R', f:{days:'M',fam:'A',job:'N',asset:'L',foreign:'Y'},
+  { id:'2006두3964', country:'미국·일본', r:'R', ty:2, f:{days:'M',fam:'A',job:'N',asset:'L',foreign:'Y'},
     summary:'입출국을 반복한 이중거주자. 2개 과세기간 합산 1년 이상 거소가 인정됨.',
     key:'매년 1년에 못 미쳐도 2과세기간 합산 1년 이상이면 거주자. 이중거주자 입증책임은 납세자.' },
 ];
@@ -1904,6 +1982,91 @@ function precTags(p, hits) {
   return tags;
 }
 
+// ====================================================
+//  DISPUTE TYPE CLASSIFICATION (책 3장·5장 5가지 유형)
+//  표시 전용 — 거주자/비거주자 판정 점수에는 관여하지 않는다.
+// ====================================================
+function classifyType(d) {
+  const famKr = (d.spouseStatus === 'korea' ? 2 : 0)
+              + (d.spouseStatus === 'both' ? 1 : 0)
+              + Math.min(d.childrenInKorea, 3)
+              + (d.parentsStatus === 'korea' ? 1 : 0);
+  const abroadBase = (d.daysAbroad > d.daysInKorea ? 1 : 0) + (d.abrJob !== 'none' ? 1 : 0);
+  const krJobActive = d.krJob !== 'none' && d.krWorkMode !== 'nominal';
+
+  const sc = [0, 0, 0, 0, 0];
+
+  // 유형 1: 본인은 해외 · 생계 가족은 국내
+  if (famKr > 0 && abroadBase > 0) sc[0] = famKr * 2 + abroadBase;
+
+  // 유형 2: 외국 영주권·국적 보유
+  if (d.foreignStatus !== 'none') {
+    sc[1] = 4 + (d.krRegDel === 'yes' ? 1 : 0) + (d.daysAbroad > d.daysInKorea ? 1 : 0);
+  }
+
+  // 유형 3: 국내 자산 집중
+  if (d.domTotal >= 50000) sc[2] = 5;
+  else if (d.domTotal >= 10000) sc[2] = 3;
+  if (sc[2] > 0) {
+    if (d.domTotal > d.abrTotal) sc[2] += 2;
+    if (d.houseRent === 'yes' || d.houseRent === 'mix' || d.shopRent === 'yes') sc[2] += 2;
+    if (d.daysAbroad > d.daysInKorea) sc[2] += 1;
+  }
+
+  // 유형 4: 해외 법인·사업체 + 국내 직위·경영 관여
+  // 해외 근무만으로는 이 유형이 아니다. 국내 직위·경영 관여가 함께 있어야 성립한다.
+  if (d.abrJob !== 'none') {
+    let t4 = 0;
+    if (krJobActive) t4 += 3;
+    if (d.krJob === 'officer' || d.krJob === 'business') t4 += 2;
+    if (d.krJob !== 'none' && d.krWorkMode === 'nominal') t4 += 1;
+    if (d.unlistedMajor === 'yes' || d.listedMajor === 'yes') t4 += 2;
+    if (t4 > 0) sc[3] = t4 + 2;
+  }
+
+  // 유형 5는 양도·증여 시점을 입력받지 않으므로 점수화하지 않고 안내만 노출한다.
+
+  const ranked = sc.map((v, i) => ({ i: i, v: v }))
+                   .filter(x => x.v > 0)
+                   .sort((a, b) => b.v - a.v);
+  return ranked;
+}
+
+function buildTypeHTML(d) {
+  const ranked = classifyType(d);
+  const TY = t('types');
+  const counts = [0, 0, 0, 0, 0];
+  PRECEDENTS.forEach(p => { counts[p.ty - 1]++; });
+
+  let body;
+  if (ranked.length === 0) {
+    body = `<p class="type-none">${t('type_none')}</p>`;
+  } else {
+    const top = ranked[0];
+    const others = ranked.slice(1, 3);
+    const card = (idx, primary) => {
+      const ty = TY[idx];
+      return `<div class="type-card${primary ? ' type-primary' : ''}">
+        <div class="type-label">${primary ? t('type_primary_label') : t('type_other_label')}</div>
+        <div class="type-name">${ty.n}</div>
+        <div class="type-tag">“${ty.t}”</div>
+        <p class="type-desc">${ty.d}</p>
+        ${primary ? `<p class="type-key">${ty.k}</p>` : ''}
+        <div class="type-count">${t('type_prec_pre')}${counts[idx]}${t('type_prec_post')}</div>
+      </div>`;
+    };
+    body = card(top.i, true) + (others.length
+      ? `<div class="type-others">${others.map(o => card(o.i, false)).join('')}</div>` : '');
+  }
+
+  return `<div class="type-box">
+    <div class="type-box-title">${t('type_box_title')}</div>
+    <p class="type-intro">${t('type_intro')}</p>
+    ${body}
+    <p class="type-note">${t('type_t5_note')}</p>
+  </div>`;
+}
+
 function buildPrecedentHTML(d) {
   const u = userProfile(d);
   const scored = PRECEDENTS
@@ -1944,7 +2107,7 @@ function buildPrecedentHTML(d) {
         </div>
         <div class="prec-summary"><strong>[${p.country}]</strong> ${currentLang === 'en' && p.summary_en ? p.summary_en : p.summary}</div>
         <div class="prec-key"><strong>${t('prec_keypoint')}</strong> ${currentLang === 'en' && p.key_en ? p.key_en : p.key}</div>
-        <div class="prec-tags">${precTags(p, p.hits)}</div>
+        <div class="prec-tags"><span class="prec-type">${t('types')[p.ty - 1].n}</span>${precTags(p, p.hits)}</div>
       </div>
     `).join('')}
   </div>`;
@@ -2216,6 +2379,8 @@ function runAssessment() {
         <div class="conf-bar"><div class="conf-fill" style="width:${confidence}%"></div></div>
       </div>
     </div>
+
+    ${buildTypeHTML(d)}
 
     ${buildPrecedentHTML(d)}
 
