@@ -1534,8 +1534,19 @@ function applyLang() {
   sel.value = prev;
   onCountryChange();
 
-  // Re-render progress bar with translated labels
-  renderProgress(currentStep);
+  // 결과 화면이 열려 있으면 새 언어로 다시 그린다.
+  // 입력값은 그대로이므로 판정 결과는 바뀌지 않고 표기 언어만 바뀐다.
+  const resultCard = document.getElementById('resultCard');
+  if (resultCard && resultCard.classList.contains('active')) {
+    const y = window.scrollY;
+    runAssessment({ keepScroll: true });
+    // 결과를 다시 그리면 레이아웃이 잠시 접히면서 스크롤이 0으로 튄다.
+    // 레이아웃이 안정된 다음 프레임에 원래 위치로 되돌린다.
+    requestAnimationFrame(() => window.scrollTo({ top: y, behavior: 'instant' }));
+  } else {
+    // Re-render progress bar with translated labels
+    renderProgress(currentStep);
+  }
 }
 
 function setLang(lang) {
@@ -2110,7 +2121,7 @@ function buildPrecedentHTML(d) {
 // ====================================================
 //  MAIN ASSESSMENT
 // ====================================================
-function runAssessment() {
+function runAssessment(opts) {
   const d = collectData();
   const factors = [];
   const legalBasis = new Set();
@@ -2404,7 +2415,7 @@ function runAssessment() {
   document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
   document.getElementById('resultCard').classList.add('active');
   renderProgress(hasTreaty ? 8 : 7);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (!(opts && opts.keepScroll)) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ====================================================
