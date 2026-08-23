@@ -225,6 +225,12 @@
     /* ── TREATY SECTION ── */
     .treaty-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
 
+    .rule183-note {
+      background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
+      padding: 11px 14px; font-size: 12.5px; color: #78350f; line-height: 1.7; margin-bottom: 12px;
+    }
+    .rule183-note:empty { display: none; }
+
     /* ── DISPUTE TYPE ── */
     .type-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
     .type-box-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 8px; }
@@ -352,7 +358,7 @@
 
     <div class="fg">
       <label class="req" data-i18n="taxYear_label">진단 대상 과세연도</label>
-      <select id="taxYear">
+      <select id="taxYear" onchange="onYearChange()">
         <option value="" data-i18n-opt="taxYear_placeholder">-- 연도를 선택하세요 --</option>
         <option value="2025">2025</option><option value="2024">2024</option>
         <option value="2023">2023</option><option value="2022">2022</option>
@@ -384,8 +390,9 @@
     <div class="card-title" data-i18n="step2_title">국내 체류일수</div>
     <div class="card-desc" data-i18n="step2_desc">해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.</div>
 
+    <div class="rule183-note" id="rule183Note"></div>
     <div class="info-box" data-i18n-html="info_183">
-      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①). 1과세기간 중 183일 이상이면 요건을 충족합니다 (시행령 §4③).
+      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).
     </div>
 
     <div class="fg">
@@ -895,7 +902,11 @@ const LANG = {
     // Step 2
     step2_title: '국내 체류일수',
     step2_desc: '해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.',
-    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①). 1과세기간 중 183일 이상이면 요건을 충족합니다 (시행령 §4③).',
+    rule183_label: '선택한 과세연도의 거소 기준',
+    rule183_2026: '<strong>2026년 이후</strong> — 1과세기간 동안 183일 이상 <strong>또는</strong> 2과세기간에 걸쳐 계속하여 183일 이상이면 거주자 요건을 충족합니다.',
+    rule183_2018: '<strong>2018~2025년</strong> — 1과세기간(해당 연도) 동안 183일 이상이면 거소 요건을 충족합니다.',
+    rule183_2015: '<strong>2015~2017년</strong> — 이 시기에는 <strong>2과세기간에 걸쳐</strong> 183일 이상이어야 거소 요건을 충족했습니다. 해당 연도 하나만으로는 판단할 수 없으므로, 직전·직후 연도의 체류일수도 함께 확인하세요.',
+    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).',
     days_label: '국내 체류일수',
     unit_days: '일',
     unit_persons: '명',
@@ -1189,7 +1200,11 @@ const LANG = {
     // Step 2
     step2_title: 'Days in Korea',
     step2_desc: 'Enter the actual number of days you stayed in Korea during the tax year.',
-    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). The period of residence is counted <strong>from the day after entry through the day of departure</strong> (Decree §4①). Meeting 183+ days within one tax period satisfies the requirement (Decree §4③).',
+    rule183_label: 'Residence test for the selected tax year',
+    rule183_2026: '<strong>2026 onward</strong> — 183+ days within one tax period, <strong>or</strong> 183+ continuous days spanning two tax periods.',
+    rule183_2018: '<strong>2018–2025</strong> — 183+ days within the single tax year satisfies the test.',
+    rule183_2015: '<strong>2015–2017</strong> — in this period the test required 183+ days <strong>spanning two tax periods</strong>. A single year alone is not decisive, so check the days for the adjacent years as well.',
+    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). The period of residence is counted <strong>from the day after entry through the day of departure</strong> (Decree §4①).',
     days_label: 'Days in Korea',
     unit_days: 'days',
     unit_persons: 'persons',
@@ -1534,6 +1549,8 @@ function applyLang() {
   sel.value = prev;
   onCountryChange();
 
+  renderRule183();
+
   // 결과 화면이 열려 있으면 새 언어로 다시 그린다.
   // 입력값은 그대로이므로 판정 결과는 바뀌지 않고 표기 언어만 바뀐다.
   const resultCard = document.getElementById('resultCard');
@@ -1615,6 +1632,32 @@ function buildCountryDropdown() {
     ntg.appendChild(opt);
   });
   sel.appendChild(ntg);
+}
+
+// 소득세법 시행령 제4조 제3항은 개정을 거쳐 과세연도별로 거소 기준이 다르다.
+//   2014년 이전  : 2과세기간에 걸쳐 1년 이상
+//   2015~2017년  : 2과세기간에 걸쳐 183일 이상
+//   2018~2025년  : 1과세기간 동안 183일 이상
+//   2026년 이후  : 1과세기간 183일 이상 또는 2과세기간 연속 183일 이상
+function rule183Key(year) {
+  if (!year) return null;
+  if (year >= 2026) return 'rule183_2026';
+  if (year >= 2018) return 'rule183_2018';
+  return 'rule183_2015';
+}
+
+function renderRule183() {
+  const el = document.getElementById('rule183Note');
+  if (!el) return;
+  const year = parseInt(document.getElementById('taxYear').value, 10);
+  const key = rule183Key(year);
+  el.innerHTML = key ? `<strong>${year}</strong> · ${t('rule183_label')}<br>${t(key)}` : '';
+}
+
+function onYearChange() {
+  renderRule183();
+  // 대만 안내는 과세연도에 따라 달라지므로 국가 배지도 다시 그린다.
+  onCountryChange();
 }
 
 function onCountryChange() {
@@ -1902,7 +1945,7 @@ const PRECEDENTS = [
   { id:'2017두73686', country:'홍콩', r:'R', ty:5, f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
     summary:'홍콩 영구거주권자(가정주부). 배우자가 국내 기업 운영, 본인도 국내 법인 등기임원.',
     key:'「영주권=비거주자」 공식은 통하지 않음 — 실제 체류일수와 가족의 경제생활관계가 더 강한 기준.' },
-  { id:'2017두53705', country:'캐나다', r:'R', ty:4, f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2017두53705', country:'캐나다', r:'R', ty:5, f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 영주권자. 처·자녀는 캐나다 시민권자로 현지 거주하나 본인은 국내 체류가 더 많고 국내 법인 대표이사.',
     key:'「가족+영주권」만으로는 비거주자가 못 됨. 중대한 이해관계의 중심지는 「돈이 나오는 곳」.' },
   { id:'2018두35025', country:'미국', r:'R', ty:2, f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
