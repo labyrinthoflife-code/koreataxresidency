@@ -1645,6 +1645,52 @@ function setLang(lang) {
 // ====================================================
 //  DATA
 // ====================================================
+// 국가명 영문 표기. 드롭다운의 value는 한글 이름 그대로 두고(조약 판정 로직이 이를 쓴다)
+// 화면에 보일 때만 아래 표를 거친다.
+const COUNTRY_EN = {
+  '몽골':'Mongolia','중국':'China','일본':'Japan','홍콩':'Hong Kong','대만':'Taiwan',
+  '말레이시아':'Malaysia','필리핀':'Philippines','인도네시아':'Indonesia','베트남':'Vietnam',
+  '미얀마':'Myanmar','라오스':'Laos','태국':'Thailand','브루나이':'Brunei','싱가포르':'Singapore',
+  '캄보디아':'Cambodia','방글라데시':'Bangladesh','스리랑카':'Sri Lanka','파키스탄':'Pakistan',
+  '네팔':'Nepal','인도':'India','뉴질랜드':'New Zealand','호주':'Australia','피지':'Fiji',
+  '파푸아뉴기니':'Papua New Guinea','러시아':'Russia','우즈베키스탄':'Uzbekistan',
+  '카자흐스탄':'Kazakhstan','키르기즈':'Kyrgyzstan','타지키스탄':'Tajikistan',
+  '투르크메니스탄':'Turkmenistan','미국':'United States','캐나다':'Canada','브라질':'Brazil',
+  '멕시코':'Mexico','칠레':'Chile','베네수엘라':'Venezuela','파나마':'Panama','우루과이':'Uruguay',
+  '에콰도르':'Ecuador','페루':'Peru','콜롬비아':'Colombia','덴마크':'Denmark','벨기에':'Belgium',
+  '프랑스':'France','네덜란드':'Netherlands','스위스':'Switzerland','핀란드':'Finland',
+  '스웨덴':'Sweden','노르웨이':'Norway','룩셈부르크':'Luxembourg','오스트리아':'Austria',
+  '헝가리':'Hungary','아일랜드':'Ireland','폴란드':'Poland','이탈리아':'Italy','루마니아':'Romania',
+  '스페인':'Spain','불가리아':'Bulgaria','영국':'United Kingdom','포르투갈':'Portugal','몰타':'Malta',
+  '그리스':'Greece','우크라이나':'Ukraine','독일':'Germany','벨라루스':'Belarus',
+  '슬로바키아':'Slovakia','슬로베니아':'Slovenia','크로아티아':'Croatia','알바니아':'Albania',
+  '리투아니아':'Lithuania','아제르바이잔':'Azerbaijan','아이슬란드':'Iceland','라트비아':'Latvia',
+  '에스토니아':'Estonia','세르비아':'Serbia','조지아':'Georgia','체코':'Czechia','튀르키예':'Türkiye',
+  '안도라':'Andorra','이스라엘':'Israel','쿠웨이트':'Kuwait','요르단':'Jordan','오만':'Oman',
+  '사우디아라비아':'Saudi Arabia','카타르':'Qatar','이란':'Iran','바레인':'Bahrain',
+  '아랍에미리트':'United Arab Emirates','튀니지':'Tunisia','이집트':'Egypt',
+  '남아프리카공화국':'South Africa','모로코':'Morocco','알제리':'Algeria','가봉':'Gabon',
+  '케냐':'Kenya','에티오피아':'Ethiopia','르완다':'Rwanda',
+  // 미체결·비발효
+  '나이지리아':'Nigeria','수단':'Sudan','기타미체결':'Other',
+  // 판례 데이터에 쓰인 약칭·복합 표기
+  '사우디':'Saudi Arabia','대한민국':'Korea','케이만 군도':'Cayman Islands',
+  '케이만(미국·중국 주장)':'Cayman Is. (US / China asserted)',
+};
+
+// '미국·일본'처럼 여러 국가가 묶인 표기는 구분자 단위로 나누어 옮긴다.
+function cNameMulti(kr) {
+  if (currentLang !== 'en' || !kr) return kr;
+  if (COUNTRY_EN[kr]) return COUNTRY_EN[kr];
+  return kr.split('·').map(part => COUNTRY_EN[part.trim()] || part.trim()).join(' / ');
+}
+
+// 화면 표기용 국가명. 영문 표기가 없으면 원래 이름을 그대로 쓴다.
+function cName(kr) {
+  if (currentLang !== 'en') return kr;
+  return COUNTRY_EN[kr] || kr;
+}
+
 const TREATY_COUNTRIES = {
   '동북아시아': ['몽골', '중국', '일본', '홍콩', '대만'],
   '동남아시아': ['말레이시아', '필리핀', '인도네시아', '베트남', '미얀마', '라오스', '태국', '브루나이', '싱가포르', '캄보디아'],
@@ -1688,7 +1734,7 @@ function buildCountryDropdown() {
     countries.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c;
-      opt.textContent = c;
+      opt.textContent = cName(c);
       opt.setAttribute('data-treaty', '1');
       tg.appendChild(opt);
     });
@@ -1739,7 +1785,7 @@ function onCountryChange() {
   const badge = document.getElementById('treatyBadge');
   if (sel.value) {
     badge.innerHTML = hasTreaty
-      ? '<span class="treaty-badge badge-yes">' + t('treaty_yes_pre') + sel.value + t('treaty_yes_post') + '</span>'
+      ? '<span class="treaty-badge badge-yes">' + t('treaty_yes_pre') + cName(sel.value) + t('treaty_yes_post') + '</span>'
       : '<span class="treaty-badge badge-no">' + t('treaty_no') + '</span>';
     // 대만: 2023.12.27. 발효, 2024.1.1. 이후 발생 소득부터 적용
     const yr = parseInt(document.getElementById('taxYear').value, 10);
@@ -1798,7 +1844,7 @@ function showStep(n) {
   if (card) { card.classList.add('active'); }
   currentStep = n;
   if (n === 7) {
-    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || (currentLang === 'en' ? 'Selected Country' : '선택 국가');
+    document.getElementById('step7Country').textContent = cName(document.getElementById('foreignCountry').value) || (currentLang === 'en' ? 'Selected Country' : '선택 국가');
   }
   renderProgress(n);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1823,7 +1869,7 @@ function goNext(from) {
   }
   showStep(from + 1);
   if (from === 1) {
-    document.getElementById('step7Country').textContent = document.getElementById('foreignCountry').value || '선택 국가';
+    document.getElementById('step7Country').textContent = cName(document.getElementById('foreignCountry').value) || (currentLang === 'en' ? 'Selected Country' : '선택 국가');
   }
 }
 
@@ -2258,7 +2304,7 @@ function buildPrecedentHTML(d) {
           <span class="prec-rtag ${p.r}">${rtagText[p.r]}</span>
           <span class="prec-sim">${p.sim}${t('prec_sim_suffix')}</span>
         </div>
-        <div class="prec-summary"><strong>[${p.country}]</strong> ${currentLang === 'en' && p.summary_en ? p.summary_en : p.summary}</div>
+        <div class="prec-summary"><strong>[${cNameMulti(p.country)}]</strong> ${currentLang === 'en' && p.summary_en ? p.summary_en : p.summary}</div>
         <div class="prec-key"><strong>${t('prec_keypoint')}</strong> ${currentLang === 'en' && p.key_en ? p.key_en : p.key}</div>
         <div class="prec-tags"><span class="prec-type">${t('types')[p.ty - 1].n}</span>${precTags(p, p.hits)}</div>
       </div>
@@ -2542,7 +2588,7 @@ function runAssessment(opts) {
     rows.push({ k: t('concl_treaty'), v: t('concl_treaty_korea'), side: 'korea', at: treaty.decidedAt });
   } else if (treaty.side === 'foreign') {
     finalKey = 'concl_final_foreign';
-    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_foreign_pre') + d.country + t('concl_treaty_foreign_post'), side: 'foreign', at: treaty.decidedAt });
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_foreign_pre') + cName(d.country) + t('concl_treaty_foreign_post'), side: 'foreign', at: treaty.decidedAt });
   } else {
     finalKey = 'concl_final_unclear';
     rows.push({ k: t('concl_treaty'), v: t('concl_treaty_unclear'), side: '' });
@@ -2556,7 +2602,7 @@ function runAssessment(opts) {
           <div class="concl-k">${r.k}</div>
           <div class="concl-v ${r.side}">${r.v}${r.at ? `<span class="concl-at">${t('concl_decided_pre')}${r.at.num}${t('concl_decided_post')}</span>` : ''}</div>
         </div>`).join('')}
-      <div class="concl-final">${t(finalKey).replace('{country}', d.country).replace('{year}', d.taxYear)}${lawSide === 'unclear' ? `<div class="concl-caution">${t('concl_caution_law')}</div>` : ''}</div>
+      <div class="concl-final">${t(finalKey).replace('{country}', cName(d.country)).replace('{year}', d.taxYear)}${lawSide === 'unclear' ? `<div class="concl-caution">${t('concl_caution_law')}</div>` : ''}</div>
     </div>`;
 
   // ── 법적 근거 ──
@@ -2564,7 +2610,7 @@ function runAssessment(opts) {
 
   // ── RENDER ──
   document.getElementById('resultContent').innerHTML = `
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px;">${d.taxYear}${t('result_year_suffix')}${d.country}${t('result_head_suffix')}</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px;">${d.taxYear}${t('result_year_suffix')}${cName(d.country)}${t('result_head_suffix')}</div>
     <div class="card-title" style="margin-bottom:24px;">${t('result_title')}</div>
 
     <div class="verdict-box ${verdictClass}">
@@ -2619,7 +2665,7 @@ function runAssessment(opts) {
 function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
   // Only meaningful if there's a chance of being a resident
   if (domesticScore < -40) {
-    return { side: 'skip', decidedAt: null, html: `<div class="treaty-box"><div class="treaty-box-title">${t('treaty_title_pre')}${d.country}${t('treaty_title_post')}</div>
+    return { side: 'skip', decidedAt: null, html: `<div class="treaty-box"><div class="treaty-box-title">${t('treaty_title_pre')}${cName(d.country)}${t('treaty_title_post')}</div>
       <p style="font-size:13px;color:#6b7280;">${t('treaty_skip')}</p></div>` };
   }
 
@@ -2643,8 +2689,8 @@ function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
     steps.push({ num: 1, decisive: true, result: t('ts_foreign'), color: 'foreign',
       title: t('ts1_title'),
       detail: currentLang === 'en'
-        ? `There is a permanent home abroad and no permanent home in Korea → Determined as <strong>${d.country} resident</strong>.`
-        : `해외에 항구적 주거가 있고 국내에 항구적 주거가 없습니다 → <strong>${d.country} 거주자</strong>로 판정합니다.` });
+        ? `There is a permanent home abroad and no permanent home in Korea → Determined as <strong>${cName(d.country)} resident</strong>.`
+        : `해외에 항구적 주거가 있고 국내에 항구적 주거가 없습니다 → <strong>${cName(d.country)} 거주자</strong>로 판정합니다.` });
   } else if (krPermanent && (abrPermanent || abrUncertain)) {
     steps.push({ num: 1, decisive: false, result: t('ts_next2'),
       title: t('ts1_title'),
@@ -2666,14 +2712,14 @@ function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
   const finalText = treatySide === 'korea'
     ? t('treaty_final_korea')
     : treatySide === 'foreign'
-    ? t('treaty_final_foreign_pre') + d.country + t('treaty_final_foreign_post')
+    ? t('treaty_final_foreign_pre') + cName(d.country) + t('treaty_final_foreign_post')
     : t('treaty_final_unclear');
 
   const decisive = steps.filter(x => x.decisive).pop();
 
   return { side: treatySide, decidedAt: decisive ? { num: decisive.num, title: decisive.title } : null, html: `
     <div class="treaty-box">
-      <div class="treaty-box-title">${t('treaty_title_pre')}${d.country}${t('treaty_analysis_post')}</div>
+      <div class="treaty-box-title">${t('treaty_title_pre')}${cName(d.country)}${t('treaty_analysis_post')}</div>
       ${steps.map(s => `
         <div class="treaty-step">
           <div class="treaty-num ${s.decisive ? (s.color || '') : ''}">${s.num}</div>
@@ -2737,8 +2783,8 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
     steps.push({ num: 2, decisive: true, result: t('ts_foreign'), color: 'foreign',
       title: t('ts2_title'),
       detail: currentLang === 'en'
-        ? `Overseas connection index (${abrVI}) > Domestic connection index (${krVI}) — center of life (family, job, assets) is abroad → <strong>${d.country} resident</strong>.`
-        : `해외 연계도 지수(${abrVI}) > 국내 연계도 지수(${krVI}) — 가족·직업·자산 등 생활의 중심이 해외에 있습니다 → <strong>${d.country} 거주자</strong>.` });
+        ? `Overseas connection index (${abrVI}) > Domestic connection index (${krVI}) — center of life (family, job, assets) is abroad → <strong>${cName(d.country)} resident</strong>.`
+        : `해외 연계도 지수(${abrVI}) > 국내 연계도 지수(${krVI}) — 가족·직업·자산 등 생활의 중심이 해외에 있습니다 → <strong>${cName(d.country)} 거주자</strong>.` });
   } else {
     steps.push({ num: 2, decisive: false, result: t('ts_next3'),
       title: t('ts2_title'),
@@ -2759,8 +2805,8 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
       steps.push({ num: 3, decisive: true, result: t('ts_foreign'), color: 'foreign',
         title: t('ts3_title'),
         detail: currentLang === 'en'
-          ? `Days Abroad (${d.daysAbroad}) > Days in Korea (${d.daysInKorea}) → <strong>${d.country} is the habitual abode</strong>.`
-          : `해외 체류일수(${d.daysAbroad}일) > 국내 체류일수(${d.daysInKorea}일) → <strong>${d.country}이 일상적 거소</strong>.` });
+          ? `Days Abroad (${d.daysAbroad}) > Days in Korea (${d.daysInKorea}) → <strong>${cName(d.country)} is the habitual abode</strong>.`
+          : `해외 체류일수(${d.daysAbroad}일) > 국내 체류일수(${d.daysInKorea}일) → <strong>${cName(d.country)}이 일상적 거소</strong>.` });
     } else {
       steps.push({ num: 3, decisive: false, result: t('ts_next4'),
         title: t('ts3_title'),
@@ -2781,8 +2827,8 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
         steps.push({ num: 4, decisive: true, result: t('ts_foreign'), color: 'foreign',
           title: t('ts4_title'),
           detail: currentLang === 'en'
-            ? `Holds ${d.country} nationality → May be determined as <strong>${d.country} resident</strong>. Please check the specific treaty provisions.`
-            : `${d.country} 국적 보유 → <strong>${d.country} 거주자</strong>로 판정될 수 있습니다. 조약별 규정을 확인하세요.` });
+            ? `Holds ${cName(d.country)} nationality → May be determined as <strong>${cName(d.country)} resident</strong>. Please check the specific treaty provisions.`
+            : `${cName(d.country)} 국적 보유 → <strong>${cName(d.country)} 거주자</strong>로 판정될 수 있습니다. 조약별 규정을 확인하세요.` });
         steps.push({ num: 5, decisive: false, result: '', color: '',
           title: t('ts5_title'),
           detail: currentLang === 'en'
