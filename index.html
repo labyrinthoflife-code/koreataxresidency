@@ -231,6 +231,22 @@
     }
     .rule183-note:empty { display: none; }
 
+    /* ── CONCLUSION ── */
+    .concl-box { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-top: 18px; background: white; }
+    .concl-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 12px; }
+    .concl-row { display: flex; gap: 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px dashed #eef0f2; }
+    .concl-k { flex: 0 0 132px; font-size: 12px; color: #6b7280; }
+    .concl-v { font-size: 14px; font-weight: 700; color: #374151; }
+    .concl-v.korea { color: #4338ca; }
+    .concl-v.foreign { color: #b91c1c; }
+    .concl-at { font-size: 11px; font-weight: 500; color: #9ca3af; margin-left: 5px; }
+    .concl-final { font-size: 13px; line-height: 1.75; color: #374151; margin-top: 13px; padding: 12px 14px; background: #f8fafc; border-radius: 10px; }
+    .concl-caution { font-size: 12px; line-height: 1.7; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 9px 11px; margin-top: 10px; }
+    @media (max-width: 600px) {
+      .concl-row { flex-direction: column; gap: 2px; }
+      .concl-k { flex: none; }
+    }
+
     /* ── DISPUTE TYPE ── */
     .type-box { background: #f8fafc; border-radius: 14px; padding: 20px; margin-top: 22px; }
     .type-box-title { font-size: 14px; font-weight: 700; color: #374151; margin-bottom: 8px; }
@@ -494,7 +510,7 @@
             <div class="inp-wrap"><input type="number" id="landCount" min="0" value="0"><span class="unit" data-i18n="unit_parcels">필지</span></div>
           </div>
           <div class="fg" style="margin-bottom:0"><label data-i18n="value_label">합산 시가</label>
-            <div class="inp-wrap"><input type="number" id="landValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="landValue" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
       </div>
@@ -508,7 +524,7 @@
             <div class="inp-wrap"><input type="number" id="houseCount" min="0" value="0"><span class="unit" data-i18n="unit_units">채</span></div>
           </div>
           <div class="fg" style="margin-bottom:12px"><label data-i18n="value_label">합산 시가</label>
-            <div class="inp-wrap"><input type="number" id="houseValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="houseValue" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
         <div class="fg" style="margin-bottom:0"><label data-i18n="rent_label">임대 여부</label>
@@ -529,7 +545,7 @@
             <div class="inp-wrap"><input type="number" id="shopCount" min="0" value="0"><span class="unit" data-i18n="unit_units2">개</span></div>
           </div>
           <div class="fg" style="margin-bottom:12px"><label data-i18n="value_label">합산 시가</label>
-            <div class="inp-wrap"><input type="number" id="shopValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="shopValue" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
         <div class="fg" style="margin-bottom:0"><label data-i18n="rent_label">임대 여부</label>
@@ -546,7 +562,7 @@
       <div class="asset-body">
         <div class="asset-row single">
           <div class="fg" style="margin-bottom:0"><label data-i18n="value_label">합산 시가</label>
-            <div class="inp-wrap"><input type="number" id="otherREValue" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="otherREValue" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
       </div>
@@ -559,7 +575,7 @@
       <div class="asset-body">
         <div class="asset-row single">
           <div class="fg" style="margin-bottom:12px"><label data-i18n="stock_value_label">시가 합산</label>
-            <div class="inp-wrap"><input type="number" id="listedStockVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="listedStockVal" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
         <div class="fg" style="margin-bottom:0"><label data-i18n="listed_major_label">대주주 해당 여부</label>
@@ -577,7 +593,7 @@
       <div class="asset-body">
         <div class="asset-row single">
           <div class="fg" style="margin-bottom:12px"><label data-i18n="stock_value_label">시가 합산</label>
-            <div class="inp-wrap"><input type="number" id="unlistedStockVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="unlistedStockVal" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
         <div class="fg" style="margin-bottom:0"><label data-i18n="unlisted_major_label">최대주주 해당 여부</label>
@@ -594,10 +610,10 @@
       <div class="asset-body">
         <div class="asset-row">
           <div class="fg" style="margin-bottom:0"><label data-i18n="deposit_label">예금·적금·금융자산</label>
-            <div class="inp-wrap"><input type="number" id="depositVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="depositVal" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
           <div class="fg" style="margin-bottom:0"><label data-i18n="other_asset_label">기타 자산</label>
-            <div class="inp-wrap"><input type="number" id="otherAssetVal" min="0" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="otherAssetVal" value="0" oninput="calcDomTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
       </div>
@@ -697,7 +713,8 @@
       <div class="grid-2">
         <div class="fg"><label data-i18n="position_label">직위·역할</label><input type="text" id="krPosition" data-i18n-ph="kr_position_ph" placeholder="예) 대표이사, 팀장, 이사"></div>
         <div class="fg"><label data-i18n="kr_income_label">연간 급여·소득 (대략)</label>
-          <div class="inp-wrap"><input type="number" id="krIncome" min="0" placeholder="0"><span class="unit" data-i18n="unit_money">만원</span></div>
+          <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="krIncome" placeholder="0"><span class="unit" data-i18n="unit_money">만원</span></div>
+          <div class="help" data-i18n="kr_income_help">세전 기준으로 입력하세요.</div>
         </div>
       </div>
       <div class="fg" style="margin-bottom:0"><label data-i18n="workmode_label">실제 근무 형태</label>
@@ -737,6 +754,10 @@
       <div class="grid-2">
         <div class="fg"><label data-i18n="industry_label">업종</label><input type="text" id="abrIndustry" data-i18n-ph="abr_industry_ph" placeholder="예) 건설, 금융, 스포츠"></div>
         <div class="fg"><label data-i18n="position_label">직위·역할</label><input type="text" id="abrPosition" data-i18n-ph="abr_position_ph" placeholder="예) PM, Director, 선수"></div>
+      </div>
+      <div class="fg"><label data-i18n="abr_income_label">연간 급여·소득 (대략)</label>
+        <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="abrIncome" placeholder="0"><span class="unit" data-i18n="unit_money">만원</span></div>
+        <div class="help" data-i18n="abr_income_help">원화 환산 기준으로 입력하세요. 국내·해외 소득의 크기 비교는 「중대한 이해관계의 중심지」 판단의 핵심 근거입니다.</div>
       </div>
       <div class="fg" style="margin-bottom:0"><label data-i18n="workdur_label">해당 연도 근무 기간</label>
         <div class="btn-group">
@@ -804,7 +825,7 @@
       <div class="asset-body">
         <div class="asset-row">
           <div class="fg" style="margin-bottom:0"><label data-i18n="abr_value_label">합산 시가 (원화 환산)</label>
-            <div class="inp-wrap"><input type="number" id="abrREVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="abrREVal" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
           <div class="fg" style="margin-bottom:0"><label data-i18n="abr_re_res_label">주거용 포함 여부</label>
             <div class="btn-group" style="margin-top:6px;">
@@ -821,7 +842,7 @@
       <div class="asset-body">
         <div class="asset-row">
           <div class="fg" style="margin-bottom:0"><label data-i18n="abr_value_label">시가 합산 (원화 환산)</label>
-            <div class="inp-wrap"><input type="number" id="abrStockVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="abrStockVal" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
           <div class="fg" style="margin-bottom:0"><label data-i18n="abr_stock_pct_label">최대 지분율</label>
             <div class="inp-wrap"><input type="number" id="abrStockPct" min="0" max="100" value="0" step="0.01"><span class="unit">%</span></div>
@@ -835,10 +856,10 @@
       <div class="asset-body">
         <div class="asset-row">
           <div class="fg" style="margin-bottom:0"><label data-i18n="deposit_label">예금·금융자산</label>
-            <div class="inp-wrap"><input type="number" id="abrDepositVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="abrDepositVal" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
           <div class="fg" style="margin-bottom:0"><label data-i18n="other_asset_label">기타 자산</label>
-            <div class="inp-wrap"><input type="number" id="abrOtherVal" min="0" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
+            <div class="inp-wrap"><input type="text" inputmode="numeric" data-money id="abrOtherVal" value="0" oninput="calcAbrTotal()"><span class="unit" data-i18n="unit_money">만원</span></div>
           </div>
         </div>
       </div>
@@ -1039,6 +1060,9 @@ const LANG = {
     position_label: '직위·역할',
     kr_position_ph: '예) 대표이사, 팀장, 이사',
     kr_income_label: '연간 급여·소득 (대략)',
+    kr_income_help: '세전 기준으로 입력하세요.',
+    abr_income_label: '연간 급여·소득 (대략)',
+    abr_income_help: '원화 환산 기준으로 입력하세요. 국내·해외 소득의 크기 비교는 「중대한 이해관계의 중심지」 판단의 핵심 근거입니다.',
     workmode_label: '실제 근무 형태',
     kwm_full: '상시 출근',
     kwm_remote: '원격 근무',
@@ -1082,9 +1106,31 @@ const LANG = {
     abr_total_sub: '원화 환산 기준',
     // Result
     result_year_suffix: '년 귀속 · ',
+    result_head_suffix: ' 거주자 여부',
     result_title: '판정 결과',
     result_confidence: '판정 신뢰도',
     result_factors_title: '📋 판정 요소별 분석',
+    concl_title: '📌 최종 결론',
+    concl_law: '소득세법상 판정',
+    concl_law_r: '거주자',
+    concl_law_unclear: '판단 불명확',
+    concl_law_nr: '비거주자',
+    concl_treaty: '조세조약 Tie-Breaker',
+    concl_treaty_none: '미체결국 — 적용 없음',
+    concl_treaty_skip: '소득세법상 비거주자로 판단되어 적용 불필요',
+    concl_treaty_korea: '한국 거주자',
+    concl_treaty_foreign_pre: '',
+    concl_treaty_foreign_post: ' 거주자',
+    concl_treaty_unclear: '판단 불명확',
+    concl_decided_pre: ' (',
+    concl_decided_post: '단계에서 결정)',
+    concl_final_korea: '<strong>{year}년 귀속 소득에 대해 한국이 전세계 소득 과세권을 가집니다.</strong> 국외 소득을 포함해 종합소득세 신고 의무가 있으며, 외국에서 납부한 세액은 외국납부세액공제로 조정합니다.',
+    concl_final_foreign: '<strong>{year}년 귀속 소득에 대해 한국의 전세계 소득 과세권이 제한됩니다.</strong> 조약상 {country} 거주자로 보아, 한국은 국내원천소득에 대해서만 과세할 수 있습니다. 다만 이는 조약 적용을 전제로 하므로 거주자증명서 등 입증자료가 필요합니다.',
+    concl_final_unclear: '<strong>조약상 거주지국이 확정되지 않습니다.</strong> 항구적 주거·중대한 이해관계·일상적 거소 어느 단계에서도 우열이 뚜렷하지 않은 상태이므로, 실제 신고 전에 전문가 검토가 반드시 필요합니다.',
+    concl_final_r_notreaty: '<strong>{year}년 귀속 소득에 대해 한국이 전세계 소득 과세권을 가집니다.</strong> 조세조약 미체결국이므로 Tie-Breaker로 이를 제한할 수 없고, 이중과세는 외국납부세액공제로만 조정됩니다.',
+    concl_final_nr_notreaty: '<strong>한국은 국내원천소득에 대해서만 과세합니다.</strong> 비거주자에 해당하므로 국외 소득에 대한 한국의 과세권은 없습니다.',
+    concl_final_unclear_law: '<strong>소득세법상 거주자 여부가 확정되지 않습니다.</strong> 조세조약 미체결국이어서 Tie-Breaker로 보정할 수도 없으므로, 생활관계를 뒷받침하는 자료를 갖추어 전문가 검토를 받으시기 바랍니다.',
+    concl_caution_law: '⚠ 소득세법 단계에서 거주자·비거주자 요소가 팽팽해 결론이 갈릴 수 있습니다. 위 조약 결과는 소득세법상 거주자로 인정되는 경우를 전제로 한 것이므로, 실제 신고 전 전문가 검토가 필요합니다.',
     result_legal_title: '적용 법령 및 판례',
     result_disclaimer: '⚠️ <strong>주의사항</strong>: 본 진단은 입력 정보를 바탕으로 한 참고용 판단입니다. 거주자·비거주자 판정은 개별 사실관계에 따라 달라질 수 있으며, 과세당국이나 법원의 최종 판단은 다를 수 있습니다. 구체적인 세금 문제는 반드시 세무사·세무변호사와 상담하시기 바랍니다.',
     // Precedents
@@ -1337,6 +1383,9 @@ const LANG = {
     position_label: 'Position / Role',
     kr_position_ph: 'e.g. CEO, Team Lead, Director',
     kr_income_label: 'Annual Salary / Income (approx.)',
+    kr_income_help: 'Enter the pre-tax amount.',
+    abr_income_label: 'Annual Salary / Income (approx.)',
+    abr_income_help: 'Enter the KRW-converted amount. Comparing domestic and overseas income is central to locating the centre of vital interests.',
     workmode_label: 'Actual Work Style',
     kwm_full: 'Regular On-site',
     kwm_remote: 'Remote Work',
@@ -1380,9 +1429,31 @@ const LANG = {
     abr_total_sub: 'KRW equivalent',
     // Result
     result_year_suffix: ' Tax Year · ',
+    result_head_suffix: ' Residency',
     result_title: 'Assessment Result',
     result_confidence: 'Confidence',
     result_factors_title: '📋 Factor Analysis',
+    concl_title: '📌 Conclusion',
+    concl_law: 'Under the Income Tax Act',
+    concl_law_r: 'Resident',
+    concl_law_unclear: 'Inconclusive',
+    concl_law_nr: 'Non-resident',
+    concl_treaty: 'Treaty tie-breaker',
+    concl_treaty_none: 'No treaty — not applicable',
+    concl_treaty_skip: 'Not needed; non-resident under the Income Tax Act',
+    concl_treaty_korea: 'Resident of Korea',
+    concl_treaty_foreign_pre: 'Resident of ',
+    concl_treaty_foreign_post: '',
+    concl_treaty_unclear: 'Inconclusive',
+    concl_decided_pre: ' (decided at stage ',
+    concl_decided_post: ')',
+    concl_final_korea: '<strong>Korea has the right to tax your worldwide income for {year}.</strong> You must file a global income tax return including foreign-source income; tax paid abroad is relieved through the foreign tax credit.',
+    concl_final_foreign: '<strong>Korea\'s right to tax your worldwide income for {year} is limited.</strong> Treated as a treaty resident of {country}, Korea may tax Korean-source income only. This depends on the treaty being applied, so supporting evidence such as a certificate of residence is required.',
+    concl_final_unclear: '<strong>The treaty state of residence is not settled.</strong> No stage — permanent home, centre of vital interests, or habitual abode — shows a clear edge, so professional review is essential before filing.',
+    concl_final_r_notreaty: '<strong>Korea has the right to tax your worldwide income for {year}.</strong> With no treaty in force there is no tie-breaker to limit this, and double taxation is relieved only through the foreign tax credit.',
+    concl_final_nr_notreaty: '<strong>Korea taxes Korean-source income only.</strong> As a non-resident, Korea has no taxing right over your foreign-source income.',
+    concl_final_unclear_law: '<strong>Residency under the Income Tax Act is not settled.</strong> With no treaty in force there is no tie-breaker to resolve it either, so gather evidence of your pattern of life and seek professional review.',
+    concl_caution_law: '⚠ Resident and non-resident factors are closely balanced under the Income Tax Act, so the outcome could go either way. The treaty result above assumes you are found resident under the Act, so professional review is needed before filing.',
     result_legal_title: 'Applicable Laws & Precedents',
     result_disclaimer: '⚠️ <strong>Disclaimer</strong>: This assessment is for reference purposes only based on your input. The determination may vary depending on individual facts, and the final determination by tax authorities or courts may differ. Please consult a tax accountant or tax attorney for specific tax matters.',
     // Precedents
@@ -1598,6 +1669,7 @@ const TOTAL_STEPS_NO_TREATY = 6;
 // ====================================================
 (function init() {
   buildCountryDropdown();
+  initMoneyInputs();
   renderProgress(1);
 })();
 
@@ -1786,7 +1858,38 @@ function toggleAbrJobDetail() {
 // ====================================================
 //  TOTALS
 // ====================================================
-function getNum(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+function getNum(id) {
+  const raw = document.getElementById(id)?.value;
+  if (raw == null) return 0;
+  return parseFloat(String(raw).replace(/,/g, '')) || 0;
+}
+
+// ── 금액 입력의 세 자리 콤마 ──
+// type="number"는 콤마를 담을 수 없어 data-money 입력은 text로 두고 직접 포맷한다.
+function commify(digits) {
+  return digits ? Number(digits).toLocaleString('en-US') : '';
+}
+
+function formatMoneyInput(el) {
+  const before = el.value;
+  const caretFromEnd = before.length - (el.selectionStart ?? before.length);
+  const digits = before.replace(/[^0-9]/g, '').replace(/^0+(?=\d)/, '');
+  const next = commify(digits);
+  if (next !== before) {
+    el.value = next;
+    // 콤마가 늘거나 줄어도 커서가 같은 자리에 남도록 뒤에서부터 위치를 복원한다.
+    const pos = Math.max(0, next.length - caretFromEnd);
+    try { el.setSelectionRange(pos, pos); } catch (e) { /* 일부 브라우저 미지원 */ }
+  }
+}
+
+function initMoneyInputs() {
+  document.querySelectorAll('input[data-money]').forEach(el => {
+    formatMoneyInput(el);
+    el.addEventListener('input', () => formatMoneyInput(el));
+    el.addEventListener('blur', () => { if (!el.value) el.value = ''; });
+  });
+}
 
 function calcDomTotal() {
   const total = getNum('landValue') + getNum('houseValue') + getNum('shopValue') +
@@ -1857,6 +1960,8 @@ function collectData() {
     krWorkMode: document.querySelector('input[name="krWorkMode"]:checked')?.value || 'full',
     abrJob: document.querySelector('input[name="abrJob"]:checked')?.value || 'none',
     abrWorkDur: document.querySelector('input[name="abrWorkDur"]:checked')?.value || 'full',
+    krIncome: getNum('krIncome'),
+    abrIncome: getNum('abrIncome'),
     // Treaty-specific
     daysAbroad: parseInt(document.getElementById('daysAbroad').value) || 0,
     abrHousing: document.querySelector('input[name="abrHousing"]:checked')?.value || 'none',
@@ -2405,16 +2510,61 @@ function runAssessment(opts) {
 
   // ── 조세조약 Tie-Breaker ──
   let treatyHTML = '';
+  let treaty = null;
   if (d.hasTreaty) {
-    treatyHTML = buildTreatyHTML(d, score, hasKrFamily, hasForeignStatus);
+    treaty = buildTreatyHTML(d, score, hasKrFamily, hasForeignStatus);
+    treatyHTML = treaty.html;
   }
+
+  // ── 최종 결론 ──
+  // 소득세법 판정과 조세조약 Tie-Breaker 결과를 한 줄씩 제시하고, 둘을 합한
+  // 실제 과세 결론까지 명시한다. (조약 결과가 소득세법 판정을 뒤집을 수 있다)
+  // 위 판정 배지와 같은 임계값을 쓴다 (거주자 30↑ / 비거주자 -30↓ / 그 사이는 불명확)
+  const lawSide = score >= 30 ? 'r' : (score < -30 ? 'nr' : 'unclear');
+  const rows = [];
+  rows.push({
+    k: t('concl_law'),
+    v: lawSide === 'r' ? t('concl_law_r') : lawSide === 'nr' ? t('concl_law_nr') : t('concl_law_unclear'),
+    side: lawSide === 'r' ? 'korea' : lawSide === 'nr' ? 'foreign' : '',
+  });
+
+  let finalKey;
+  if (!d.hasTreaty) {
+    finalKey = lawSide === 'nr' ? 'concl_final_nr_notreaty'
+             : lawSide === 'r' ? 'concl_final_r_notreaty'
+             : 'concl_final_unclear_law';
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_none'), side: '' });
+  } else if (treaty.side === 'skip') {
+    finalKey = 'concl_final_nr_notreaty';
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_skip'), side: '' });
+  } else if (treaty.side === 'korea') {
+    finalKey = 'concl_final_korea';
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_korea'), side: 'korea', at: treaty.decidedAt });
+  } else if (treaty.side === 'foreign') {
+    finalKey = 'concl_final_foreign';
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_foreign_pre') + d.country + t('concl_treaty_foreign_post'), side: 'foreign', at: treaty.decidedAt });
+  } else {
+    finalKey = 'concl_final_unclear';
+    rows.push({ k: t('concl_treaty'), v: t('concl_treaty_unclear'), side: '' });
+  }
+
+  const conclusionHTML = `
+    <div class="concl-box">
+      <div class="concl-title">${t('concl_title')}</div>
+      ${rows.map(r => `
+        <div class="concl-row">
+          <div class="concl-k">${r.k}</div>
+          <div class="concl-v ${r.side}">${r.v}${r.at ? `<span class="concl-at">${t('concl_decided_pre')}${r.at.num}${t('concl_decided_post')}</span>` : ''}</div>
+        </div>`).join('')}
+      <div class="concl-final">${t(finalKey).replace('{country}', d.country).replace('{year}', d.taxYear)}${lawSide === 'unclear' ? `<div class="concl-caution">${t('concl_caution_law')}</div>` : ''}</div>
+    </div>`;
 
   // ── 법적 근거 ──
   const bases = [...legalBasis].filter(Boolean);
 
   // ── RENDER ──
   document.getElementById('resultContent').innerHTML = `
-    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px;">${d.taxYear}${t('result_year_suffix')}${d.country}</div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:6px;">${d.taxYear}${t('result_year_suffix')}${d.country}${t('result_head_suffix')}</div>
     <div class="card-title" style="margin-bottom:24px;">${t('result_title')}</div>
 
     <div class="verdict-box ${verdictClass}">
@@ -2427,6 +2577,8 @@ function runAssessment(opts) {
         <div class="conf-bar"><div class="conf-fill" style="width:${confidence}%"></div></div>
       </div>
     </div>
+
+    ${conclusionHTML}
 
     ${buildTypeHTML(d)}
 
@@ -2467,8 +2619,8 @@ function runAssessment(opts) {
 function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
   // Only meaningful if there's a chance of being a resident
   if (domesticScore < -40) {
-    return `<div class="treaty-box"><div class="treaty-box-title">${t('treaty_title_pre')}${d.country}${t('treaty_title_post')}</div>
-      <p style="font-size:13px;color:#6b7280;">${t('treaty_skip')}</p></div>`;
+    return { side: 'skip', decidedAt: null, html: `<div class="treaty-box"><div class="treaty-box-title">${t('treaty_title_pre')}${d.country}${t('treaty_title_post')}</div>
+      <p style="font-size:13px;color:#6b7280;">${t('treaty_skip')}</p></div>` };
   }
 
   const krPermanent = d.houseCount > 0; // 국내 항구적 주거 (주택 보유)
@@ -2517,7 +2669,9 @@ function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
     ? t('treaty_final_foreign_pre') + d.country + t('treaty_final_foreign_post')
     : t('treaty_final_unclear');
 
-  return `
+  const decisive = steps.filter(x => x.decisive).pop();
+
+  return { side: treatySide, decidedAt: decisive ? { num: decisive.num, title: decisive.title } : null, html: `
     <div class="treaty-box">
       <div class="treaty-box-title">${t('treaty_title_pre')}${d.country}${t('treaty_analysis_post')}</div>
       ${steps.map(s => `
@@ -2532,7 +2686,7 @@ function buildTreatyHTML(d, domesticScore, hasKrFamily, hasForeignStatus) {
       <div class="treaty-verdict ${treatySide !== 'unclear' ? (treatySide === 'korea' ? 'korea' : 'foreign') : ''}">
         ${finalText}
       </div>
-    </div>`;
+    </div>` };
 }
 
 function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
@@ -2558,6 +2712,13 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
   if (d.abrTotal >= 50000) abrVI += 3;
   else if (d.abrTotal >= 10000) abrVI += 2;
   else if (d.abrTotal > 0) abrVI += 1;
+
+  // 소득 — 중대한 이해관계의 중심지는 '돈이 나오는 곳'으로 판단된다 (대법 2017두53705 등)
+  if (d.krIncome > 0 || d.abrIncome > 0) {
+    if (d.krIncome > d.abrIncome * 1.5) krVI += 2;
+    else if (d.abrIncome > d.krIncome * 1.5) abrVI += 2;
+    else { krVI += 1; abrVI += 1; }
+  }
 
   let side = null;
   const fsWord = d.foreignStatus === 'citizenship'
@@ -2639,6 +2800,7 @@ function analyzeVitalInterests(d, steps, hasKrFamily, hasForeignStatus) {
 function restart() {
   document.querySelectorAll('input[type="number"]').forEach(el => el.value = '0');
   document.querySelectorAll('input[type="text"]').forEach(el => el.value = '');
+  document.querySelectorAll('input[data-money]').forEach(el => el.value = '0');
   document.getElementById('taxYear').value = '';
   document.getElementById('foreignCountry').value = '';
   document.getElementById('krOrgType').value = '';
