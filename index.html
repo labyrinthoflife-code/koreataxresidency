@@ -231,6 +231,25 @@
     }
     .rule183-note:empty { display: none; }
 
+    /* ── DAY-COUNT RULE ── */
+    .daysrule-box { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-top: 18px; background: white; }
+    .daysrule-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px; }
+    .daysrule-sub { font-size: 12px; color: #6b7280; line-height: 1.65; margin-bottom: 12px; }
+    .daysrule-row { display: flex; gap: 12px; align-items: baseline; padding: 8px 10px; border-radius: 8px; }
+    .daysrule-row.on { background: #eef2ff; }
+    .daysrule-y { flex: 0 0 116px; font-size: 12px; font-weight: 700; color: #6b7280; }
+    .daysrule-row.on .daysrule-y { color: #4338ca; }
+    .daysrule-d { font-size: 12.5px; color: #4b5563; line-height: 1.65; }
+    .daysrule-row.on .daysrule-d { color: #374151; font-weight: 600; }
+    .daysrule-badge {
+      display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700;
+      color: white; background: #6366f1; border-radius: 5px; padding: 1px 6px; vertical-align: 1px;
+    }
+    @media (max-width: 600px) {
+      .daysrule-row { flex-direction: column; gap: 3px; }
+      .daysrule-y { flex: none; }
+    }
+
     /* ── CONCLUSION ── */
     .concl-box { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-top: 18px; background: white; }
     .concl-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 12px; }
@@ -376,7 +395,8 @@
       <label class="req" data-i18n="taxYear_label">진단 대상 과세연도</label>
       <select id="taxYear" onchange="onYearChange()">
         <option value="" data-i18n-opt="taxYear_placeholder">-- 연도를 선택하세요 --</option>
-        <option value="2025">2025</option><option value="2024">2024</option>
+        <option value="2026">2026</option><option value="2025">2025</option>
+        <option value="2024">2024</option>
         <option value="2023">2023</option><option value="2022">2022</option>
         <option value="2021">2021</option><option value="2020">2020</option>
         <option value="2019">2019</option><option value="2018">2018</option>
@@ -408,7 +428,7 @@
 
     <div class="rule183-note" id="rule183Note"></div>
     <div class="info-box" data-i18n-html="info_183">
-      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).
+      📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).<br><br>다만, 국내에 거소를 둔 자가 외국에 출국하는 경우 그 출국목적이 <strong>단기 관광, 질병의 치료, 친족 경조사 참석, 출장·연수 등 사업의 경영 또는 업무와 관련된 사유</strong> 등 명백하게 일시적인 것으로 인정되는 때에는 <strong>그 출국한 기간도 국내에 거소를 둔 기간</strong>으로 봅니다 (시행령 §4②).
     </div>
 
     <div class="fg">
@@ -420,14 +440,15 @@
     </div>
 
     <div class="fg">
-      <label data-i18n="stayReason_label">특이 체류 사유 (해당 시 선택)</label>
-      <div class="btn-group">
+      <label data-i18n="stayReason_label">일시적 출국 사유 (해당 시 선택)</label>
+      <div class="btn-group" style="flex-wrap:wrap;">
         <div class="btn-radio"><input type="radio" name="stayReason" id="sr0" value="none" checked><label for="sr0" data-i18n="sr_none">해당 없음</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr1" value="medical"><label for="sr1" data-i18n="sr_medical">🏥 질병 치료</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr2" value="sports"><label for="sr2" data-i18n="sr_sports">⚽ 국가대표</label></div>
-        <div class="btn-radio"><input type="radio" name="stayReason" id="sr3" value="other"><label for="sr3" data-i18n="sr_other">기타 일시적</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr1" value="tourism"><label for="sr1" data-i18n="sr_tourism">✈️ 단기 관광</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr2" value="medical"><label for="sr2" data-i18n="sr_medical">🏥 질병 치료</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr3" value="family"><label for="sr3" data-i18n="sr_family">👪 친족 경조사</label></div>
+        <div class="btn-radio"><input type="radio" name="stayReason" id="sr4" value="business"><label for="sr4" data-i18n="sr_business">💼 사업·업무 출장</label></div>
       </div>
-      <div class="help" data-i18n="stayReason_help">질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.</div>
+      <div class="help" data-i18n="stayReason_help">국내 체류일수에는 실제로 국내에 있던 일수를 입력하세요. 위 사유로 일시 출국한 기간이 있다면 해당 사유를 선택해 주세요 — 시행령 §4②에 따라 그 출국 기간도 국내 거소 기간에 포함되는 것으로 보아 판정에 반영합니다.</div>
     </div>
 
     <div class="nav-buttons">
@@ -924,19 +945,30 @@ const LANG = {
     step2_title: '국내 체류일수',
     step2_desc: '해당 과세연도 동안 국내에 실제 체류한 일수를 입력해주세요.',
     rule183_label: '선택한 과세연도의 거소 기준',
-    rule183_2026: '<strong>2026년 이후</strong> — 1과세기간 동안 183일 이상 <strong>또는</strong> 2과세기간에 걸쳐 계속하여 183일 이상이면 거주자 요건을 충족합니다.',
-    rule183_2018: '<strong>2018~2025년</strong> — 1과세기간(해당 연도) 동안 183일 이상이면 거소 요건을 충족합니다.',
-    rule183_2015: '<strong>2015~2017년</strong> — 이 시기에는 <strong>2과세기간에 걸쳐</strong> 183일 이상이어야 거소 요건을 충족했습니다. 해당 연도 하나만으로는 판단할 수 없으므로, 직전·직후 연도의 체류일수도 함께 확인하세요.',
-    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).',
+    rule183_2026: '<strong>2026년</strong> — 국내에 183일 이상 거소를 둔 것으로 보는 경우는 ① 국내에 거소를 둔 기간이 1과세기간 동안 183일 이상인 경우, <strong>또는</strong> ② 2과세기간에 걸쳐 계속하여 183일 이상인 경우입니다.',
+    rule183_2018: '<strong>2018~2025년</strong> — 1과세기간 동안 183일 이상인 경우',
+    rule183_2015: '<strong>2015~2017년</strong> — 2과세기간에 걸쳐 183일 이상인 경우. 해당 연도 하나만으로는 판단할 수 없으므로 직전·직후 연도의 체류일수도 함께 확인하세요.',
+    rule183_2014: '<strong>2014년 이전</strong> — 2과세기간에 걸쳐 1년 이상인 경우',
+    daysrule_title: '📅 적용되는 체류일수 판단기준',
+    daysrule_sub: '소득세법 시행령 제4조 제3항은 개정을 거쳐 과세연도마다 기준이 다릅니다. 선택하신 과세연도에 적용되는 기준은 다음과 같습니다.',
+    daysrule_applied: '적용',
+    daysrule_rows: [
+      ['2026년', '① 1과세기간 동안 183일 이상, 또는 ② 2과세기간에 걸쳐 계속하여 183일 이상'],
+      ['2018~2025년', '1과세기간 동안 183일 이상'],
+      ['2015~2017년', '2과세기간에 걸쳐 183일 이상'],
+      ['2014년 이전', '2과세기간에 걸쳐 1년 이상'],
+    ],
+    info_183: '📌 <strong>183일 기준</strong>: 국내에 183일 이상 거소를 둔 개인은 거주자로 봅니다 (소득세법 §1의2①2호). 거소를 둔 기간은 <strong>입국한 날의 다음 날부터 출국한 날까지</strong>로 계산합니다 (시행령 §4①).<br><br>다만, 국내에 거소를 둔 자가 외국에 출국하는 경우 그 출국목적이 <strong>단기 관광, 질병의 치료, 친족 경조사 참석, 출장·연수 등 사업의 경영 또는 업무와 관련된 사유</strong> 등 명백하게 일시적인 것으로 인정되는 때에는 <strong>그 출국한 기간도 국내에 거소를 둔 기간</strong>으로 봅니다 (시행령 §4②).',
     days_label: '국내 체류일수',
     unit_days: '일',
     unit_persons: '명',
-    stayReason_label: '특이 체류 사유 (해당 시 선택)',
+    stayReason_label: '일시적 출국 사유 (해당 시 선택)',
     sr_none: '해당 없음',
+    sr_tourism: '✈️ 단기 관광',
     sr_medical: '🏥 질병 치료',
-    sr_sports: '⚽ 국가대표',
-    sr_other: '기타 일시적',
-    stayReason_help: '질병 치료(조심2023서9615)·국가대표 활동(대법 2018두60847) 등 불가피한 일시적 체류는 실질 생활 근거지와 무관하게 판단될 수 있습니다.',
+    sr_family: '👪 친족 경조사',
+    sr_business: '💼 사업·업무 출장',
+    stayReason_help: '국내 체류일수에는 실제로 국내에 있던 일수를 입력하세요. 위 사유로 일시 출국한 기간이 있다면 해당 사유를 선택해 주세요 — 시행령 §4②에 따라 그 출국 기간도 국내 거소 기간에 포함되는 것으로 보아 판정에 반영합니다.',
     // Step 3
     step3_title: '가족 현황',
     step3_desc: '생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.',
@@ -1247,19 +1279,30 @@ const LANG = {
     step2_title: 'Days in Korea',
     step2_desc: 'Enter the actual number of days you stayed in Korea during the tax year.',
     rule183_label: 'Residence test for the selected tax year',
-    rule183_2026: '<strong>2026 onward</strong> — 183+ days within one tax period, <strong>or</strong> 183+ continuous days spanning two tax periods.',
-    rule183_2018: '<strong>2018–2025</strong> — 183+ days within the single tax year satisfies the test.',
-    rule183_2015: '<strong>2015–2017</strong> — in this period the test required 183+ days <strong>spanning two tax periods</strong>. A single year alone is not decisive, so check the days for the adjacent years as well.',
-    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). The period of residence is counted <strong>from the day after entry through the day of departure</strong> (Decree §4①).',
+    rule183_2026: '<strong>2026</strong> — you are treated as having a place of residence in Korea for 183+ days where ① the period of residence is 183+ days within one tax period, <strong>or</strong> ② 183+ continuous days spanning two tax periods.',
+    rule183_2018: '<strong>2018–2025</strong> — 183+ days within one tax period',
+    rule183_2015: '<strong>2015–2017</strong> — 183+ days spanning two tax periods. A single year alone is not decisive, so check the days for the adjacent years as well.',
+    rule183_2014: '<strong>2014 and earlier</strong> — one year or more spanning two tax periods',
+    daysrule_title: '📅 Day-count test applied',
+    daysrule_sub: 'Enforcement Decree art. 4(3) has been amended over time, so the test differs by tax year. The test applied to the year you selected is shown below.',
+    daysrule_applied: 'Applied',
+    daysrule_rows: [
+      ['2026', '① 183+ days within one tax period, or ② 183+ continuous days spanning two tax periods'],
+      ['2018–2025', '183+ days within one tax period'],
+      ['2015–2017', '183+ days spanning two tax periods'],
+      ['2014 and earlier', 'One year or more spanning two tax periods'],
+    ],
+    info_183: '📌 <strong>183-Day Rule</strong>: An individual who has a place of residence in Korea for 183 or more days is considered a resident (Income Tax Act §1-2①2). The period of residence is counted <strong>from the day after entry through the day of departure</strong> (Decree §4①).<br><br>However, where a person with a place of residence in Korea travels abroad and the purpose is clearly temporary — <strong>short-term tourism, medical treatment, attending a family wedding or funeral, or business travel and training related to running a business or to work</strong> — <strong>that period abroad also counts as a period of residence in Korea</strong> (Decree §4②).',
     days_label: 'Days in Korea',
     unit_days: 'days',
     unit_persons: 'persons',
-    stayReason_label: 'Special Stay Reason (if applicable)',
+    stayReason_label: 'Reason for temporary departure (if applicable)',
     sr_none: 'None',
-    sr_medical: '🏥 Medical Treatment',
-    sr_sports: '⚽ National Athlete',
-    sr_other: 'Other Temporary',
-    stayReason_help: 'Stays for unavoidable reasons such as medical treatment (조심2023서9615) or national team activities (대법 2018두60847) may be assessed independently of the actual base of life.',
+    sr_tourism: '✈️ Short-term tourism',
+    sr_medical: '🏥 Medical treatment',
+    sr_family: '👪 Family wedding / funeral',
+    sr_business: '💼 Business travel / training',
+    stayReason_help: 'Enter the days you were actually in Korea. If you left the country temporarily for one of these reasons, select it — under Decree §4② that period abroad also counts as a period of residence in Korea, and the assessment reflects it.',
     // Step 3
     step3_title: 'Family Status',
     step3_desc: 'The residence of family members sharing a livelihood is the most important factor in determining resident status. A spouse and children living in Korea strongly support resident determination.',
@@ -1781,7 +1824,30 @@ function rule183Key(year) {
   if (!year) return null;
   if (year >= 2026) return 'rule183_2026';
   if (year >= 2018) return 'rule183_2018';
-  return 'rule183_2015';
+  if (year >= 2015) return 'rule183_2015';
+  return 'rule183_2014';
+}
+
+// 결과 화면에 실을 연도별 기준표. 선택한 과세연도의 행을 표시해 둔다.
+function daysRuleIndex(year) {
+  if (year >= 2026) return 0;
+  if (year >= 2018) return 1;
+  if (year >= 2015) return 2;
+  return 3;
+}
+
+function buildDaysRuleHTML(d) {
+  const rows = t('daysrule_rows');
+  const hit = daysRuleIndex(parseInt(d.taxYear, 10));
+  return `<div class="daysrule-box">
+    <div class="daysrule-title">${t('daysrule_title')}</div>
+    <p class="daysrule-sub">${t('daysrule_sub')}</p>
+    ${rows.map((r, i) => `
+      <div class="daysrule-row${i === hit ? ' on' : ''}">
+        <div class="daysrule-y">${r[0]}${i === hit ? `<span class="daysrule-badge">${t('daysrule_applied')}</span>` : ''}</div>
+        <div class="daysrule-d">${r[1]}</div>
+      </div>`).join('')}
+  </div>`;
 }
 
 function renderRule183() {
@@ -2424,19 +2490,25 @@ function runAssessment(opts) {
       en ? `${d.daysInKorea} days in Korea in ${d.taxYear} — meets the 183-day residency threshold.`
          : `${d.taxYear}년 국내 체류일수 ${d.daysInKorea}일 — 거소 기준(183일)을 충족하여 거주자 요건에 해당합니다.`,
       '소득세법 제1조의2 제1항 제2호', 60);
-    if (d.stayReason === 'medical') {
-      add('warning', '⚠️',
-        en ? 'Includes Medical Treatment Stay' : '질병 치료 목적 체류 포함',
-        en ? 'The Tax Tribunal (조심2023서9615) ruled that a stay for medical treatment does not constitute establishing a base of life, and recognized non-resident status despite exceeding 183 days.'
-           : '조세심판원(조심2023서9615)에서는 질병 치료 목적의 체류는 생활 근거지를 형성한 것으로 보기 어렵다고 판단하여 183일 초과 체류에도 불구하고 비거주자로 인정한 사례가 있습니다.',
-        '조심2023서9615', -12);
-    }
-    if (d.stayReason === 'sports') {
-      add('warning', '⚠️',
-        en ? 'Includes National Athlete Stay' : '국가대표 활동 체류 포함',
-        en ? 'The Supreme Court (2018두60847) ruled that temporary returns to Korea for national team activities are unrelated to establishing a domestic base of life.'
-           : '대법원(2018두60847)은 국가대표 활동으로 인한 일시적 귀국은 국내 생활 근거지 형성과 무관하다고 보았습니다.',
-        '대법원 2018두60847', -10);
+  }
+
+  // ── 일시적 출국 (시행령 §4②) ──
+  // 국내에 거소를 둔 사람이 단기 관광·질병 치료·친족 경조사·사업상 출장 등
+  // 명백히 일시적인 목적으로 출국한 기간은 국내 거소 기간에 포함된다.
+  if (d.stayReason !== 'none') {
+    const SR = {
+      tourism:  { ko: '단기 관광',        en: 'short-term tourism' },
+      medical:  { ko: '질병 치료',        en: 'medical treatment' },
+      family:   { ko: '친족 경조사 참석', en: 'attending a family wedding or funeral' },
+      business: { ko: '사업·업무 관련 출장·연수', en: 'business travel or training related to work' },
+    };
+    const r = SR[d.stayReason];
+    if (r) {
+      add('positive', '🛫',
+        en ? 'Temporary Departure Counts as Domestic Residence' : '일시적 출국 기간도 국내 거소에 산입',
+        en ? `The departure was for ${r.en}, a clearly temporary purpose, so that period abroad also counts as a period of residence in Korea. The effective day count is therefore longer than the days entered.`
+           : `출국 목적이 ${r.ko}로 명백히 일시적인 경우에 해당하여, 그 출국 기간도 국내에 거소를 둔 기간으로 봅니다. 따라서 실제 산입되는 거소 기간은 입력하신 체류일수보다 길어집니다.`,
+        '소득세법 시행령 제4조 제2항', 8);
     }
   }
 
@@ -2707,6 +2779,8 @@ function runAssessment(opts) {
     </div>
 
     ${conclusionHTML}
+
+    ${buildDaysRuleHTML(d)}
 
     ${buildTypeHTML(d)}
 
