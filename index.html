@@ -231,6 +231,11 @@
     }
     .rule183-note:empty { display: none; }
 
+    .note-4-4 {
+      font-size: 12px; line-height: 1.7; color: #4b5563; background: #f8fafc;
+      border-left: 3px solid #cbd5e1; border-radius: 0 8px 8px 0; padding: 9px 12px; margin-top: 9px;
+    }
+
     /* ── DAY-COUNT RULE ── */
     .daysrule-box { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-top: 18px; background: white; }
     .daysrule-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px; }
@@ -449,6 +454,7 @@
         <div class="btn-radio"><input type="radio" name="stayReason" id="sr4" value="business"><label for="sr4" data-i18n="sr_business">💼 사업·업무 출장</label></div>
       </div>
       <div class="help" data-i18n="stayReason_help">국내 체류일수에는 실제로 국내에 있던 일수를 입력하세요. 위 사유로 일시 출국한 기간이 있다면 해당 사유를 선택해 주세요 — 시행령 §4②에 따라 그 출국 기간도 국내 거소 기간에 포함되는 것으로 보아 판정에 반영합니다.</div>
+      <div class="note-4-4" data-i18n-html="stayReason_note44">재외동포의 경우 단기 관광, 질병의 치료, 병역의무의 이행 등의 사유로 입국하는 경우 그 입국한 기간이 명백하게 일시적인 것임을 입증하는 한 해당 국내 체류 기간은 국내 거소를 둔 것으로 보지 않습니다 (소득세법 시행령 제4조 제4항).</div>
     </div>
 
     <div class="nav-buttons">
@@ -969,6 +975,7 @@ const LANG = {
     sr_family: '👪 친족 경조사',
     sr_business: '💼 사업·업무 출장',
     stayReason_help: '국내 체류일수에는 실제로 국내에 있던 일수를 입력하세요. 위 사유로 일시 출국한 기간이 있다면 해당 사유를 선택해 주세요 — 시행령 §4②에 따라 그 출국 기간도 국내 거소 기간에 포함되는 것으로 보아 판정에 반영합니다.',
+    stayReason_note44: '재외동포의 경우 단기 관광, 질병의 치료, 병역의무의 이행 등의 사유로 입국하는 경우 그 입국한 기간이 명백하게 일시적인 것임을 입증하는 한 해당 국내 체류 기간은 국내 거소를 둔 것으로 보지 않습니다 (소득세법 시행령 제4조 제4항).',
     // Step 3
     step3_title: '가족 현황',
     step3_desc: '생계를 같이하는 가족의 거주지는 판례에서 가장 중요한 거주자 판단 요소로 작용합니다. 배우자·자녀의 국내 거주는 강력한 거주자 판단 근거입니다.',
@@ -1303,6 +1310,7 @@ const LANG = {
     sr_family: '👪 Family wedding / funeral',
     sr_business: '💼 Business travel / training',
     stayReason_help: 'Enter the days you were actually in Korea. If you left the country temporarily for one of these reasons, select it — under Decree §4② that period abroad also counts as a period of residence in Korea, and the assessment reflects it.',
+    stayReason_note44: 'For an overseas Korean national, where entry into Korea is for reasons such as short-term tourism, medical treatment or performing military service, that period of stay in Korea is not treated as a period of residence, provided the entry is shown to have been clearly temporary (Enforcement Decree of the Income Tax Act art. 4(4)).',
     // Step 3
     step3_title: 'Family Status',
     step3_desc: 'The residence of family members sharing a livelihood is the most important factor in determining resident status. A spouse and children living in Korea strongly support resident determination.',
