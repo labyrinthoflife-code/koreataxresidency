@@ -995,6 +995,7 @@ const LANG = {
     ps_korea: '🇰🇷 국내',
     ps_abroad: '✈️ 해외',
     // Dropdown groups
+    popular_group: '⭐ 자주 조회하는 조세조약',
     treaty_group: '조세조약 체결국',
     non_treaty_group: '조세조약 미체결국',
     // Progress labels
@@ -1361,6 +1362,7 @@ const LANG = {
     ps_korea: '🇰🇷 Korea',
     ps_abroad: '✈️ Abroad',
     // Dropdown groups
+    popular_group: '⭐ Most viewed treaties',
     treaty_group: 'Tax Treaty Countries',
     non_treaty_group: 'Non-Treaty Countries',
     // Progress labels
@@ -1734,8 +1736,9 @@ function applyLang() {
   // Rebuild country dropdown preserving selection
   const sel = document.getElementById('foreignCountry');
   const prev = sel.value;
-  // Remove all but first option
-  while (sel.options.length > 1) sel.remove(1);
+  // 첫 번째 안내 옵션만 남기고 비운다. sel.remove()는 option만 지우고 optgroup 껍데기를
+  // 남기므로, 그대로 두면 언어를 바꿀 때마다 이전 언어의 그룹 제목이 쌓인다.
+  while (sel.lastChild && sel.children.length > 1) sel.removeChild(sel.lastChild);
   buildCountryDropdown();
   sel.value = prev;
   onCountryChange();
@@ -1831,6 +1834,15 @@ function cName(kr) {
   return COUNTRY_EN[kr] || kr;
 }
 
+// 조회 빈도가 높은 조약국. 드롭다운 맨 위에 따로 묶어 먼저 보여준다.
+// 아래 대륙별 목록에도 그대로 남아 있으므로 어느 쪽으로 찾아도 선택된다.
+const POPULAR_COUNTRIES = [
+  '미국', '중국', '일본', '영국',
+  '독일', '네덜란드', '베트남', '싱가포르',
+  '인도', '인도네시아', '프랑스', '스위스',
+  '홍콩',
+];
+
 const TREATY_COUNTRIES = {
   '동북아시아': ['몽골', '중국', '일본', '홍콩', '대만'],
   '동남아시아': ['말레이시아', '필리핀', '인도네시아', '베트남', '미얀마', '라오스', '태국', '브루나이', '싱가포르', '캄보디아'],
@@ -1863,6 +1875,17 @@ function buildCountryDropdown() {
   const sel = document.getElementById('foreignCountry');
   const regions = t('regions');
   const nonTreatyOpts = t('non_treaty_opts');
+
+  const pg = document.createElement('optgroup');
+  pg.label = t('popular_group');
+  POPULAR_COUNTRIES.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = cName(c);
+    opt.setAttribute('data-treaty', '1');
+    pg.appendChild(opt);
+  });
+  sel.appendChild(pg);
 
   const tg = document.createElement('optgroup');
   tg.label = t('treaty_group');
