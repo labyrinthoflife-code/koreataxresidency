@@ -236,6 +236,22 @@
       border-left: 3px solid #cbd5e1; border-radius: 0 8px 8px 0; padding: 9px 12px; margin-top: 9px;
     }
 
+    /* ── PRECEDENT KEYWORDS ── */
+    .kw-row { margin-top: 10px; padding-top: 9px; border-top: 1px dashed #e5e7eb; display: grid; gap: 6px; }
+    .kw-line { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+    .kw-lab { font-size: 10px; font-weight: 700; color: #9ca3af; letter-spacing: .02em; margin-right: 2px; }
+    .kw {
+      font-size: 11px; color: #4b5563; background: #f1f3f5;
+      border: 1px solid transparent; border-radius: 6px; padding: 2px 8px;
+    }
+    .kw.kw-basis { color: #6d28d9; background: #f5f3ff; }
+    .kw.on { color: #166534; background: #dcfce7; border-color: #86efac; font-weight: 600; }
+    .prec-tr { font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 8px; }
+    .prec-tr.tr-W { color: #166534; background: #dcfce7; }
+    .prec-tr.tr-L { color: #991b1b; background: #fee2e2; }
+    .prec-tr.tr-P { color: #92400e; background: #fef3c7; }
+    .prec-type.cross { opacity: .65; }
+
     /* ── DAY-COUNT RULE ── */
     .daysrule-box { border: 1px solid #e5e7eb; border-radius: 14px; padding: 18px 20px; margin-top: 18px; background: white; }
     .daysrule-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px; }
@@ -1174,6 +1190,44 @@ const LANG = {
     prec_sim_suffix: '% 유사',
     prec_keypoint: '▸ 키포인트',
     prec_same_country: '같은 국가',
+    // ── 판례 키워드 (부록1 기반 8개 축) ──
+    kw_title: '사실관계 키워드',
+    kw_basis_title: '판단 층위',
+    kw_match: '내 상황과 일치',
+    tr_W: '납세자 승',
+    tr_L: '납세자 패',
+    tr_P: '납세자 일부 승',
+    basis_labels: {
+      'B-DOM': '소득세법 단독', 'B-TB1': '조약 1단계 항구적 주거',
+      'B-TB2': '조약 2단계 이해관계 중심지', 'B-TB3': '조약 3단계 일상적 거소',
+      'B-EXC': '거소 기간 산정 예외', 'B-SUB': '실질과세 원칙',
+    },
+    kw_labels: {
+      'F-STAY': '배우자·자녀 국내 상주', 'F-MOVE': '가족 전원 해외 이주',
+      'F-PART': '가족 일부만 국내', 'F-SHIFT': '가족 이동 = 전환 시점',
+      'F-MARRY': '결혼으로 새 세대 형성', 'F-ADULT': '성년 자녀의 경제적 의존',
+      'S-SHORT': '단기 체류에도 거주자', 'S-LONG': '장기 체류에도 비거주자',
+      'S-SUM2': '2과세기간 합산 183일', 'S-ILL': '질병 치료 입국 제외',
+      'S-TEMP': '제사·명절 등 일시 방문',
+      'A-REMIT': '해외 소득 국내 송금', 'A-CONC': '국내 자산 압도적 집중',
+      'A-RENT': '임대사업자 등록·신고', 'A-NONE': '해외에 자산 없음',
+      'A-MAINT': '송금이 기존 관계 유지 수준',
+      'P-PR': '영주권·시민권 취득', 'P-REG': '주민등록 유지·말소',
+      'P-EMIG': '해외이주신고', 'P-BENE': '거주자 전용 공제 수령',
+      'P-VISA': '현지 체류허가·재외국민등록', 'P-CERT': '현지국 거주자증명서',
+      'C-CEO': '국내 법인 직접 경영', 'C-REMOTE': '이메일·보고서 원격 경영',
+      'C-INDIR': '비등기 회장 등 간접 관여', 'C-PAPER': '페이퍼컴퍼니·조세피난처',
+      'C-DEPEND': '해외 법인의 한국 종속성', 'C-SCALE': '해외 사업의 압도적 실체',
+      'C-OFFICE': '국내 집무실이 의사결정 장소', 'C-SPORT': '프로스포츠 선수',
+      'E-ADMIT': '본인의 자발적 진술·자인', 'E-TRACE': '카드·건강보험·진료 흔적',
+      'E-DESIGN': '전문가 자문에 의한 외관 형성', 'E-CONTRACT': "계약서상 '비거주자' 기재",
+      'E-MED': '객관적 진료기록',
+      'Z-DONEE': '수증자 거주자성 독립 판단', 'Z-1H1H': '1세대 1주택 비과세',
+      'Z-RETURN': '영구귀국일 vs 실질 생활관계', 'Z-COUPLE': '부부 연동 판정',
+      'Z-WHT': '완납적 원천징수', 'Z-PENAL': '부정무신고가산세 40%',
+      'Z-LEAD': '리딩케이스', 'Z-PAIR': '정반대 결론 비교 사례',
+    },
+
     // Dispute types (책 3장·5장 5가지 유형)
     type_box_title: '🧭 분쟁 유형 분류',
     type_intro: '입력하신 상황을 책에서 정리한 5가지 분쟁 유형과 대조했습니다. 유형 분류는 참고용이며 위 판정 결과에는 영향을 주지 않습니다.',
@@ -1502,6 +1556,44 @@ const LANG = {
     prec_sim_suffix: '% match',
     prec_keypoint: '▸ Key Point',
     prec_same_country: 'Same Country',
+    // ── Precedent keywords ──
+    kw_title: 'Fact keywords',
+    kw_basis_title: 'Basis of decision',
+    kw_match: 'Matches your situation',
+    tr_W: 'Taxpayer won',
+    tr_L: 'Taxpayer lost',
+    tr_P: 'Taxpayer partly won',
+    basis_labels: {
+      'B-DOM': 'Income Tax Act alone', 'B-TB1': 'Treaty stage 1 — permanent home',
+      'B-TB2': 'Treaty stage 2 — centre of vital interests', 'B-TB3': 'Treaty stage 3 — habitual abode',
+      'B-EXC': 'Exception to the abode count', 'B-SUB': 'Substance-over-form',
+    },
+    kw_labels: {
+      'F-STAY': 'Spouse / children living in Korea', 'F-MOVE': 'Whole family relocated abroad',
+      'F-PART': 'Only part of the family in Korea', 'F-SHIFT': "Family's move marks the switch",
+      'F-MARRY': 'Marriage formed a new household', 'F-ADULT': 'Adult child financially dependent',
+      'S-SHORT': 'Resident despite a short stay', 'S-LONG': 'Non-resident despite a long stay',
+      'S-SUM2': '183 days across two tax periods', 'S-ILL': 'Entry for treatment excluded',
+      'S-TEMP': 'Visits for rites and holidays',
+      'A-REMIT': 'Foreign income remitted to Korea', 'A-CONC': 'Assets concentrated in Korea',
+      'A-RENT': 'Registered rental business', 'A-NONE': 'No assets abroad',
+      'A-MAINT': 'Remittance only maintained existing ties',
+      'P-PR': 'Permanent residency / citizenship', 'P-REG': 'Resident registration kept or cancelled',
+      'P-EMIG': 'Emigration report', 'P-BENE': 'Claimed resident-only deductions',
+      'P-VISA': 'Local residence permit / registration', 'P-CERT': 'Certificate of residence',
+      'C-CEO': 'Directly ran a Korean company', 'C-REMOTE': 'Managed remotely by email',
+      'C-INDIR': 'Indirect involvement as unregistered chairman', 'C-PAPER': 'Paper company / tax haven',
+      'C-DEPEND': 'Offshore entity dependent on Korea', 'C-SCALE': 'Overwhelming overseas substance',
+      'C-OFFICE': 'Decisions made from a Korean office', 'C-SPORT': 'Professional athlete',
+      'E-ADMIT': 'Own statement admitted against them', 'E-TRACE': 'Card, insurance and medical traces',
+      'E-DESIGN': 'Appearance engineered on advice', 'E-CONTRACT': "Contract labelled 'non-resident'",
+      'E-MED': 'Objective medical records',
+      'Z-DONEE': "Donee's residency judged separately", 'Z-1H1H': 'One-house exemption',
+      'Z-RETURN': 'Stated return date vs actual life', 'Z-COUPLE': 'Judged with the spouse',
+      'Z-WHT': 'Final withholding', 'Z-PENAL': '40% penalty for fraudulent non-filing',
+      'Z-LEAD': 'Leading case', 'Z-PAIR': 'Directly opposite outcome',
+    },
+
     // Dispute types
     type_box_title: '🧭 Dispute Type',
     type_intro: 'Your situation was matched against the five dispute types identified in the book. This classification is informational and does not affect the determination above.',
@@ -2097,157 +2189,157 @@ function collectData() {
 //  f.foreign: Y(외국적·영주권) N(한국적)
 // ====================================================
 const PRECEDENTS = [
-  { id:'2018두60847', country:'일본', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+  { id:'2018두60847', country:'일본', r:'N', ty:1, tr:'W', basis:['B-TB1','B-TB2'], tags:['F-PART','S-TEMP','C-SPORT','Z-LEAD'], f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
     summary:'일본 J리그 프로축구선수. 배우자·자녀가 일본 구단 제공 주거에서 함께 생활하고, 국내 체류는 국가대표 활동 등 일시적이었음.',
     summary_en:'Professional footballer in Japan\'s J-League. His spouse and children lived with him in housing provided by the club, and his stays in Korea were temporary — national team duty and the like.',
     key:'항구적 주거는 소유·임차 불문 「계속 거주 가능성」으로 판단 — 가족과 함께 산 구단 숙소도 인정. 국가대표 일시 입국은 국내 거주 근거가 아님.',
     key_en:'A permanent home turns on whether continued residence was available, not on ownership or lease — club housing the family lived in together qualified. Temporary entry for national team duty is not a basis for residence in Korea.' },
-  { id:'2019두59400', country:'미국', r:'N', ty:2, f:{days:'L',fam:'A',job:'A',asset:'L',foreign:'Y'},
+  { id:'2019두59400', country:'미국', r:'N', ty:2, tr:'W', basis:['B-DOM'], tags:['Z-DONEE','P-PR','P-REG','F-MOVE'], f:{days:'L',fam:'A',job:'A',asset:'L',foreign:'Y'},
     summary:'어린 시절 미국 이주 후 학업·취업·결혼으로 미국에 생활기반을 형성한 자녀(수증자)의 거주자 여부.',
     summary_en:'Whether children who emigrated to the US young and built their lives there through study, work and marriage — the donees — were residents.',
     key:'부모의 학비 지원·주민등록 유지는 거주자 판정을 좌우하지 않음. 실질적 생활근거지가 어디인지로 판단.',
     key_en:'Parental tuition support and a maintained resident registration do not decide residency. What governs is where the substantive base of life lies.' },
-  { id:'2019두52935', country:'카타르', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
-    summary:'카타르 건설법인 총괄관리자로 상시 근무. 국내 생계 가족 없이 연 37일 정도만 제사·명절로 입국.',
-    summary_en:'Full-time general manager of a construction company in Qatar. No dependent family in Korea; entered only about 37 days a year for ancestral rites and holidays.',
+  { id:'2019두52935', country:'카타르', r:'N', ty:1, tr:'W', basis:['B-TB1','B-TB2'], tags:['F-PART','S-TEMP','A-MAINT','C-SCALE'], f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
+    summary:'카타르 건설법인 총괄관리자로 14년 이상 상시 근무. 처·딸·차남 등 친족이 국내에 있었으나 연 37일 정도만 제사·명절로 입국.',
+    summary_en:'General manager of a construction company in Qatar for over 14 years. His wife, daughter and second son were in Korea, yet he entered only about 37 days a year for ancestral rites and holidays.',
     key:'국내에 부동산·친족이 있어 소득세법상 거주자라도, 조약상 「중대한 이해관계의 중심지」가 카타르면 비거주자로 역전.',
     key_en:'Even where property and relatives make someone a resident under the Income Tax Act, the outcome reverses to non-resident if the treaty\'s centre of vital interests is Qatar.' },
-  { id:'2018두128', country:'미국', r:'N', ty:2, f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
+  { id:'2018두128', country:'미국', r:'N', ty:2, tr:'W', basis:['B-TB1'], tags:['P-PR','P-REG','F-MOVE','S-LONG','C-CEO','A-CONC'], f:{days:'L',fam:'A',job:'A',asset:'M',foreign:'N'},
     summary:'1992년 가족 전원 미국 이주, 미국에 항구적 주거 형성. BVI·홍콩 페이퍼컴퍼니 운영(이중거주자).',
     summary_en:'The whole family emigrated to the US in 1992 and established a permanent home there. Operated BVI and Hong Kong paper companies (dual resident).',
     key:'조약상 항구적 주거 = 「가족과 함께 거주하는 장소」. 가족 전원이 미국에 살면 미국 거주자 → 한국 국외원천소득 과세권 소멸.',
     key_en:'A treaty permanent home is where the family lives together. With the whole family in the US he was a US resident, extinguishing Korea\'s right to tax foreign-source income.' },
-  { id:'2018두54798', country:'미국', r:'N', ty:2, f:{days:'L',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두54798', country:'미국', r:'N', ty:2, tr:'W', basis:['B-TB1','B-TB2','B-TB3'], tags:['P-PR','F-STAY','C-INDIR','S-TEMP'], tyx:['4'], f:{days:'L',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'미국 영주권자(국내 비등재 회장). 본인은 과세연도에 전혀 입국하지 않았고 배우자는 국내 거주 중 사망.',
     summary_en:'US permanent resident, unregistered chairman of a Korean company. He did not enter Korea at all during the tax year; his spouse died while living in Korea.',
     key:'배우자가 국내에 있어도 본인이 전혀 귀국하지 않으면 「일상적 거소」에서 조약상 거주자가 역전될 수 있음.',
     key_en:'Even with a spouse in Korea, treaty residency can reverse at the habitual abode stage if the person never returns.' },
-  { id:'2015두52050', country:'미국', r:'N', ty:5, f:{days:'M',fam:'A',job:'X',asset:'L',foreign:'Y'},
+  { id:'2015두52050', country:'미국', r:'N', ty:5, tr:'W', basis:['B-DOM'], tags:['F-MOVE','P-PR','S-SUM2','Z-WHT'], f:{days:'M',fam:'A',job:'X',asset:'L',foreign:'Y'},
     summary:'미국 영주권자. 배우자·자녀 모두 미국 거주, 국내엔 매출 없는 법인 등기이사 직위뿐, 부동산도 양도 완료.',
     summary_en:'US permanent resident. Spouse and children all lived in the US; in Korea he held only a registered directorship of a company with no revenue, and his real estate had already been sold.',
     key:'국내에 생계 가족·실질 자산이 없고 명목상 직위뿐이면 183일 부근 체류여도 비거주자.',
     key_en:'With no dependent family or real assets in Korea and only a nominal title, even a stay near 183 days leaves you a non-resident.' },
-  { id:'2017두59352', country:'인도네시아', r:'N', ty:1, f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
+  { id:'2017두59352', country:'인도네시아', r:'N', ty:1, tr:'W', basis:['B-DOM'], tags:['F-PART','C-SCALE','P-VISA'], f:{days:'L',fam:'X',job:'A',asset:'M',foreign:'N'},
     summary:'인도네시아 대규모 현지공장 대표이사. 처·딸은 국내, 아들은 현지 동거, 연 39일만 국내 체류.',
     summary_en:'Representative director of a large local plant in Indonesia. Wife and daughter in Korea, son living with him locally; only 39 days a year in Korea.',
     key:'부양가족 일부가 국내에 있어도 본인이 국내에 주소·1년 이상 거소를 두지 않았다면 비거주자.',
     key_en:'Even with some dependants in Korea, you are a non-resident if you had neither a domicile nor an abode of one year or more in Korea.' },
-  { id:'2022두33279', country:'호주', r:'N', ty:5, f:{days:'M',fam:'A',job:'K',asset:'M',foreign:'Y'},
+  { id:'2022두33279', country:'호주', r:'N', ty:5, tr:'L', basis:['B-DOM','B-TB1','B-TB2'], tags:['Z-1H1H','Z-PAIR','S-SUM2','P-PR'], f:{days:'M',fam:'A',job:'K',asset:'M',foreign:'Y'},
     summary:'호주 시민권자. 국내 다가구주택을 임대만 하고 실거주하지 않으며, 생계 가족도 국내에 없음.',
     summary_en:'Australian citizen. Rented out a multi-unit house in Korea without living in it, and had no dependent family there.',
     key:'주민등록이 유지되고 2과세기간 합산 거소(183일)를 충족해도, 실거주·생계가족이 없으면 조약 tie-breaker에서 비거주자.',
     key_en:'Even with resident registration maintained and 183 days met across two tax periods, the absence of actual residence and dependent family makes you a non-resident under the treaty tie-breaker.' },
-  { id:'2021두53054', country:'인도네시아', r:'N', ty:4, f:{days:'M',fam:'X',job:'A',asset:'H',foreign:'N'},
+  { id:'2021두53054', country:'인도네시아', r:'N', ty:4, tr:'W', basis:['B-TB1','B-TB2','B-TB3'], tags:['C-SCALE','P-VISA','P-CERT','F-STAY','A-CONC'], f:{days:'M',fam:'X',job:'A',asset:'H',foreign:'N'},
     summary:'인도네시아 코린도그룹 회장. 부인·모친은 국내 상주, 본인은 자카르타 거주(국내 자산 약 338억).',
     summary_en:'Chairman of the Korindo Group in Indonesia. His wife and mother lived in Korea while he lived in Jakarta (Korean assets of about 33.8 billion won).',
     key:'양국 항구적 주거 → 중대한 이해관계 단정 불가 → 「일상적 거소」(인니 체류가 더 김)가 최종 결정. Tie-Breaker 3단계가 모두 작동한 사례.',
     key_en:'Permanent homes in both states, centre of vital interests inconclusive, then habitual abode — longer stays in Indonesia — decided it. All three tie-breaker stages operated.' },
-  { id:'조심2023부3227', country:'인도네시아', r:'N', ty:1, f:{days:'L',fam:'A',job:'A',asset:'H',foreign:'N'},
+  { id:'조심2023부3227', country:'인도네시아', r:'N', ty:1, tr:'W', basis:['B-DOM','B-TB2'], tags:['F-MARRY','F-SHIFT','F-MOVE'], f:{days:'L',fam:'A',job:'A',asset:'H',foreign:'N'},
     summary:'배우자의 인니 근무로 이주한 전업주부. 가족 전원 자카르타 거주, 국내 비상장법인 60% 지분 보유.',
     summary_en:'Homemaker who relocated for her spouse\'s posting in Indonesia. The whole family lived in Jakarta; she held a 60% stake in an unlisted Korean company.',
     key:'주민등록이 유지되어 있어도 가족 전원이 해외에 살고 국내 생계 가족이 없으면 비거주자일 수 있음.',
     key_en:'Even with resident registration maintained, you may be a non-resident where the whole family lives abroad and no dependent family remains in Korea.' },
-  { id:'조심2023서9615', country:'뉴질랜드', r:'N', ty:2, f:{days:'H',fam:'A',job:'A',asset:'M',foreign:'Y'},
+  { id:'조심2023서9615', country:'뉴질랜드', r:'N', ty:2, tr:'W', basis:['B-EXC'], tags:['P-PR','S-LONG','S-ILL','E-MED','P-BENE','C-CEO'], f:{days:'H',fam:'A',job:'A',asset:'M',foreign:'Y'},
     summary:'뉴질랜드 영주권자. 배우자 폐종양 치료로 18개월 연속 국내 체류하며 파생상품 거래.',
     summary_en:'New Zealand permanent resident. Stayed in Korea for 18 consecutive months for his spouse\'s lung tumour treatment while trading derivatives.',
     key:'183일을 명백히 초과해도 질병 치료 목적 체류는 거소 기간에서 제외 — 183일 룰의 중대한 예외.',
     key_en:'Even well beyond 183 days, a stay for medical treatment is excluded from the abode count — a major exception to the 183-day rule.' },
-  { id:'2017두50928', country:'중국', r:'M', ty:1, f:{days:'M',fam:'X',job:'A',asset:'M',foreign:'N'},
+  { id:'2017두50928', country:'중국', r:'M', ty:1, tr:'P', basis:['B-DOM'], tags:['F-SHIFT','F-MOVE','P-VISA'], f:{days:'M',fam:'X',job:'A',asset:'M',foreign:'N'},
     summary:'홍콩·중국법인 대표. 2008~2010년은 처·자 중국 거주(비거주자), 2011년 처 귀국·국내 사업 개시(거주자).',
     summary_en:'Head of Hong Kong and Chinese companies. In 2008-2010 his wife and children lived in China (non-resident); in 2011 his wife returned and he began business in Korea (resident).',
     key:'같은 사람도 연도별로 거주자성이 달라짐 — 가족 귀국·국내 사업 개시 시점이 분기점.',
     key_en:'The same person\'s residency can differ year by year — the family\'s return and the start of domestic business were the turning point.' },
-  { id:'서울고법 2022누38108', country:'러시아', r:'R', ty:1, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'서울고법 2022누38108', country:'러시아', r:'R', ty:1, tr:'P', basis:['B-TB1','B-TB2'], tags:['F-STAY','A-REMIT','A-RENT','A-NONE','C-SPORT'], f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'러시아 프로축구선수. 본인은 연 6~66일 체류지만 배우자·자녀·부모가 국내 상주, 국내 임대업 운영.',
     summary_en:'Professional footballer in Russia. He stayed only 6-66 days a year, but his spouse, children and parents lived in Korea and he ran a rental business there.',
     key:'본인이 해외에서 활동해도 배우자·자녀가 국내에 상주하고 소득을 국내에 투자하면 거주자 판정이 거의 뒤집히지 않음.',
     key_en:'Even while working abroad, residency is very hard to overturn where the spouse and children live in Korea and income is invested there.' },
-  { id:'2020두48567', country:'중국', r:'R', ty:1, f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
+  { id:'2020두48567', country:'중국', r:'R', ty:1, tr:'L', basis:['B-TB1','B-TB2'], tags:['F-STAY','A-REMIT','C-SPORT','E-CONTRACT'], f:{days:'L',fam:'K',job:'A',asset:'H',foreign:'N'},
     summary:'중국 프로축구선수. 본인 국내 148일이나 배우자·자녀가 국내 대부분 거주, 국내 전세·건물 취득.',
     summary_en:'Professional footballer in China. He spent 148 days in Korea, but his spouse and children lived there most of the year and he acquired a jeonse lease and a building.',
     key:'본인 체류일수가 해외보다 적어도 배우자·자녀가 국내에 상주하면 「생계를 같이하는 가족」으로 거주자.',
     key_en:'Even with fewer days than abroad, a spouse and children living in Korea count as dependent family and make you a resident.' },
-  { id:'2018두65903', country:'사우디·영국', r:'R', ty:1, f:{days:'M',fam:'K',job:'A',asset:'H',foreign:'N'},
+  { id:'2018두65903', country:'사우디·영국', r:'R', ty:1, tr:'L', basis:['B-DOM'], tags:['F-STAY','E-TRACE'], f:{days:'M',fam:'K',job:'A',asset:'H',foreign:'N'},
     summary:'사우디 해외법인 근무. 배우자·자녀가 4년간 단 5일만 국외 체류하며 국내에서 생계.',
     summary_en:'Worked for an overseas company in Saudi Arabia. Over four years his spouse and children spent only five days outside Korea, living there throughout.',
     key:'가족이 국내에서 생계를 같이한 사실이 핵심. 외국 국적·영주권이 없으면 비거주자 간주 규정도 적용되지 않음.',
     key_en:'The decisive fact was the family sharing a household in Korea. Without foreign citizenship or permanent residency, the deemed non-resident rule does not apply either.' },
-  { id:'2019두30096', country:'미국·홍콩', r:'R', ty:4, f:{days:'M',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2019두30096', country:'미국·홍콩', r:'R', ty:4, tr:'L', basis:['B-DOM'], tags:['C-REMOTE','C-OFFICE','E-DESIGN','P-PR','A-CONC'], f:{days:'M',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'미국 시민권자. 홍콩 출국 후에도 가족이 연 147~167일 국내 체류, 수천억 국내 법인 경영 관여.',
     summary_en:'US citizen. Even after leaving for Hong Kong his family spent 147-167 days a year in Korea, and he stayed involved in managing Korean companies worth hundreds of billions.',
     key:'시민권자라도 체류·가족·자산·경영이 국내에 집중되면 거주자. 형식적 비거주자 요건 만들기는 오히려 불리하게 작용.',
     key_en:'Even a citizen is a resident where stays, family, assets and management concentrate in Korea. Manufacturing the formal appearance of non-residency worked against him.' },
-  { id:'2018두135', country:'싱가포르', r:'R', ty:4, f:{days:'H',fam:'X',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두135', country:'싱가포르', r:'R', ty:4, tr:'L', basis:['B-SUB','B-TB2'], tags:['C-PAPER','P-PR','A-CONC','F-PART'], f:{days:'H',fam:'X',job:'X',asset:'H',foreign:'Y'},
     summary:'싱가포르 영주권자. 국내 체류·자산이 급증(2009년 270일), 매입한 국내 아파트에 부모 거주.',
     summary_en:'Singapore permanent resident. His stays and assets in Korea rose sharply (270 days in 2009), and his parents lived in an apartment he bought there.',
     key:'영주권이 있어도 국내 체류·자산이 급증하고 부모가 국내에 거주하면 거주자. 조약상 입증책임은 납세자.',
     key_en:'Even with permanent residency, sharply rising stays and assets plus parents living in Korea make you a resident. Under the treaty the burden of proof is the taxpayer\'s.' },
-  { id:'2018두35575', country:'중국', r:'R', ty:3, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2018두35575', country:'중국', r:'R', ty:3, tr:'L', basis:['B-DOM'], tags:['E-ADMIT','F-ADULT','A-RENT'], f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 공예품 제조업. 중국 체류가 더 많지만 재혼 배우자·딸이 국내 주소지에서 상주.',
     summary_en:'Handicraft manufacturing in China. He spent more days in China, but his remarried spouse and daughter lived permanently at his Korean address.',
     key:'중국 체류가 더 많아도 생계를 같이하는 가족(배우자·자녀)이 국내에 상주하면 거주자.',
     key_en:'Even with more days in China, you are a resident where dependent family — spouse and children — live in Korea.' },
-  { id:'2018두34367', country:'캐나다', r:'R', ty:2, f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2018두34367', country:'캐나다', r:'R', ty:2, tr:'L', basis:['B-DOM'], tags:['P-PR','P-REG','A-RENT','A-CONC'], f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 영주권 취득·이주했으나 국내 고가 아파트 등 거액 자산 보유, 임대소득 계속 발생.',
     summary_en:'Acquired Canadian permanent residency and emigrated, but kept substantial Korean assets including a high-value apartment, with rental income continuing.',
     key:'영주권 취득·출국만으로 비거주자로 자동 전환되지 않음 — 국내 거액 자산·소득이 있으면 거주자 유지.',
     key_en:'Acquiring permanent residency and leaving does not convert you automatically — substantial Korean assets and income keep you a resident.' },
-  { id:'2017두57929', country:'중국', r:'R', ty:3, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2017두57929', country:'중국', r:'R', ty:3, tr:'L', basis:['B-DOM'], tags:['A-REMIT','A-RENT','F-STAY','S-SHORT'], f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 거점 무역·사업. 연 40일만 국내 체류하나 가족 전원 국내, 30억 초과 부동산·임대사업.',
     summary_en:'Trading and business based in China. Only 40 days a year in Korea, but the whole family lived there and he held over 3 billion won of property and a rental business.',
     key:'연 318일 중국 체류라도 가족 전원이 국내에 살고 귀국 시 같은 주소지에 거주하면 거주자.',
     key_en:'Even at 318 days a year in China, you are a resident where the whole family lives in Korea and you return to the same address.' },
-  { id:'2015두36546', country:'중국', r:'R', ty:1, f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2015두36546', country:'중국', r:'R', ty:1, tr:'L', basis:['B-DOM'], tags:['F-STAY','S-SHORT','E-TRACE'], f:{days:'L',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'중국 위탁가공업. 본인은 연 21일만 국내 체류하나 배우자·자녀가 1년 내내 국내 상주.',
     summary_en:'Consignment processing business in China. He spent only 21 days a year in Korea, but his spouse and children lived there year-round.',
     key:'본인 21일 체류여도 가족이 국내에 상주하면 거주자 — 체류일수는 결정적 기준이 아님. 신용카드·진료기록이 생활중심지 증거.',
     key_en:'Even at 21 days, family living in Korea makes you a resident — day count is not decisive. Credit card and medical records evidenced the centre of living.' },
-  { id:'2018두39065', country:'홍콩·미국', r:'R', ty:5, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'Y'},
+  { id:'2018두39065', country:'홍콩·미국', r:'R', ty:5, tr:'L', basis:['B-DOM'], tags:['Z-RETURN','Z-COUPLE','P-PR','C-CEO','P-REG'], f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'Y'},
     summary:'홍콩 영주권자. 쟁점기간 대부분 국내 체류, 배우자 국내 거주, 국내 법인 100% 보유·임원.',
     summary_en:'Hong Kong permanent resident. He was in Korea for most of the period at issue, his spouse lived there, and he wholly owned and served as an officer of a Korean company.',
     key:'특정일 해외 체류여도 기간 전체 생활관계로 거주자. 해외이주신고 미이행·국내 직장 건강보험은 거주자 방증.',
     key_en:'A stay abroad on a particular date does not control; residency follows the whole period\'s pattern of life. A missing emigration report and workplace health insurance corroborate residency.' },
-  { id:'2017두73686', country:'홍콩', r:'R', ty:5, f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
+  { id:'2017두73686', country:'홍콩', r:'R', ty:5, tr:'L', basis:['B-DOM'], tags:['Z-RETURN','Z-COUPLE','P-PR','P-REG'], f:{days:'M',fam:'K',job:'K',asset:'M',foreign:'Y'},
     summary:'홍콩 영구거주권자(가정주부). 배우자가 국내 기업 운영, 본인도 국내 법인 등기임원.',
     summary_en:'Hong Kong permanent resident, a homemaker. Her spouse ran a business in Korea and she too was a registered officer of a Korean company.',
     key:'「영주권=비거주자」 공식은 통하지 않음 — 실제 체류일수와 가족의 경제생활관계가 더 강한 기준.',
     key_en:'The \'permanent residency equals non-residency\' formula does not hold — actual day count and the family\'s economic life are far stronger criteria.' },
-  { id:'2017두53705', country:'캐나다', r:'R', ty:5, f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2017두53705', country:'캐나다', r:'R', ty:5, tr:'L', basis:['B-DOM'], tags:['P-PR','F-PART','F-MOVE','C-CEO','A-CONC'], tyx:['2','4'], f:{days:'H',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 영주권자. 처·자녀는 캐나다 시민권자로 현지 거주하나 본인은 국내 체류가 더 많고 국내 법인 대표이사.',
     summary_en:'Canadian permanent resident. His wife and children were Canadian citizens living there, but he spent more days in Korea and was representative director of Korean companies.',
     key:'「가족+영주권」만으로는 비거주자가 못 됨. 중대한 이해관계의 중심지는 「돈이 나오는 곳」.',
     key_en:'Family plus permanent residency alone does not make you a non-resident. The centre of vital interests is where the money comes from.' },
-  { id:'2018두35025', country:'미국', r:'R', ty:2, f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2018두35025', country:'미국', r:'R', ty:2, tr:'L', basis:['B-DOM','B-TB2'], tags:['P-PR','F-PART','S-SHORT','A-CONC','C-CEO'], f:{days:'L',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'미국 영주권자. 배우자·자녀는 미국, 모친은 국내 거주. 국내에서 유통회사 설립·실질 경영.',
     summary_en:'US permanent resident. Spouse and children in the US, mother in Korea. He founded and substantively ran a distribution company in Korea.',
     key:'가족이 해외에 있어도 국내에서 법인을 실질 경영하고 거액 자산을 보유하면 거주자.',
     key_en:'Even with family abroad, substantively running a company and holding substantial assets in Korea makes you a resident.' },
-  { id:'2015두1243', country:'일본', r:'R', ty:4, f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
+  { id:'2015두1243', country:'일본', r:'R', ty:4, tr:'L', basis:['B-DOM'], tags:['C-OFFICE','C-PAPER','E-DESIGN','Z-PENAL','F-STAY','A-CONC'], f:{days:'M',fam:'K',job:'K',asset:'H',foreign:'N'},
     summary:'일본 거류증 보유 그룹 경영자. 가족 전용 국내 생활공간 완비, 국내 집무실에서 그룹 전체 통제.',
     summary_en:'Group head holding a Japanese residence card. A living space for the family was fully maintained in Korea, and he controlled the whole group from his office there.',
     key:'국내 집무실에서 그룹 의사결정을 하고 가족 생활공간이 국내에 완비되면 거주자.',
     key_en:'Making group decisions from an office in Korea, with a family living space fully maintained there, makes you a resident.' },
-  { id:'2016두37584', country:'사우디·카타르', r:'R', ty:4, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2016두37584', country:'사우디·카타르', r:'R', ty:4, tr:'L', basis:['B-DOM'], tags:['C-DEPEND','C-CEO','F-STAY','A-REMIT'], f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'사우디 법인 대표(국내법인 대표이사 겸직). 본인 연 188일·배우자 327일 국내 체류, 강남 자산.',
     summary_en:'Head of a Saudi company and concurrently representative director of a Korean one. He spent 188 days and his spouse 327 days a year in Korea, with assets in Gangnam.',
     key:'해외 사업의 통제권·매출의 한국 종속성까지 들여다봄 — 의사결정 장소가 국내면 거주자.',
     key_en:'The court examined control of the overseas business and its revenue dependence on Korea — where decisions are made in Korea, you are a resident.' },
-  { id:'2014두13959', country:'케이만(미국·중국 주장)', r:'R', ty:4, f:{days:'H',fam:'K',job:'X',asset:'M',foreign:'N'},
+  { id:'2014두13959', country:'케이만(미국·중국 주장)', r:'R', ty:4, tr:'L', basis:['B-DOM'], tags:['C-PAPER','F-STAY','S-LONG'], f:{days:'H',fam:'K',job:'X',asset:'M',foreign:'N'},
     summary:'케이만 법인 주주·국내법인 이사. 연평균 255일 국내 체류, 한국인 배우자 국내 거주.',
     summary_en:'Shareholder of a Cayman company and director of a Korean one. He averaged 255 days a year in Korea, with a Korean spouse living there.',
     key:'해외 거주자라는 주장을 구체적으로 입증하지 못하면 국내 거주자. 입증책임은 납세자.',
     key_en:'Without concrete proof of the claimed foreign residency you are a domestic resident. The burden of proof is the taxpayer\'s.' },
-  { id:'2014두47303', country:'미국', r:'R', ty:2, f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
+  { id:'2014두47303', country:'미국', r:'R', ty:2, tr:'L', basis:['B-DOM'], tags:['P-PR','P-EMIG','P-BENE','P-REG','F-MOVE','A-RENT','C-CEO'], f:{days:'M',fam:'A',job:'K',asset:'H',foreign:'Y'},
     summary:'미국 영주권자. 처·자녀는 미국 이주했으나 본인은 국내 부동산 임대업·법인 경영.',
     summary_en:'US permanent resident. His wife and children emigrated to the US, but he ran a property rental business and companies in Korea.',
     key:'가족이 미국에 있어도 자산과 일이 국내에 있으면 「언제든 돌아와 살 사람」으로 거주자. 거주자 소득공제 받은 사실이 증거.',
     key_en:'Even with family in the US, assets and work in Korea make you someone who could return to live at any time — a resident. Having claimed resident deductions was evidence.' },
-  { id:'2013두16876', country:'일본', r:'R', ty:3, f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
+  { id:'2013두16876', country:'일본', r:'R', ty:3, tr:'L', basis:['B-DOM'], tags:['A-CONC','C-CEO','Z-LEAD'], f:{days:'H',fam:'K',job:'X',asset:'H',foreign:'N'},
     summary:'재일교포(한국 국적). 배우자와 국내 고가주택 거주, 약 155억 국내 자산, 국내·일본 법인 경영.',
     summary_en:'Korean-Japanese holding Korean nationality. Lived with his spouse in a high-value Korean home, with about 15.5 billion won of Korean assets and companies in both countries.',
     key:'국내 고가주택에 가족과 거주하고 거액 자산을 두면 일본 주소·납세가 있어도 거주자.',
     key_en:'Living with family in a high-value Korean home and holding substantial assets there makes you a resident even with a Japanese domicile and tax filings.' },
-  { id:'조심2024서0141', country:'캐나다', r:'R', ty:5, f:{days:'H',fam:'X',job:'K',asset:'H',foreign:'Y'},
+  { id:'조심2024서0141', country:'캐나다', r:'R', ty:5, tr:'W', basis:['B-DOM'], tags:['Z-1H1H','Z-PAIR','S-LONG','F-PART','P-REG'], f:{days:'H',fam:'X',job:'K',asset:'H',foreign:'Y'},
     summary:'캐나다 국적자. 양도 당시 본인·딸이 국내 454일 연속 거주, 배우자는 자녀 유학 뒷바라지로 일시 캐나다.',
     summary_en:'Canadian national. At the time of transfer he and his daughter had lived in Korea for 454 consecutive days, while his spouse was temporarily in Canada supporting a child\'s studies.',
     key:'국적·영주권 유무가 아닌 183일 이상 국내 거소가 핵심. 배우자의 한시적 해외 체류는 세대 분리로 봄.',
@@ -2311,6 +2403,55 @@ function precTags(p, hits) {
   let tags = keys.map(k => `<span class="prec-tag ${hits[k] ? 'hit' : ''}">${getPrecTagLabel(k, p.f[k])}</span>`).join('');
   if (hits.country) tags = `<span class="prec-tag hit">${t('prec_same_country')}</span>` + tags;
   return tags;
+}
+
+// ====================================================
+//  판례 사실관계 키워드 (책 부록1의 8개 축)
+//  입력값과 겹치는 키워드를 표시해 같은 쟁점이 다투어진 판례를 찾아보게 한다.
+//  ※ 일치 개수를 점수로 환산해 결론을 내지 않는다 — 키워드는 색인이지 판정 알고리즘이 아니다.
+// ====================================================
+function userKeywords(d) {
+  const k = new Set();
+  const kidsKr = d.childrenInKorea > 0, kidsAb = d.childrenAbroad > 0;
+  const famKr = d.spouseStatus === 'korea' || kidsKr;
+  const famAb = d.spouseStatus === 'abroad' || kidsAb;
+
+  if (famKr) k.add('F-STAY');
+  if (famAb && !famKr && d.parentsStatus !== 'korea') k.add('F-MOVE');
+  if ((famKr && famAb) || d.spouseStatus === 'both' || d.parentsStatus === 'korea') k.add('F-PART');
+
+  if (d.daysInKorea > 0 && d.daysInKorea < 100) k.add('S-SHORT');
+  if (d.daysInKorea > 183) k.add('S-LONG');
+
+  if (d.domTotal > 0 && d.domTotal >= d.abrTotal * 2) k.add('A-CONC');
+  if (d.houseRent === 'yes' || d.houseRent === 'mix' || d.shopRent === 'yes') k.add('A-RENT');
+  if (d.abrTotal === 0 && d.domTotal > 0) k.add('A-NONE');
+
+  if (d.foreignStatus !== 'none') k.add('P-PR');
+  if (d.krRegDel === 'yes') k.add('P-REG');
+
+  if (d.krJob === 'officer' || d.krJob === 'business') {
+    if (d.krWorkMode === 'nominal') k.add('C-INDIR');
+    else if (d.krWorkMode === 'remote') k.add('C-REMOTE');
+    else k.add('C-CEO');
+  }
+  if (d.abrJob !== 'none' && d.abrTotal > d.domTotal) k.add('C-SCALE');
+  return k;
+}
+
+function precKeywordHTML(p, mine) {
+  const kwL = t('kw_labels'), bsL = t('basis_labels');
+  const basis = (p.basis || []).map(b =>
+    `<span class="kw kw-basis">${bsL[b] || b}</span>`).join('');
+  const tags = (p.tags || []).map(x => {
+    const on = mine.has(x);
+    return `<span class="kw${on ? ' on' : ''}"${on ? ` title="${t('kw_match')}"` : ''}>${kwL[x] || x}</span>`;
+  }).join('');
+  if (!basis && !tags) return '';
+  return `<div class="kw-row">
+    ${basis ? `<div class="kw-line"><span class="kw-lab">${t('kw_basis_title')}</span>${basis}</div>` : ''}
+    ${tags ? `<div class="kw-line"><span class="kw-lab">${t('kw_title')}</span>${tags}</div>` : ''}
+  </div>`;
 }
 
 // ====================================================
@@ -2404,6 +2545,7 @@ function buildPrecedentHTML(d) {
     .map(p => { const m = precSim(u, p, d); return Object.assign({}, p, { sim: m.sim, hits: m.hits }); })
     .sort((a, b) => b.sim - a.sim);
   const top = scored.slice(0, 4);
+  const mine = userKeywords(d);
 
   let rW = 0, nW = 0;
   scored.slice(0, 6).forEach(p => {
@@ -2434,11 +2576,13 @@ function buildPrecedentHTML(d) {
         <div class="prec-top">
           <span class="prec-id">${lawName(p.id)}</span>
           <span class="prec-rtag ${p.r}">${rtagText[p.r]}</span>
+          <span class="prec-tr tr-${p.tr}">${t('tr_' + p.tr)}</span>
           <span class="prec-sim">${p.sim}${t('prec_sim_suffix')}</span>
         </div>
         <div class="prec-summary"><strong>[${cNameMulti(p.country)}]</strong> ${currentLang === 'en' && p.summary_en ? p.summary_en : p.summary}</div>
         <div class="prec-key"><strong>${t('prec_keypoint')}</strong> ${currentLang === 'en' && p.key_en ? p.key_en : p.key}</div>
-        <div class="prec-tags"><span class="prec-type">${t('types')[p.ty - 1].n}</span>${precTags(p, p.hits)}</div>
+        <div class="prec-tags"><span class="prec-type">${t('types')[p.ty - 1].n}</span>${(p.tyx || []).map(x => `<span class="prec-type cross">${t('types')[x - 1].n}</span>`).join('')}${precTags(p, p.hits)}</div>
+        ${precKeywordHTML(p, mine)}
       </div>
     `).join('')}
   </div>`;
