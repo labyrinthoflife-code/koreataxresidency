@@ -236,6 +236,25 @@
       border-left: 3px solid #cbd5e1; border-radius: 0 8px 8px 0; padding: 9px 12px; margin-top: 9px;
     }
 
+    /* ── BOOK BANNER ── */
+    .book-banner { display: block; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
+    .book-banner img { display: block; width: 100%; height: auto; }
+    .book-banner:hover { box-shadow: 0 12px 34px rgba(0,0,0,0.26); transform: translateY(-2px); }
+    .book-banner { transition: box-shadow .2s, transform .2s; }
+
+    /* 세로형 — 컨테이너(740px) 바깥 오른쪽 여백에 고정. 여백이 좁아지면 감춘다. */
+    .book-banner.pc {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      left: calc(50% + 400px); width: 190px; z-index: 20;
+    }
+    .book-banner.pc:hover { transform: translateY(-50%) translateY(-2px); }
+    .book-banner.mobile { margin-top: 28px; }
+
+    /* 가로형은 세로형이 보이지 않을 때만 노출한다 */
+    @media (min-width: 1200px) { .book-banner.mobile { display: none; } }
+    @media (max-width: 1199px) { .book-banner.pc { display: none; } }
+    @media print { .book-banner { display: none !important; } }
+
     /* ── PRECEDENT KEYWORDS ── */
     .kw-row { margin-top: 10px; padding-top: 9px; border-top: 1px dashed #e5e7eb; display: grid; gap: 6px; }
     .kw-line { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -923,10 +942,20 @@
     </div>
   </div>
 
+  <a class="book-banner mobile" href="https://product.kyobobook.co.kr/detail/S000221238256"
+     target="_blank" rel="noopener noreferrer" data-i18n-title="banner_alt">
+    <img src="banner-mobile.png" width="1080" height="540" loading="lazy" data-i18n-alt="banner_alt" alt="해외에 살아도 한국에 세금을 내야 할까 — 책 자세히 보기">
+  </a>
+
   <div style="text-align:center;color:rgba(255,255,255,0.45);font-size:12px;margin-top:22px;line-height:2;" data-i18n="footer_disclaimer">
-    본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.
+    본 사이트는 해외에 살아도 한국에 세금을 내야할까(심창현, 삼일인포마인)의 내용을 기초로 만들었습니다. 본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.
   </div>
 </div>
+
+<a class="book-banner pc" href="https://product.kyobobook.co.kr/detail/S000221238256"
+   target="_blank" rel="noopener noreferrer" data-i18n-title="banner_alt">
+  <img src="banner-pc.png" width="600" height="1200" loading="lazy" data-i18n-alt="banner_alt" alt="해외에 살아도 한국에 세금을 내야 할까 — 책 자세히 보기">
+</a>
 
 <script>
 // ====================================================
@@ -1023,7 +1052,8 @@ const LANG = {
       '아프리카': '아프리카',
     },
     non_treaty_opts: [['기타미체결','기타 (미체결국)'],['나이지리아','나이지리아 (효력정지)'],['수단','수단 (미발효)']],
-    footer_disclaimer: '본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.',
+    footer_disclaimer: '본 사이트는 해외에 살아도 한국에 세금을 내야할까(심창현, 삼일인포마인)의 내용을 기초로 만들었습니다. 본 진단은 참고 목적으로만 사용하세요. 구체적 납세 문제는 변호사·회계사·세무사 등 전문가와 상담하시기 바랍니다.',
+    banner_alt: '해외에 살아도 한국에 세금을 내야 할까 (심창현, 삼일인포마인) — 책 자세히 보기',
     // Step 4
     step4_title: '국내 자산 현황',
     step4_desc: '해당 과세연도 기준 국내 보유 자산의 시가를 입력해주세요. 없는 항목은 0으로 두시면 됩니다.',
@@ -1390,7 +1420,8 @@ const LANG = {
       '아프리카': 'Africa',
     },
     non_treaty_opts: [['기타미체결','Other (Non-treaty country)'],['나이지리아','Nigeria (Treaty suspended)'],['수단','Sudan (Not in force)']],
-    footer_disclaimer: 'For reference only. Please consult a licensed tax attorney or certified tax accountant for specific tax matters.',
+    footer_disclaimer: 'This site is based on 『해외에 살아도 한국에 세금을 내야 할까』 by Shim Chang-hyun (Samil Infomine). For reference only. Please consult a licensed tax attorney or certified tax accountant for specific tax matters.',
+    banner_alt: '해외에 살아도 한국에 세금을 내야 할까 by Shim Chang-hyun (Samil Infomine) — view the book',
     // Step 4
     step4_title: 'Domestic Assets',
     step4_desc: 'Enter the market value of assets held in Korea as of the tax year. Leave items at 0 if not applicable.',
@@ -1702,6 +1733,16 @@ function applyLang() {
     const key = el.getAttribute('data-i18n-opt');
     const val = t(key);
     if (val !== undefined) el.textContent = val;
+  });
+
+  // Update alt / title attributes (배너 등)
+  document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+    const val = t(el.getAttribute('data-i18n-alt'));
+    if (val !== undefined) el.alt = val;
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const val = t(el.getAttribute('data-i18n-title'));
+    if (val !== undefined) el.title = val;
   });
 
   // Update placeholders
